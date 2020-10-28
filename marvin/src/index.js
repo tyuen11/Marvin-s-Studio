@@ -14,6 +14,8 @@ import RegisterScreen from './components/RegisterScreen';
 import RequestReset from './components/RequestReset';
 import ResetPassword from './components/ResetPassword';
 
+import App from './App'
+
 
 const client = new ApolloClient({ uri: 'http://localhost:3000/graphql' });
 
@@ -25,7 +27,7 @@ ReactDOM.render(
               <Route exact path="/register" component={RegisterScreen} />
               <Route exact path="/reqreset" component={RequestReset} />
               <Route exact path="/reset" component={ResetPassword} />
-              
+              <Route exact path="/playlist" component={App}/>
           </div>
       </Router>
   </ApolloProvider>, 

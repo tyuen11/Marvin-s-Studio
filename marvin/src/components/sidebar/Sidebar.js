@@ -7,6 +7,8 @@ class Sidebar extends React.Component {
         const sidebarStyle = {
             width: 200,
             height: '100%',
+            padding: 0,
+            margin: 0,
             background: '#232323',
             textAlign: 'center',
             color: 'white',
@@ -52,8 +54,8 @@ class Sidebar extends React.Component {
         }
 
         return (
-            <div className="Sidebar" style={sidebarStyle}>
-                <img src={logo} height={60}></img>
+            <ul className="Sidebar" style={sidebarStyle}>
+                <img src={logo} height={60} alt=''></img>
                 <input type='text' style={searchStyle} placeholder='Search'></input>
                 <div style={buttonDivStyle}>
                     <button style={buttonStyle}>Home</button>
@@ -62,7 +64,7 @@ class Sidebar extends React.Component {
                 </div>
                 <div style={labelStyle}>My Playlists</div>
                 <PlaylistLinks/>
-            </div>
+            </ul>
         )
         
     }

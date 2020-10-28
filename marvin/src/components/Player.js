@@ -7,7 +7,10 @@ class Player extends React.Component {
             height: 75,
             bottom: 0,
             left: 0,
-            background: 'gray',
+            background: '#232323',
+            borderTopStyle: 'solid',
+            borderThickness: 1,
+            borderColor: 'white',
             z_index: 99,
             position: 'absolute'
         }

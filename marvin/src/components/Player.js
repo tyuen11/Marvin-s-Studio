@@ -19,7 +19,7 @@ class Player extends React.Component {
 
         const playerStyle = {
             width: '100%',
-            height: 60,
+            height: 80,
             padding: 10,
             bottom: 0,
             left: 0,

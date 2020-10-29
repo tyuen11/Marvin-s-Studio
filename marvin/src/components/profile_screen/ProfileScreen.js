@@ -1,13 +1,15 @@
 import React from 'react'
-import Player from '../Player'
-import Sidebar from '../sidebar/Sidebar'
-import AlbumLinks from './AlbumLinks';
+import Player from '../Player';
+import Sidebar from '../sidebar/Sidebar';
+import ProfilePlaylistLinks from './ProfilePlaylistLinks';
 
-class ArtistScreen extends React.Component {
+class ProfileScreen extends React.Component {
     constructor(props) {
         super(props);
-        console.log("Passed props");
+        console.log("ProfileScreen");
     }
+
+    
     render () {
         const screenStyle = {
             width: '100%',
@@ -16,7 +18,7 @@ class ArtistScreen extends React.Component {
             position: 'fixed',
         }
 
-        const artistScreenStyle = {
+        const profileScreenStyle = {
             width: 'calc(100% - 200px)',
             background: '#232323',
             padding: '20px 40px'
@@ -37,24 +39,22 @@ class ArtistScreen extends React.Component {
             borderBottomStyle: 'solid',
             borderColor: 'white'
         }
-
         return (
             <div className='Screen' style={screenStyle}>
                 <Sidebar/>
                 <Player/>
-                <div className='ArtistScreen' style={artistScreenStyle}>
+                <div className='ProfileScreen' style={profileScreenStyle}>
                     <h3 style={headerStyle}>
-                        <img src={this.props.image} 
-                            height='80' width='80'style={{marginRight: 20, borderRadius: '50%'}}></img>
-                        {this.props.name}
+                        <img src="https://thumbs.dreamstime.com/z/business-man-profile-brazilian-white-background-38563179.jpg"
+                            height='80' width='80' style={{marginRight: 20, borderRadius: '50%'}}></img>
+                        John Doe
                     </h3>
-                    <div className='Albums' style={colHeaderStyle}>Albums</div>
-                    <AlbumLinks {...this.props}/>
+                    <div className='Playlists' style={colHeaderStyle}>My Playlists</div>
+                    <ProfilePlaylistLinks {...this.props}/>
                 </div>
-
             </div>
         )
     }
 }
 
-export default ArtistScreen
+export default ProfileScreen

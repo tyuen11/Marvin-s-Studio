@@ -13,6 +13,8 @@ import LoginScreen from './components/LoginScreen';
 import RegisterScreen from './components/RegisterScreen';
 import RequestReset from './components/RequestReset';
 import ResetPassword from './components/ResetPassword';
+import PlaylistScreen from './components/playlist_screen/PlaylistScreen';
+import AlbumScreen from './components/AlbumScreen';
 
 
 const client = new ApolloClient({ uri: 'http://localhost:3000/graphql' });
@@ -22,9 +24,14 @@ ReactDOM.render(
       <Router>
           <div>
               <Route exact path="/login" component={LoginScreen} />
+              
               <Route exact path="/register" component={RegisterScreen} />
               <Route exact path="/reqreset" component={RequestReset} />
               <Route exact path="/reset" component={ResetPassword} />
+              <Route exact path="/playlist" component={PlaylistScreen} />
+              <Route exact path="/album" component={AlbumScreen} />
+
+
               
           </div>
       </Router>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-class PlaylistScreen extends React.Component {
+class AlbumScreen extends React.Component {
         render() {
                 return (
                         <div id="playlist" className="container" >
@@ -8,13 +8,11 @@ class PlaylistScreen extends React.Component {
                                         <div className="col">
 
                                                 <div className="row">
-                                                        <h3 className="text-light" style={{ paddingTop: "40px" }}> Playlist Name </h3>
+                                                        <h3 className="text-light" style={{  paddingTop: "20px",fontSize:"60px",paddingLeft:"20px" }}> Album Name </h3>
                                                 </div>
 
                                                 <div className="row">
-                                                        <label className="text-light" style={{ marginLeft: "20px" }}> Playlist by John doe </label>
-
-
+                                                        <label className="text-light" style={{ marginLeft: "30px" ,fontSize:"20px"}}> Album by John Doe </label>
                                                 </div>
 
                                                 <div className="row">
@@ -61,36 +59,20 @@ class PlaylistScreen extends React.Component {
                                                                                 </input>
                                                                         </a>
                                                                 </div>
-
-                                                                <div className="row">
-                                                                        <a href="albumPic">
-                                                                                <input type="image" style={{ width: "8%", marginLeft: "30px" }}
-                                                                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTRji0oY8QGRLIxPEavTz2xOy8fXi0us--o3A&usqp=CAU">
-                                                                                </input>
-                                                                        </a>
-                                                                </div>
-
+                                                      
                                                         </div>
 
                                                 </div>
-
-
-
                                         </div>
                                 </div>
                                 <div className="row" >
-                                        <h3 style={{ color: "white" }}>
-                                                Song Name
-                        </h3>
-                                        <h3 style={{ color: "white", marginLeft: "60px" }}>
-                                                Artist
-                        </h3>
-                                        <h3 style={{ color: "white", marginLeft: "60px" }}>
-                                                Album
-                        </h3>
-                                        <h3 style={{ color: "white", marginLeft: "60px" }}>
-                                                Date Added
-                        </h3>
+                                        <h3 className="col-4 text-light">
+                                                Title
+                                        </h3>
+                                        <h3 className="col-4 text-light">
+                                                Runtime
+                                        </h3>
+                          
                                 </div>
 
 
@@ -99,4 +81,4 @@ class PlaylistScreen extends React.Component {
         }
 }
 
-export default PlaylistScreen
+export default AlbumScreen

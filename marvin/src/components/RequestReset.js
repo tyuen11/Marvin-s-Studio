@@ -22,7 +22,7 @@ class RequestReset extends Component {
                         <form className="" style={{margin: "0.25rem", paddingTop: "1.5rem"}}>
                             <div className="form-group col-8 mx-auto text-left">
                                 <label className="text-light mt-2 mb-3">What's your email address?</label>
-                                <input type="password" className="form-control mb-4"  placeholder="Email"/>
+                                <input className="form-control mb-4"  placeholder="Email"/>
                             </div>
                             <Link to='/login'>
                                 <button type="button" className="btn btn-light mr-2" click="location.href='/login">Cancel</button>

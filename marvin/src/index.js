@@ -29,10 +29,7 @@ ReactDOM.render(
               <Route exact path="/reqreset" component={RequestReset} />
               <Route exact path="/reset" component={ResetPassword} />
               <Route exact path="/playlist" component={PlaylistScreen} />
-              <Route exact path="/album" component={AlbumScreen} />
-
-
-              
+              <Route exact path="/album" component={AlbumScreen} />   
           </div>
       </Router>
   </ApolloProvider>, 

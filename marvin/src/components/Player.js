@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../logo.svg'
+import logo from '../icons/marvins.png';
 
 class Player extends React.Component {
     constructor () {
@@ -19,7 +19,7 @@ class Player extends React.Component {
 
         const playerStyle = {
             width: '100%',
-            height: 60,
+            height: 80,
             padding: 10,
             bottom: 0,
             left: 0,

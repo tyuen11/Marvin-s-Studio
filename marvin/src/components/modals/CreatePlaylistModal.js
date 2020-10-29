@@ -1,33 +1,27 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import {Modal, Button} from 'react-bootstrap';
+
 
 class CreatePlaylistModal extends Component {
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#createPlaylistModal">
-                    Open modal
-                </button>
-                <div id="createPlaylistModal "className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title text-light" >Create Playlist</h5>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
+                <Modal id="showCreatePlaylist" show={this.props.show} onHide={this.props.handleClose}>
+                    <Modal.Header closeButton={true}>
+                        <Modal.Title className="">Create Playlist</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body id="exportModalBody">
+                        <form>
+                            <div className="form-group col-8 text-center mx-auto">
+                                <label className="mt-2 mb-3 ">What's the name of your playlist?</label>
+                                <input className="form-control mb-4"  defaultValue="My Playlist"/>
+                                <div className="row mb-4">
+                                    <Button type="button" className="col-6 btn btn-primary ml-2 text-center mx-auto">Create Playlist</Button>
+                                </div>
                             </div>
-                            <div className="modal-body">
-                                <form>
-                                    <div className="form-group col-8 mx-auto text-left">
-                                        <label className="text-light mt-2 mb-3">What's the name of your playlist</label>
-                                        <input className="form-control mb-4"  placeholder="My Playlist"/>
-                                        <button type="button" className="btn btn-primary ml-2">Create Playlist</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        </form>
+                    </Modal.Body>
+                </Modal>
             </div>
         )
     }

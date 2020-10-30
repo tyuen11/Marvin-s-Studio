@@ -3,6 +3,11 @@ import logo from '../../icons/marvins.png';
 import PlaylistLinks from './PlaylistLinks.js'
 
 class Sidebar extends React.Component {
+    constructor(props) {
+        super(props);
+        console.log("Sidebar")
+    }
+
     render() {
         const sidebarStyle = {
             width: 200,
@@ -63,7 +68,7 @@ class Sidebar extends React.Component {
                     <button style={buttonStyle}>Create Playlist</button>
                 </div>
                 <div style={labelStyle}>My Playlists</div>
-                <PlaylistLinks/>
+                <PlaylistLinks {...this.props}/>
             </ul>
         )
         

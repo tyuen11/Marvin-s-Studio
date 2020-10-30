@@ -8,16 +8,8 @@ class ProfilePlaylistLinks extends React.Component {
     }
 
     render() {
-
-        const playlistViewStyle = {
-            display: "inline-block",
-            position: 'relative',
-            width: '100%',
-            textAlign: 'left'
-        }
-
         return (
-            <div className="PlaylistLinks" style={playlistViewStyle}>
+            <div className='row'>
                 {this.props.playlists.map((playlist) =>(
                     <ProfilePlaylistLink {...playlist}/>
                 ))}

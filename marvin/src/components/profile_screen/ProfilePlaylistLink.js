@@ -11,18 +11,11 @@ class ProfilePlaylistLink extends React.Component {
     }
 
     render() {
-        const playlistImgStyle = {
-            borderRadius: 10,
-            borderStyle: 'solid',
-            borderThickness: 1,
-            borderColor: 'white',
-            height: 90
-        }
-
-        return (
-            <div className='col s4' style={{display: 'inline-block', color: 'white', width: 150, textAlign: 'center', cursor: 'pointer'}}
+       return (
+            <div className='mr-5 text-white w-25 h-25' style={{cursor: 'pointer'}}
                 onClick={this.goToPlaylist}>
-                <img src="https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png" style={playlistImgStyle}></img>
+                <img className='border rounded border-white w-100 h-100'
+                    src="https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png"></img>
                 <div>{this.props.name}</div>
             </div>
         )

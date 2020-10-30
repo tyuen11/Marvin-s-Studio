@@ -11,19 +11,11 @@ class AlbumLink extends React.Component {
     }
 
     render() {
-        const albumImgStyle = {
-            borderRadius: 10,
-            borderStyle: 'solid',
-            borderThickness: 1,
-            borderColor: 'white',
-            height: 90
-        }
-
         return (
-            <div className='col s4' style={{display: 'inline-block', color: 'white', width: 150, textAlign: 'center', cursor: 'pointer'}}
+            <div className='mr-5 text-white w-25 h-25' style={{cursor: 'pointer'}}
                 onClick={this.goToAlbum}>
-                <img src={this.props.image} style={albumImgStyle}></img>
-                <div>{this.props.title}</div>
+                <img className='border rounded border-white w-100 h-100' src={this.props.image}></img>
+                <div className='text-center'>{this.props.title}</div>
             </div>
         )
     }

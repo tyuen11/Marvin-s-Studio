@@ -1,8 +1,25 @@
 import React from 'react'
-import logo from '../../icons/marvins.png';
+import logo from '../../icons/marvins.png'
 import PlaylistLinks from './PlaylistLinks.js'
+import { Link } from 'react-router-dom';
+import CreatePlaylistModal from '../modals/CreatePlaylistModal';
+
 
 class Sidebar extends React.Component {
+    state = {
+        show: false
+    }
+
+    handleShow = () => {
+        this.setState({show: true});
+        console.log("done");
+    }
+
+    handleClose = () => {
+        this.setState({show: false});
+        console.log("dosne");
+    }
+
     render() {
         const sidebarStyle = {
             width: 200,
@@ -54,17 +71,23 @@ class Sidebar extends React.Component {
         }
 
         return (
+            <div>
             <ul className="Sidebar" style={sidebarStyle}>
-                <img src={logo} height={60} alt=''></img>
+                <Link to='/login'>
+                    <img src={logo} height={85} alt=''/>
+                </Link>
+                
                 <input type='text' style={searchStyle} placeholder='Search'></input>
                 <div style={buttonDivStyle}>
                     <button style={buttonStyle}>Home</button>
                     <button style={buttonStyle}>Your Library</button>
-                    <button style={buttonStyle}>Create Playlist</button>
+                    <button style={buttonStyle} onClick={this.handleShow}>Create Playlist</button>
                 </div>
                 <div style={labelStyle}>My Playlists</div>
                 <PlaylistLinks/>
             </ul>
+            <CreatePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}/>
+            </div>
         )
         
     }

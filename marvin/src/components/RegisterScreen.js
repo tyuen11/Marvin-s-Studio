@@ -30,7 +30,7 @@ export default class RegisterScreen extends Component {
                         <form className="text-left" style={{margin: "0.25rem", paddingTop: "1.5rem"}}>
                             <div className="form-group">
                                 <label className="text-light mt-2 mb-3">What's your email address?</label>
-                                <input type="password" className="form-control"  placeholder="Email"/>
+                                <input type="email" className="form-control"  placeholder="Email"/>
                             </div>
                             <div className="form-group" >
                                 <label className="text-light my-3">Create a password</label>
@@ -38,7 +38,7 @@ export default class RegisterScreen extends Component {
                             </div>
                             <div className="form-group">
                                 <label className="text-light my-3">What's your name?</label>
-                                <input type="password" className="form-control"  placeholder="Enter a name"/>
+                                <input type="text" className="form-control"  placeholder="Enter a name"/>
                             </div>
                         </form>
                         <button type="button" className="btn btn-primary btn-sm rounded-pill mt-3 mb-2">Sign Up</button>

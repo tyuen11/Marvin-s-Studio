@@ -7,7 +7,7 @@ class PlaylistLink extends React.Component {
     }
     render() {
         return (
-            <div style={{marginBottom: 5, paddingLeft: 20, textAlign: 'left', cursor: 'pointer'}}>{this.props.name}</div>
+            <div className='text-white text-left pl-3 mb-1' style={{cursor: 'pointer'}}>{this.props.name}</div>
         )
     }
 }

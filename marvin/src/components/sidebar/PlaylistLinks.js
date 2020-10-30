@@ -10,7 +10,7 @@ class PlaylistLinks extends React.Component {
     render() {
         return (
             <div>
-               {this.props.profile.playlists.map((playlist) => (
+               {this.props.playlists.map((playlist) => (
                    <PlaylistLink {...playlist}/>
                ))}
             </div>

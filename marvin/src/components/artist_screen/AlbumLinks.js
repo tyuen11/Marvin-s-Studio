@@ -9,7 +9,7 @@ class AlbumLinks extends React.Component {
 
     render() {
         return (
-            <div className='row'>
+            <div className='row position-absolute' style={{paddingRight: '20%', paddingLeft: 20}}>
                 {this.props.albums.map((album) =>(
                     <AlbumLink {...album}/>
                 ))}

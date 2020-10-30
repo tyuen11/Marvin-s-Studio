@@ -12,11 +12,11 @@ class ProfilePlaylistLink extends React.Component {
 
     render() {
        return (
-            <div className='mr-5 text-white w-25 h-25' style={{cursor: 'pointer'}}
+            <div className='col mr-5 text-white p-0' style={{cursor: 'pointer', width: 120, height: 120}}
                 onClick={this.goToPlaylist}>
                 <img className='border rounded border-white w-100 h-100'
                     src="https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png"></img>
-                <div>{this.props.name}</div>
+                <div className='text-center'>{this.props.name}</div>
             </div>
         )
     }

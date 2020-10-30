@@ -9,7 +9,7 @@ class ProfilePlaylistLinks extends React.Component {
 
     render() {
         return (
-            <div className='row'>
+            <div className='row position-absolute' style={{paddingRight:'20%', paddingLeft: 20}}>
                 {this.props.playlists.map((playlist) =>(
                     <ProfilePlaylistLink {...playlist}/>
                 ))}

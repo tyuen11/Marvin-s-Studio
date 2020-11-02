@@ -13,6 +13,8 @@ import LoginScreen from './components/LoginScreen';
 import RegisterScreen from './components/RegisterScreen';
 import RequestReset from './components/RequestReset';
 import ResetPassword from './components/ResetPassword';
+import PlaylistScreen from './components/playlist_screen/PlaylistScreen';
+import AlbumScreen from './components/AlbumScreen';
 
 import ArtistScreen from './components/artist_screen/ArtistScreen';
 import ProfileScreen from './components/profile_screen/ProfileScreen.js';

@@ -13,8 +13,8 @@ import LoginScreen from './components/LoginScreen';
 import RegisterScreen from './components/RegisterScreen';
 import RequestReset from './components/RequestReset';
 import ResetPassword from './components/ResetPassword';
-import PlaylistScreen from './components/playlist_screen/PlaylistScreen';
-import AlbumScreen from './components/AlbumScreen';
+import MainScreen from './components/MainScreen';
+
 
 import ArtistScreen from './components/artist_screen/ArtistScreen';
 import ProfileScreen from './components/profile_screen/ProfileScreen.js';
@@ -35,6 +35,7 @@ ReactDOM.render(
 
               <Route exact path="/artist" component={() => <ArtistScreen {...PlaylistData.artist}/> }/>
               <Route exact path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/>
+              <Route path='/user' component={MainScreen}/>
           </div>
       </Router>
   </ApolloProvider>, 

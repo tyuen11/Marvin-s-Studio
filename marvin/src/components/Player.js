@@ -16,54 +16,24 @@ class Player extends React.Component {
         let mins = this.state.currTime / 60;
         let secs = this.state.currTime % 60;
         if (secs < 10) secs = '0' + secs;
-
-        const playerStyle = {
-            width: '100%',
-            height: 80,
-            padding: 10,
-            bottom: 0,
-            left: 0,
-            background: '#232323',
-            borderTopStyle: 'solid',
-            borderThickness: 1,
-            borderColor: 'white',
-            z_index: 99,
-            position: 'absolute',
-            display: 'inherit'
-        }
-
-        const buttonStyle = {
-            color: playerDisabled ? '#3d8af7' : '#0c59cf',
-            background: 'transparent',
-            height: 60,
-            width: '5.6%',
-            textAlign: 'center',
-            fontSize: 40,
-            fontWeight: 'bold',
-            borderStyle: 'none',
-            marginRight: '.5%',
-            cursor: playerDisabled ? 'not-allowed' : 'pointer'
-        }
-
-        const timeStyle = {
-            color: 'white',
-            fontSize: 18,
-            paddingTop: 18,
-            paddingLeft: 5,
-            marginLeft: '1%',
-            marginRight: '3%'
-        }
-
-        
+        let buttonCursor = this.state.playerDisabled ? "disabled" : "not-allowed"
+     
         return (
-            <div className="Player" style={playerStyle}>
-                <img src={logo} style={{height: 60}} alt=''></img>
-                <button className='Prev' style={buttonStyle} disabled={playerDisabled}>P</button>
-                <button className='PlayPause' style={buttonStyle} disabled = {playerDisabled}>Pl</button>
-                <button className='Next' style={buttonStyle} disabled={playerDisabled}>N</button>
-                <input type='range' style={{width: '60%', marginLeft: '1%'}} min='0'></input>
-                <div className='time' style={timeStyle}>{mins}:{secs} </div>
-                <button className='ShuffleQueue' style={buttonStyle} disabled={playerDisabled}>S</button>
+            <div className="row w-100 pl-5 pt-2 position-absolute display-inherit border border-white border-left-0 border-bottom-0 border-right-0"
+                    style={{height: 80, bottom: 0, left: 0, zIndex: 99, background: '#232323'}}>
+                <img className='mr-3' src={logo} style={{height: 60, width: 60}} alt=''></img>
+                <button className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
+                    style={{fontSize: 40, cursor: buttonCursor}} disabled={playerDisabled}>P</button>
+                <button className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
+                    style={{fontSize: 40, cursor: buttonCursor}} disabled = {playerDisabled}>Pl</button>
+                <button className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
+                    style={{fontSize: 40, cursor: buttonCursor}} disabled={playerDisabled}>N</button>
+                <input type='range' className='w-50 mx-2' min='0'></input>
+                <div className='text-white pt-4 mx-3' style={{fontSize: 18}}>{mins}:{secs} </div>
+                <button className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
+                    style={{fontSize: 40, cursor: buttonCursor}} disabled={playerDisabled}>S</button>
+                <button className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
+                    style={{fontSize: 40, cursor: buttonCursor}} disabled={playerDisabled}>Q</button>
             </div>
         )
     }

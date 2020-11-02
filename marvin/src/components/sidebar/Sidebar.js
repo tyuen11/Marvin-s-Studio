@@ -6,6 +6,10 @@ import CreatePlaylistModal from '../modals/CreatePlaylistModal';
 
 
 class Sidebar extends React.Component {
+    constructor(props) {
+        super(props);
+        console.log("Sidebar")
+    }
     state = {
         show: false
     }
@@ -19,74 +23,24 @@ class Sidebar extends React.Component {
         this.setState({show: false});
         console.log("dosne");
     }
-
+    
     render() {
-        const sidebarStyle = {
-            width: 200,
-            height: '100%',
-            padding: 0,
-            margin: 0,
-            background: '#232323',
-            textAlign: 'center',
-            color: 'white',
-            borderRightStyle: 'solid',
-            borderThickness: 1,
-            borderColor: 'white'
-        }
-
-        const searchStyle = {
-            width: '80%',
-            padding: 3,
-            margin: 5,
-            borderRadius: 5,
-            borderThickness: 1,
-            borderStyle: 'solid',
-            borderColor: '#3d8af7',
-            outline: 'none'
-        }
-
-        const buttonDivStyle = {
-            backgroundColor:'#3d8af7',
-            marginTop: 5,
-            marginBottom: 5,
-            paddingTop: 5,
-            textAlign: 'center',
-            width: '100%',
-            display: 'block'
-        }
-
-        const buttonStyle = {
-            borderStyle: 'none',
-            width: '80%',
-            backgroundColor: 'transparent',
-            fontSize: 16,
-            marginBottom: 8,
-            color: 'white'
-        }
-
-        const labelStyle = {
-            fontSize: 24,
-            color: '#3d8af7',
-            marginBottom: 10
-        }
-
         return (
             <div>
-            <ul className="Sidebar" style={sidebarStyle}>
-                <Link to='/login'>
-                    <img src={logo} height={85} alt=''/>
-                </Link>
-                
-                <input type='text' style={searchStyle} placeholder='Search'></input>
-                <div style={buttonDivStyle}>
-                    <button style={buttonStyle}>Home</button>
-                    <button style={buttonStyle}>Your Library</button>
-                    <button style={buttonStyle} onClick={this.handleShow}>Create Playlist</button>
-                </div>
-                <div style={labelStyle}>My Playlists</div>
-                <PlaylistLinks/>
-            </ul>
-            <CreatePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}/>
+              <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200}}>
+                  <Link to='/login'>
+                      <img src={logo} height={85} alt=''/>
+                  </Link>
+                  <input className='border border-primary px-1 py-1 my-1 rounded w-75' type='text' placeholder='Search'></input>
+                  <div className='my-1 pt-1 text-center w-100 display-block' style={{background:'#3d8af7', height: 115}}>
+                      <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Home</button>
+                      <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Your Library</button>
+                      <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Create Playlist</button>
+                  </div>
+                  <div className='h4 text-primary'>My Playlists</div>
+                  <PlaylistLinks {...this.props.profile}/>
+              </div>
+              <CreatePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}/>
             </div>
         )
         

@@ -28,12 +28,10 @@ ReactDOM.render(
       <Router>
           <div>
               <Route exact path="/login" component={LoginScreen} />
-              
               <Route exact path="/register" component={RegisterScreen} />
               <Route exact path="/reqreset" component={RequestReset} />
               <Route exact path="/reset" component={ResetPassword} />
-
-              <Route exact path="/artist" component={() => <ArtistScreen {...PlaylistData.artist}/> }/>
+              <Route exact path="/artist" component={() => <ArtistScreen {...PlaylistData}/> }/>
               <Route exact path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/>
           </div>
       </Router>

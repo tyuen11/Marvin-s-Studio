@@ -35,7 +35,8 @@ class Sidebar extends React.Component {
                   <div className='my-1 pt-1 text-center w-100 display-block' style={{background:'#3d8af7', height: 115}}>
                       <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Home</button>
                       <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Your Library</button>
-                      <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Create Playlist</button>
+                      <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'
+                        onClick={this.handleShow}>Create Playlist</button>
                   </div>
                   <div className='h4 text-primary'>My Playlists</div>
                   <PlaylistLinks {...this.props.profile}/>

@@ -1,5 +1,6 @@
 import React from 'react';
 import PlaylistSong from './PlaylistSong.js';
+import DeletePlaylistModal from '../modals/DeletePlaylistModal.js';
 
 class PlaylistScreen extends React.Component {
     state = {
@@ -19,7 +20,7 @@ class PlaylistScreen extends React.Component {
     render() { 
         console.log(this.state);
         return (
-            <div id="playlist" className="container " >
+            <div id="playlist" className="container" >
                 <div className="row border-light" style={{ border: "solid", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px" }}>
                     <div id="top" className="col ml-3">
                         <div className="row">
@@ -42,8 +43,8 @@ class PlaylistScreen extends React.Component {
                                             src="https://i.imgur.com/T8JZhAk.png">
                                         </input>
                                     </a>
-                                    <a id="trash" className="ml-4" onClick={this.handleShow}>
-                                        <input type="image" style={{ width: "10%" }}
+                                    <a id="trash" className="ml-4">
+                                        <input type="image" style={{ width: "10%" }}  onClick={this.handleShow}
                                             src="https://i.imgur.com/jpujrfk.png">
                                         </input>
                                     </a>
@@ -64,11 +65,11 @@ class PlaylistScreen extends React.Component {
                                         </a>
                                     </div>
                                     <div className="row mx-2">
-                                        <input type="image" style={{ width: "10%" }} className="mx-2"
+                                        <input type="image" style={{ width: "10%", height:"10%"}} className="mx-2"
                                             src="https://i.imgur.com/NYr5rnm.png">
                                         </input>
                                         <label id="playlistPoints" className="text-light">100</label>
-                                        <input type="image" style={{ width: "10%"}} className="mx-2"
+                                        <input type="image" style={{ width: "10%", height:"10%"}} className="mx-2"
                                             src="https://i.imgur.com/zYcZbNp.png">
                                         </input>
                                     </div>Î
@@ -76,19 +77,16 @@ class PlaylistScreen extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="row ml-3" >
+                <div className="row mt-3 ml-3" >
                     <div className="col-2"> <h3 style={{ color: "white" }}>Title</h3>  </div>
                     <div className="col-2"> <h3 style={{ color: "white" }}>Artist </h3>  </div>
                     <div className="col-2"> <h3 style={{ color: "white" }}>Album </h3>  </div>
                     <div className="col-2"> <h3 style={{ color: "white" }}>Date Added </h3>  </div>
                 </div>
-                 <div className="divider"/>
-
+                <div className="divider song-divider"/>
                 <PlaylistSong/>
-                {/* <DeletePlaylistModal showDelete={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}/> */}
-
-
-                </div>
+                <DeletePlaylistModal showDelete={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}/>
+            </div>
             )
     }
 }

@@ -26,7 +26,7 @@ const client = new ApolloClient({ uri: 'http://localhost:3000/graphql' });
 ReactDOM.render(
   <ApolloProvider client={client}>
       <Router>
-          <div className='position-fixed'>
+          <div>
               <Route exact path="/login" component={LoginScreen} />
               <Route exact path="/register" component={RegisterScreen} />
               <Route exact path="/reqreset" component={RequestReset} />

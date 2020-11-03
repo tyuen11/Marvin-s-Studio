@@ -1,6 +1,5 @@
 import React from 'react';
 import PlaylistSong from './PlaylistSong.js';
-import DeletePlaylistModal from '../modals/DeletePlaylistModal.js';
 
 class PlaylistScreen extends React.Component {
     state = {
@@ -85,7 +84,7 @@ class PlaylistScreen extends React.Component {
                 </div>
                 <div className="divider song-divider"/>
                 <PlaylistSong/>
-                <DeletePlaylistModal showDelete={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}/>
+
             </div>
             )
     }

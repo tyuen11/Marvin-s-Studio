@@ -8,49 +8,19 @@ class ProfileScreen extends React.Component {
         super(props);
         console.log("ProfileScreen");
     }
-
     
     render () {
-        const screenStyle = {
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            position: 'fixed',
-        }
-
-        const profileScreenStyle = {
-            width: 'calc(100% - 200px)',
-            background: '#232323',
-            padding: '20px 40px'
-        }
-
-        const headerStyle = {
-            color: 'white',
-            fontSize: 50
-        }
-
-        const colHeaderStyle = {
-            color: 'white',
-            fontSize: 20,
-            marginTop: 30,
-            marginBottom: 20,
-            paddingBottom: 20,
-            width: '100%',
-            borderBottomStyle: 'solid',
-            borderColor: 'white'
-        }
         return (
-            <div className='Screen' style={screenStyle}>
-                <Sidebar/>
+            <div className='d-flex h-100 position-fixed p-0 w-100'>
+                <Sidebar {...this.props}/>
                 <Player/>
-                <div className='ProfileScreen' style={profileScreenStyle}>
-                    <h3 style={headerStyle}>
-                        <img src="https://thumbs.dreamstime.com/z/business-man-profile-brazilian-white-background-38563179.jpg"
-                            height='80' width='80' style={{marginRight: 20, borderRadius: '50%'}}></img>
-                        John Doe
-                    </h3>
-                    <div className='Playlists' style={colHeaderStyle}>My Playlists</div>
-                    <ProfilePlaylistLinks {...this.props}/>
+                <div className='display-inline pl-5 pt-4 w-100'>
+                    <div className='display-4 text-white border border-white border-left-0 border-right-0 border-top-0 mb-3'>
+                        <img className='rounded-circle mr-3 mb-4' src={this.props.profile.image} height='80' width='80'></img>
+                        {this.props.profile.name}
+                        <div className='h4'>My Playlists</div>
+                    </div>
+                    <ProfilePlaylistLinks {...this.props.profile}/>
                 </div>
             </div>
         )

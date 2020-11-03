@@ -8,16 +8,8 @@ class AlbumLinks extends React.Component {
     }
 
     render() {
-
-        const albumViewStyle = {
-            display: "inline-block",
-            position: 'relative',
-            width: '100%',
-            textAlign: 'left'
-        }
-
         return (
-            <div className="AlbumLinks" style={albumViewStyle}>
+            <div className='row position-absolute' style={{paddingRight: '20%', paddingLeft: 20}}>
                 {this.props.albums.map((album) =>(
                     <AlbumLink {...album}/>
                 ))}

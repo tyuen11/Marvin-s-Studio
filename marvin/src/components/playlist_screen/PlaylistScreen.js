@@ -84,6 +84,7 @@ class PlaylistScreen extends React.Component {
                 </div>
                 <div className="divider song-divider"/>
                 <PlaylistSong/>
+
             </div>
             )
     }

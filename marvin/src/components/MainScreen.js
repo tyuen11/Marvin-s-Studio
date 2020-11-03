@@ -8,12 +8,14 @@ import ArtistScreen from './artist_screen/ArtistScreen';
 import Player from './Player'
 
 
+
 class MainScreen extends Component {
     render() {
         return (
+
             <div>
                 <div className="row">
-                    <Sidebar {...PlaylistData}/>
+                    <Sidebar className="col col-2" {...PlaylistData}/>
                     <div>
                         <Switch>
                             <Route path="/user/playlist">

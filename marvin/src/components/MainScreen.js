@@ -6,6 +6,7 @@ import Sidebar from './sidebar/Sidebar.js';
 import PlaylistData from '../PlaylistData.json'
 import ArtistScreen from './artist_screen/ArtistScreen';
 import Player from './Player'
+import ProfileScreen from './profile_screen/ProfileScreen';
 
 
 
@@ -15,16 +16,19 @@ class MainScreen extends Component {
             <div>
                 <div className="row">
                     <Sidebar className="col-2" {...PlaylistData}/>
-                    <div>
+                    <div className='col'>
                         <Switch>
                             <Route path="/user/playlist">
-                                <PlaylistScreen />
+                                <PlaylistScreen {...PlaylistData.profile.playlists[0]} />
                             </Route>
                             <Route path="/user/album">
                                 <AlbumScreen />
                             </Route>
                             <Route path="/user/artist">
                                 <ArtistScreen {...PlaylistData}/>
+                            </Route>
+                            <Route path="/user/profile">
+                                <ProfileScreen {...PlaylistData}/>
                             </Route>
                         </Switch>
                     </div>

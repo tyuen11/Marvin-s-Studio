@@ -5,6 +5,7 @@
         "playlists": [
             {
                 "name": "Rock And/Or Roll",
+                "owner": "John Doe",
                 "songs": [
                     {
                         "title": "Some Might Say",
@@ -28,6 +29,7 @@
             },
             {
                 "name": "Sir Cartier",
+                "owner": "Quentin Tarantino",
                 "songs": [
                     {
                         "title": "Long Time",

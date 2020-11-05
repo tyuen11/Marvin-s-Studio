@@ -19,7 +19,7 @@ class Player extends React.Component {
         let buttonCursor = this.state.playerDisabled ? "disabled" : "not-allowed"
      
         return (
-            <div className="row w-100 pl-5 pt-2 position-absolute display-inherit border border-white border-left-0 border-bottom-0 border-right-0"
+            <div className="row w-100 pl-5 pt-2 position-fixed display-inherit border border-white border-left-0 border-bottom-0 border-right-0"
                     style={{height: 80, bottom: 0, left: 0, zIndex: 99, background: '#232323'}}>
                 <img className='mr-3' src={logo} style={{height: 60, width: 60}} alt=''></img>
                 <button className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'

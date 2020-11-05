@@ -1,7 +1,13 @@
 import React from 'react';
-import PlaylistSong from './PlaylistSong.js';
+import PlaylistSongs from './PlaylistSongs.js';
+import DeletePlaylistModal from '../modals/DeletePlaylistModal.js';
 
 class PlaylistScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        console.log("Passed props to playlistScreen");
+    }
+
     state = {
         show: false
     }
@@ -25,10 +31,10 @@ class PlaylistScreen extends React.Component {
                         <div className="row">
                             <div id="playlistInfoAndActions" className="col-8">
                                 <div id="playlistName" className="row">
-                                    <h1 className="text-light ml-4 mt-5"> Playlist Name </h1>
+                                    <h1 className="text-light ml-4 mt-5">{this.props.name} </h1>
                                 </div>
                                 <div id="playlistOwner" className="row">
-                                    <h4 className="text-light ml-4"> Playlist by John Doe </h4>
+                                    <h4 className="text-light ml-4"> Playlist by {this.props.owner} </h4>
                                 </div>
 
                                 <div id="actions" className="mt-5 ml-3">
@@ -83,8 +89,8 @@ class PlaylistScreen extends React.Component {
                     <div className="col-2"> <h3 style={{ color: "white" }}>Date Added </h3>  </div>
                 </div>
                 <div className="divider song-divider"/>
-                <PlaylistSong/>
-
+                <PlaylistSongs {...this.props} />
+                {/*<DeletePlaylistModal showDelete={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}/>*/}
             </div>
             )
     }

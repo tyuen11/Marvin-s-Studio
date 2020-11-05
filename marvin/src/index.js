@@ -18,6 +18,7 @@ import MainScreen from './components/MainScreen';
 
 import ArtistScreen from './components/artist_screen/ArtistScreen';
 import ProfileScreen from './components/profile_screen/ProfileScreen.js';
+import PlaylistScreen from './components/playlist_screen/PlaylistScreen'
 import PlaylistData from './PlaylistData.json'
 
 
@@ -33,6 +34,7 @@ ReactDOM.render(
               <Route exact path="/reset" component={ResetPassword} />
               <Route exact path="/artist" component={() => <ArtistScreen {...PlaylistData}/> }/>
               <Route exact path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/>
+              <Route exact path="/playlist" component={() => <PlaylistScreen />} />
               <Route path='/user' component={MainScreen}/>
           </div>
       </Router>

@@ -1,28 +1,5 @@
 var mongoose = require('mongoose');
 
-var communitySchema = new mongoose.Schema({
-    communityPlaylists: [playlistSchema],
-    gotwPlaylist: playlistSchema,
-    publicPlaylists: [playlistSchema],
-    song1: sotdSchema,
-    song2: sotdSchema,
-    song3: sotdSchema
-})
-
-var playlistSchema = new mongoose.Schema({
-    id: String,
-    dateCreated: Date,
-    genre: String,
-    lastUpdated: Date,
-    numPlays: Number,
-    numTracks: Number,
-    owner: UserSchema,
-    playlistPoints: Number,
-    privacyType: Enumerator,
-    songs: [songSchema],
-    title: String
-})
-
 var songSchema = new mongoose.Schema({
     id: String,
     albumID: String,
@@ -31,9 +8,18 @@ var songSchema = new mongoose.Schema({
     title: String
 })
 
-var sotdSchema = new mongoose.Schema({
-    song: songSchema,
-    sotdVotes: Number
+var playlistSchema = new mongoose.Schema({
+    id: String,
+    dateCreated: Number,
+    genre: String,
+    lastUpdated: Number,
+    numPlays: Number,
+    numTracks: Number,
+    ownerID: String,
+    playlistPoints: Number,
+    privacyType: Number,
+    songs: [songSchema],
+    title: String
 })
 
 var UserSchema = new mongoose.Schema({

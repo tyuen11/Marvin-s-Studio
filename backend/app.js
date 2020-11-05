@@ -17,7 +17,7 @@ const LocalStrategy = require("passport-local").Strategy;
 var schema = require('./graphql/UserSchemas');
 
 // Connect to MongoDB Atlas database with mongoose
-mongoose.connect(DB, { promiseLibrary: require('bluebird'), useNewUrlParser: true })
+mongoose.connect("mongodb://localhost/marvins-studio", { promiseLibrary: require('bluebird'), useNewUrlParser: true, useUnifiedTopology: true })
   .then(() =>  console.log('connection successful'))
   .catch((err) => console.error(err));
 
@@ -28,6 +28,7 @@ schema: schema,
 rootValue: global,
 graphiql: true,
 }));
+
 
 app.use(cors());
 app.use(passport.initialize());
@@ -55,7 +56,7 @@ var userValidation = `
         }
     }
 `;
-
+/*
 // Passport setup for Google
 passport.use(new GoogleStrategy({
         clientID: GOOGLE_CLIENT_ID,
@@ -95,7 +96,7 @@ passport.use(new LocalStrategy(
       });
     }
   ));
-
+*/
 const isLoggedIn = (req, res, next) => {
     if (req.user){
         next();

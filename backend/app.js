@@ -6,7 +6,7 @@ const passport = require("passport");
 const cookieSession = require("cookie-session");
 const { graphqlHTTP } = require('express-graphql');
 const fetch = require("node-fetch");
-
+const mergeSchemas = require('graphql-tools').mergeSchemas
 const UserModel = require('./models/User');
 
 
@@ -14,7 +14,12 @@ const UserModel = require('./models/User');
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 
-var schema = require('./graphql/UserSchemas');
+var userSchema = require('./graphql/UserSchemas');
+var playlistSchema = require('./graphql/PlaylistSchemas')
+var communitySchema = require('./graphql/CommunitySchemas')
+//var schema = mergeSchemas({ 
+  //  schemas: [ userSchema, playlistSchema ]
+//})
 
 // Connect to MongoDB Atlas database with mongoose
 mongoose.connect("mongodb://localhost/marvins-studio", { promiseLibrary: require('bluebird'), useNewUrlParser: true, useUnifiedTopology: true })
@@ -24,7 +29,7 @@ mongoose.connect("mongodb://localhost/marvins-studio", { promiseLibrary: require
 const app = express();
 
 app.use('/graphql', cors(), graphqlHTTP({
-schema: schema,
+schema: playlistSchema,
 rootValue: global,
 graphiql: true,
 }));

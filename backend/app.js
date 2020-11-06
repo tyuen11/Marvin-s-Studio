@@ -151,6 +151,7 @@ passport.use('local-register', new LocalStrategy({
                             // NEED TO ADD USER'S NAME FROM REQ.BODY.NAME
                         }).save().then((newUser) => {
                             console.log(newUser);
+                            return done(null, newUser);
                         });
                     });
                 } catch (err) {

@@ -4,8 +4,12 @@ import gql from 'graphql-tag'
 import PlaylistLinks from './PlaylistLinks.js'
 import { Link } from 'react-router-dom';
 import CreatePlaylistModal from '../modals/CreatePlaylistModal';
+/*
+const ADD_PLAYLIST = gql `
+    mutation AddPlaylist()
+`
+*/
 
-const ADD_PLAYLIST = gql
 
 class Sidebar extends React.Component {
     constructor(props) {

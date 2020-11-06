@@ -5,12 +5,26 @@ import { Switch, Route} from 'react-router';
 import Sidebar from './sidebar/Sidebar.js';
 import PlaylistData from '../PlaylistData.json'
 import ArtistScreen from './artist_screen/ArtistScreen';
+import ProfileScreen from './profile_screen/ProfileScreen.js';
 import Player from './Player'
-import ProfileScreen from './profile_screen/ProfileScreen';
 
 
 
 class MainScreen extends Component {
+    state = {
+        user: null
+    }
+
+    componentDidMount = () => {
+        fetch('http://localhost:5000/ud')
+        .then(res => res.json())
+        .then(res => this.setState({user:res}))
+        .catch(err => {
+            console.log(err);
+        });  
+      console.log(this.state.user);
+    }
+
     render() {
         return (
             <div>
@@ -18,18 +32,16 @@ class MainScreen extends Component {
                     <Sidebar className="col-2" {...PlaylistData}/>
                     <div className='col'>
                         <Switch>
-                            <Route path="/user/playlist/">
-                                <PlaylistScreen {...PlaylistData.profile.playlists[0]} />
+                            <Route path="/">
+                                <PlaylistScreen {...PlaylistData.profile.playlists[0]} />                            
                             </Route>
-                            <Route path="/user/album">
+                            <Route  path="/album">
                                 <AlbumScreen />
                             </Route>
-                            <Route path="/user/artist">
+                            <Route path="/artist">
                                 <ArtistScreen {...PlaylistData}/>
                             </Route>
-                            <Route path="/user/profile">
-                                <ProfileScreen {...PlaylistData}/>
-                            </Route>
+                            <Route  path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/>
                         </Switch>
                     </div>
                 </div>

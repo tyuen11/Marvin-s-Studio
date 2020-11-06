@@ -55,9 +55,12 @@ class Sidebar extends React.Component {
                       <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Your Library</button>
                       <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'
                         onClick={this.handleShow}>Create Playlist</button>
-                  </div>
-                  <div className='h4 text-primary'>My Playlists</div>
-                  <PlaylistLinks {...this.props.profile}/>
+                    </div>
+                    <div className='h4 text-primary'>My Playlists</div>
+                    <PlaylistLinks {...this.props.profile}/>
+                    <form action='/logout' method="post">
+                    <button action="submit">Logout</button>
+                    </form>
               </div>
               <CreatePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}/>
             </div>

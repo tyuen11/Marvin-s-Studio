@@ -5,6 +5,10 @@ import { Link } from 'react-router-dom';
 
 class LoginScreen extends Component {
     render() {
+        // validateUser = () => {
+        //     var email = document.getElementById("userEmail").value;
+        //     var password = document.getElementById("userPass").value;
+        // }
         return (
             <div id="login"  className="container">
                 <div className="row justify-content-center mt-5">
@@ -24,15 +28,15 @@ class LoginScreen extends Component {
                             <strong className="divider-title text-light">or</strong>
                         </div>
 
-                        <form>
-                            <input type="email" placeholder="Email" className="my-4 w-100"></input>
-                            <input type="password" placeholder="Password" className="mt-1 mb-4 w-100"></input>
-                        </form>
+                        <form action="/login" method="post">
+                            <input name="email" type="text" placeholder="Email" className="my-4 w-100"></input>
+                            <input name="password" type="password" placeholder="Password" className="mt-1 mb-4 w-100"></input>
 
-                        <div className="d-flex justify-content-between" style={{margin: "0.25rem", paddingBottom: "1.95rem"}}>
-                            <button type="button" className="btn btn-primary btn-sm col-sm-3">Log In</button>
-                            <a href="/reqreset" className="mt-2" >Forgot Password?</a>
-                        </div>
+                            <div className="d-flex justify-content-between" style={{margin: "0.25rem", paddingBottom: "1.95rem"}}>
+                                <button type="submit" className="btn btn-primary btn-sm col-sm-3">Log In</button>
+                                <a href="/reqreset" className="mt-2" >Forgot Password?</a>
+                            </div>
+                        </form>
                         <div className="divider"/>
 
                         <div style={{margin: "0.25rem", padding: "2rem"}}>

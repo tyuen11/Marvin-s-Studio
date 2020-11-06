@@ -5,7 +5,6 @@ import { Switch, Route} from 'react-router';
 import Sidebar from './sidebar/Sidebar.js';
 import PlaylistData from '../PlaylistData.json'
 import ArtistScreen from './artist_screen/ArtistScreen';
-import ProfileScreen from './profile_screen/ProfileScreen.js';
 import Player from './Player'
 
 import ProfileScreen from './profile_screen/ProfileScreen';

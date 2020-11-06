@@ -45,35 +45,40 @@ class PlaylistScreen extends React.Component {
                                         </input>
                                     </a>
                                     <a href="shuffleBtn" className="ml-3">
-                                        <input type="image" style={{ width: "7%" }}
+                                        <input type="image" style={{ width: "11%"}}
                                             src="https://i.imgur.com/T8JZhAk.png">
                                         </input>
                                     </a>
-                                    <a id="trash" className="mt-10 ml-4">
-                                        <input type="image" style={{ width: "6%" }} onClick={this.handleShow}
+                                    <a id="trash" className="ml-4">
+                                        <input type="image" style={{ width: "10%" }}  onClick={this.handleShow}
                                             src="https://i.imgur.com/jpujrfk.png">
                                         </input>
                                     </a>
-                                       
-                                </div>
-                            </div>
-                            <div id="imgAndVotes" className="col-4 mt-4" >
-                                <div className="row mt-4 mb-2 text-center">
-                                    <a href="albumPic">
-                                        <input type="image" style={{ width: "70%" }}
-                                            src="https://dalelyles.com/musicmp3s/no_cover.jpg">
+                                    <a id="moreActions" className="ml-4">
+                                        <input type="image" style={{ width: "10%" }}
+                                            src="https://i.imgur.com/6mXgQgP.png">
                                         </input>
                                     </a>
                                 </div>
-                                <div className="row mx-2">
-                                    <input type="image" style={{ width: "10%", height: "10%" }} className="mx-2"
-                                        src="https://i.imgur.com/NYr5rnm.png">
-                                    </input>
-                                    <label id="playlistPoints" className="text-light">100</label>
-                                    <input type="image" style={{ width: "10%", height: "10%" }} className="mx-2"
-                                        src="https://i.imgur.com/zYcZbNp.png">
-                                    </input>
-                                </div>Î
+                            </div>
+
+                            <div id="imgAndVotes" className="col-4 mt-4" >
+                                    <div className="row mt-4 mb-2 text-center">
+                                        <a href="albumPic">
+                                            <input type="image" style={{ width: "70%" }}
+                                                src="https://dalelyles.com/musicmp3s/no_cover.jpg">
+                                            </input>
+                                        </a>
+                                    </div>
+                                    <div className="row mx-2">
+                                        <input type="image" style={{ width: "10%", height:"10%"}} className="mx-2"
+                                            src="https://i.imgur.com/NYr5rnm.png">
+                                        </input>
+                                        <label id="playlistPoints" className="text-light">100</label>
+                                        <input type="image" style={{ width: "10%", height:"10%"}} className="mx-2"
+                                            src="https://i.imgur.com/zYcZbNp.png">
+                                        </input>
+                                    </div>Î
                                 </div>
                         </div>
                     </div>

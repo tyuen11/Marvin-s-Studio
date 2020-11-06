@@ -8,6 +8,9 @@ import ArtistScreen from './artist_screen/ArtistScreen';
 import ProfileScreen from './profile_screen/ProfileScreen.js';
 import Player from './Player'
 
+import ProfileScreen from './profile_screen/ProfileScreen';
+import SearchScreen from './search_screen/SearchScreen';
+
 
 
 class MainScreen extends Component {
@@ -40,6 +43,12 @@ class MainScreen extends Component {
                             </Route>
                             <Route path="/artist">
                                 <ArtistScreen {...PlaylistData}/>
+                            </Route>
+                            <Route path="/user/search">
+                                <SearchScreen />
+                            </Route>
+                            <Route path="/user/profile">
+                                <ProfileScreen {...PlaylistData}/>
                             </Route>
                             <Route  path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/>
                         </Switch>

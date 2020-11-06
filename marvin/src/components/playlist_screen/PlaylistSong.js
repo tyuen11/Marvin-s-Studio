@@ -9,19 +9,19 @@ class PlaylistSong extends Component {
     render() {
         return (
             <div>
-                <div className="row text-light ml-3">
-                    <label id="songName" className="col-2">{this.props.title}</label>
+                <div className="row text-light ml-3 ">
+                    <label id="songName" className="col-2 text-nowrap overflow-hidden overflow-ellipsis">{this.props.title}</label>
                     <label id="artistName" className="col-2">{this.props.artist}</label>
-                    <label id="albumName" className="col-2">{this.props.album}</label>
+                    <label id="albumName" className="col-2 text-nowrap overflow-hidden overflow-ellipses" style={{textOverflow:'ellipsis'}}>{this.props.album}</label>
                     <label id="date" className="col-3">{this.props.date}</label>
-                    <a id="queueBtn" className="col-1" href="playBtn">
-                        <input type="image" style={{ width: "10%" }}
-                            src="https://i.imgur.com/N7tVoo7.png">
+                    <a id="queueBtn" className="col-1" href="addQueue">
+                        <input type="image" style={{ width: "100%" }}
+                            src="https://i.imgur.com/sNVHPL0.png">
                         </input>
                     </a>
-                    <a id="deleteBtn" className="col-1" href="playBtn">
-                        <input type="image" style={{ width: "10%" }}
-                            src="https://i.imgur.com/N7tVoo7.png">
+                    <a id="deleteSong" className="col-1 mt-1" href="deleteSong">
+                        <input type="image" style={{ width: "55%"}}
+                            src="https://i.imgur.com/jpujrfk.png">
                         </input>
                     </a>
                                     

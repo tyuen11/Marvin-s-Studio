@@ -3,7 +3,7 @@ import React from 'react'
 class AlbumScreen extends React.Component {
         render() {
                 return (
-                        <div id="playlist" className="container" >
+                        <div id="album" className="album" >
                                 <div className="row" style={{ border: "solid", borderWidth: "1px", borderColor: "white", borderTopWidth: "0px", borderRightWidth: "0px" }}>
                                         <div className="col">
                                                 <div className="row">
@@ -37,7 +37,7 @@ class AlbumScreen extends React.Component {
                                                                 <div className="row">
                                                                         <div className="col">
                                                                                 <a href="thumbsUp">
-                                                                                        <input type="image" style={{ width: "22%", marginLeft: "10px" }}
+                                                                                        <input type="image" style={{ width: "22%", marginLeft: "-10px" }}
                                                                                                 src="https://i.imgur.com/NYr5rnm.png">
                                                                                         </input>
                                                                                 </a>
@@ -45,7 +45,7 @@ class AlbumScreen extends React.Component {
                                                                         <div className="col">
 
                                                                                 <a href="thumbsDown">
-                                                                                        <input type="image" style={{ width: "22%", marginLeft: "-180px" }}
+                                                                                        <input type="image" style={{ width: "22%", marginLeft: "-320px" }}
                                                                                                 src="https://i.imgur.com/zYcZbNp.png">
                                                                                         </input>
                                                                                 </a>

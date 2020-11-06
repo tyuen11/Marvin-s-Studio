@@ -18,7 +18,7 @@ class MainScreen extends Component {
                     <Sidebar className="col-2" {...PlaylistData}/>
                     <div className='col'>
                         <Switch>
-                            <Route path="/user/playlist">
+                            <Route path="/user/playlist/">
                                 <PlaylistScreen {...PlaylistData.profile.playlists[0]} />
                             </Route>
                             <Route path="/user/album">

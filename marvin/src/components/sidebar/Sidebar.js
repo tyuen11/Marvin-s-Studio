@@ -6,10 +6,20 @@ import { Link } from 'react-router-dom';
 import CreatePlaylistModal from '../modals/CreatePlaylistModal';
 /*
 const ADD_PLAYLIST = gql `
-    mutation AddPlaylist()
+    mutation AddPlaylist(
+        $title: String!,
+        $ownerID: String!) {
+        addPlaylist (
+            title: $title,
+            ownerID: $ownerID) {
+                _id
+                dateCreated
+                lastUpdated
+            }
+        }     
+    }
 `
 */
-
 
 class Sidebar extends React.Component {
     constructor(props) {
@@ -39,7 +49,9 @@ class Sidebar extends React.Component {
                   </Link>
                   <input className='border border-primary px-1 py-1 my-1 rounded w-75' type='text' placeholder='Search'></input>
                   <div className='my-1 pt-1 text-center w-100 display-block' style={{background:'#3d8af7', height: 115}}>
-                      <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Home</button>
+                      <Link to='/user/profile'>
+                        <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Home</button>
+                      </Link>
                       <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Your Library</button>
                       <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'
                         onClick={this.handleShow}>Create Playlist</button>

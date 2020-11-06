@@ -9,6 +9,7 @@ class PlaylistScreen extends React.Component {
     }
 
     state = {
+        playlist: this.props,
         show: false
     }
 
@@ -31,10 +32,10 @@ class PlaylistScreen extends React.Component {
                         <div className="row">
                             <div id="playlistInfoAndActions" className="col-8">
                                 <div id="playlistName" className="row">
-                                    <h1 className="text-light ml-4 mt-5">{this.props.name} </h1>
+                                    <h1 className="text-light ml-4 mt-5">{this.state.playlist.name} </h1>
                                 </div>
                                 <div id="playlistOwner" className="row">
-                                    <h4 className="text-light ml-4"> Playlist by {this.props.owner} </h4>
+                                    <h4 className="text-light ml-4"> Playlist by {this.state.playlist.owner} </h4>
                                 </div>
 
                                 <div id="actions" className="mt-5 ml-3">

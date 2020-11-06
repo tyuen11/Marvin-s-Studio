@@ -34,7 +34,7 @@ class MainScreen extends Component {
                     <Sidebar className="col-2" {...PlaylistData}/>
                     <div className='col'>
                         <Switch>
-                            <Route path="/">
+                            <Route path="/user/playlist">
                                 <PlaylistScreen {...PlaylistData.profile.playlists[0]} />                            
                             </Route>
                             <Route  path="/album">
@@ -49,7 +49,6 @@ class MainScreen extends Component {
                             <Route path="/user/profile">
                                 <ProfileScreen {...PlaylistData}/>
                             </Route>
-                            <Route  path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/>
                         </Switch>
                     </div>
                 </div>

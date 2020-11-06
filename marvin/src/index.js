@@ -38,6 +38,14 @@ ReactDOM.render(
               <Route exact path="/search" component={() => <SearchScreen />} />
               <Route exact path="/playlist" component={() => <PlaylistScreen />} />
               <Route path='/user' component={MainScreen}/>
+            <Route  path="/login" component={LoginScreen} />
+            <Route  path="/register" component={RegisterScreen} />
+            <Route  path="/reqreset" component={RequestReset} />
+            <Route  path="/reset" component={ResetPassword} />
+            {/* <Route  path="/artist" component={() => <ArtistScreen {...PlaylistData}/> }/>
+            <Route  path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/> */}
+            <Route exact path='/' component={MainScreen}/>
+
           </div>
       </Router>
   </ApolloProvider>, 

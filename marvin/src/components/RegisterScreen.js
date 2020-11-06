@@ -27,22 +27,21 @@ export default class RegisterScreen extends Component {
 
                         <span className="text-light">Sign up with your email address</span>
 
-                        <form className="text-left" style={{margin: "0.25rem", paddingTop: "1.5rem"}}>
-                            <div className="form-group">
+                        <form action="/register" method="post" style={{margin: "0.25rem", paddingTop: "1.5rem"}}>
+                            <div className="form-group text-left">
                                 <label className="text-light mt-2 mb-3">What's your email address?</label>
-                                <input type="email" className="form-control"  placeholder="Email"/>
+                                <input name="email" type="email" className="form-control"  placeholder="Email"/>
                             </div>
-                            <div className="form-group" >
+                            <div className="form-group text-left" >
                                 <label className="text-light my-3">Create a password</label>
-                                <input type="password" className="form-control" placeholder="Password"/>
+                                <input name="password" type="password" className="form-control" placeholder="Password"/>
                             </div>
-                            <div className="form-group">
+                            <div className="form-group text-left">
                                 <label className="text-light my-3">What's your name?</label>
                                 <input type="text" className="form-control"  placeholder="Enter a name"/>
                             </div>
+                            <button type="submit" className="btn btn-primary btn-sm rounded-pill mt-4 mb-2">Sign Up</button>
                         </form>
-                        <button type="button" className="btn btn-primary btn-sm rounded-pill mt-3 mb-2">Sign Up</button>
-
                         <div style={{margin: "0.25rem", padding: "1rem"}}>
                             <p className="text-light">Have an account? <a href="/login" className="mt-2" >Log in.</a></p> 
                         </div>

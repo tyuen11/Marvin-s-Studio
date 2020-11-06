@@ -6,7 +6,7 @@ const passport = require("passport");
 const cookieSession = require("cookie-session");
 const { graphqlHTTP } = require('express-graphql');
 const fetch = require("node-fetch");
-
+const mergeSchemas = require('graphql-tools').mergeSchemas
 const UserModel = require('./models/User');
 
 
@@ -14,20 +14,26 @@ const UserModel = require('./models/User');
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 
-var schema = require('./graphql/UserSchemas');
+var userSchema = require('./graphql/UserSchemas');
+var playlistSchema = require('./graphql/PlaylistSchemas')
+var communitySchema = require('./graphql/CommunitySchemas')
+//var schema = mergeSchemas({ 
+  //  schemas: [ userSchema, playlistSchema ]
+//})
 
 // Connect to MongoDB Atlas database with mongoose
-mongoose.connect(DB, { promiseLibrary: require('bluebird'), useNewUrlParser: true })
+mongoose.connect("mongodb://localhost/marvins-studio", { promiseLibrary: require('bluebird'), useNewUrlParser: true, useUnifiedTopology: true })
   .then(() =>  console.log('connection successful'))
   .catch((err) => console.error(err));
 
 const app = express();
 
 app.use('/graphql', cors(), graphqlHTTP({
-schema: schema,
+schema: playlistSchema,
 rootValue: global,
 graphiql: true,
 }));
+
 
 app.use(cors());
 app.use(passport.initialize());
@@ -55,7 +61,7 @@ var userValidation = `
         }
     }
 `;
-
+/*
 // Passport setup for Google
 passport.use(new GoogleStrategy({
         clientID: GOOGLE_CLIENT_ID,
@@ -95,7 +101,7 @@ passport.use(new LocalStrategy(
       });
     }
   ));
-
+*/
 const isLoggedIn = (req, res, next) => {
     if (req.user){
         next();

@@ -28,14 +28,14 @@ ReactDOM.render(
   <ApolloProvider client={client}>
       <Router>
           <div>
-              <Route exact path="/login" component={LoginScreen} />
-              <Route exact path="/register" component={RegisterScreen} />
-              <Route exact path="/reqreset" component={RequestReset} />
-              <Route exact path="/reset" component={ResetPassword} />
-              <Route exact path="/artist" component={() => <ArtistScreen {...PlaylistData}/> }/>
-              <Route exact path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/>
-              <Route exact path="/playlist" component={() => <PlaylistScreen />} />
-              <Route path='/user' component={MainScreen}/>
+            <Route  path="/login" component={LoginScreen} />
+            <Route  path="/register" component={RegisterScreen} />
+            <Route  path="/reqreset" component={RequestReset} />
+            <Route  path="/reset" component={ResetPassword} />
+            {/* <Route  path="/artist" component={() => <ArtistScreen {...PlaylistData}/> }/>
+            <Route  path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/> */}
+            <Route exact path='/' component={MainScreen}/>
+
           </div>
       </Router>
   </ApolloProvider>, 

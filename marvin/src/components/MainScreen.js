@@ -7,6 +7,7 @@ import PlaylistData from '../PlaylistData.json'
 import ArtistScreen from './artist_screen/ArtistScreen';
 import Player from './Player'
 import ProfileScreen from './profile_screen/ProfileScreen';
+import SearchScreen from './search_screen/SearchScreen';
 
 
 
@@ -26,6 +27,9 @@ class MainScreen extends Component {
                             </Route>
                             <Route path="/user/artist">
                                 <ArtistScreen {...PlaylistData}/>
+                            </Route>
+                            <Route path="/user/search">
+                                <SearchScreen />
                             </Route>
                             <Route path="/user/profile">
                                 <ProfileScreen {...PlaylistData}/>

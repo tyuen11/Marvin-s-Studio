@@ -1,37 +1,16 @@
 var mongoose = require('mongoose');
-
-var songSchema = new mongoose.Schema({
-    id: String,
-    albumID: String,
-    artistID: String,
-    genre: String,
-    title: String
-})
-
-var playlistSchema = new mongoose.Schema({
-    id: String,
-    dateCreated: Number,
-    genre: String,
-    lastUpdated: Number,
-    numPlays: Number,
-    numTracks: Number,
-    ownerID: String,
-    playlistPoints: Number,
-    privacyType: Number,
-    songs: [songSchema],
-    title: String
-})
+var Playlist = require('./Playlist').schema
 
 var UserSchema = new mongoose.Schema({
     id: String,
-    collaborativePlaylists: [playlistSchema],
+    collaborativePlaylists: [Playlist],
     email: String, 
-    followedPlaylists: [playlistSchema],
+    followedPlaylists: [Playlist],
     mostPlayed: [{
         id: String,
         type: String
     }],
-    ownedPlaylists: [playlistSchema],
+    ownedPlaylists: [Playlist],
     password: String,
     recentlyPlayed: [{
         id: String,

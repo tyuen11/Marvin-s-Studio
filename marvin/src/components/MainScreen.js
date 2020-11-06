@@ -46,10 +46,9 @@ class MainScreen extends Component {
                             <Route path="/user/search">
                                 <SearchScreen />
                             </Route>
-                            <Route path="/user/profile">
+                            <Route path="/profile">
                                 <ProfileScreen {...PlaylistData}/>
                             </Route>
-                            <Route  path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/>
                         </Switch>
                     </div>
                 </div>

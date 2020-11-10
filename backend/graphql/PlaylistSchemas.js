@@ -33,6 +33,18 @@ var songType = new GraphQLObjectType({
     }
 })
 
+var songInputType = new GraphQLInputObjectType({
+    name: 'SongInput',
+    fields: function() {
+        return { 
+            albumID: { type: GraphQLString },
+            artistID: { type: GraphQLString },
+            genre: { type: GraphQLString },
+            title: { type: GraphQLString } 
+        }
+    }
+})
+
 var playlistType = new GraphQLObjectType({
     name: 'Playlist',
     fields: function() {
@@ -40,23 +52,14 @@ var playlistType = new GraphQLObjectType({
             _id: {
                 type: GraphQLString
             },
-            dateCreated: {
-                type: GraphQLDate
-            },
             genre: {
                 type: GraphQLString
-            },
-            lastUpdated: {
-                type: GraphQLDate
             },
             numPlays: {
                 type: GraphQLInt
             },
             numTracks: {
                 type: GraphQLInt
-            },
-            ownerID: {
-                type: GraphQLString
             },
             playlistPoints: {
                 type: GraphQLInt
@@ -74,7 +77,39 @@ var playlistType = new GraphQLObjectType({
     }
 })
 
-var queryType = new GraphQLObjectType({
+var playlistInputType = new GraphQLInputObjectType({
+    name: 'PlaylistInput',
+    fields: function() {
+        return{ 
+            genre: {
+                type: GraphQLString
+            },
+            numPlays: {
+                type: GraphQLInt
+            },
+            numTracks: {
+                type: GraphQLInt
+            },
+            playlistPoints: {
+                type: GraphQLInt
+            },
+            privacyType: {
+                type: GraphQLInt
+            },
+            songs: {
+                type: new GraphQLList(songInputType)
+            },
+            title: {
+                type: GraphQLString
+            }
+        }
+    }
+})
+
+
+
+
+var query = new GraphQLObjectType({
     name: 'Query',
     fields: function() {
         return {
@@ -108,17 +143,6 @@ var queryType = new GraphQLObjectType({
     }
 })
 
-var songInputType = new GraphQLInputObjectType({
-    name: "SongInput",
-    fields: {
-        id: {type: GraphQLString},
-        albumID: {type: GraphQLString},
-        artistID: {type:GraphQLString},
-        songGenre: {type: GraphQLString},
-        title: {type: GraphQLString}
-    }
-})
-
 var mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: function() {
@@ -140,7 +164,8 @@ var mutation = new GraphQLObjectType({
                     return newPlaylist;
                 }
             },
-            updatePlaylist: {
+            
+            editPlaylist: {
                 type: playlistType,
                 args: {
                     id: {
@@ -157,28 +182,21 @@ var mutation = new GraphQLObjectType({
                         type: new GraphQLNonNull(GraphQLInt)
                     },
                     songs: {
-                        type: new GraphQLNonNull(new GraphQLList(songInputType)),
-                        args: {
-                            id: new GraphQLNonNull(GraphQLString),
-                            albumID: new GraphQLNonNull(GraphQLString),
-                            artistID: new GraphQLNonNull(GraphQLString),
-                            songGenre: new GraphQLNonNull(GraphQLString),
-                            title: new GraphQLNonNull(GraphQLString)
-                        }
+                        type: new GraphQLNonNull(GraphQLList(songInputType))
                     },
                     title: {
                         type: new GraphQLNonNull(GraphQLString)
                     },
                 },
-                resolve: function(root, params) {
+                resolve(root, params) {
                     return PlaylistModel.findByIdAndUpdate( params.id, { genre: params.genre, numTracks: params.numTracks, 
-                                                            privacyType: params.privacyType, songs: params.songs, 
-                                                            title: params.title, lastUpdated: new Date() },
-                                                            function(err) {
+                    privacyType: params.privacyType, songs: params.songs, title: params.title }, function(err) {
                         if (err) return next(err);
                     });
                 }
+                
             },
+            
             removePlaylist: {
                 type: playlistType,
                 args: {
@@ -196,4 +214,4 @@ var mutation = new GraphQLObjectType({
     }
 })
 
-module.exports = new GraphQLSchema({ query: queryType, mutation: mutation })
+module.exports = new GraphQLSchema({ query: query, mutation: mutation })

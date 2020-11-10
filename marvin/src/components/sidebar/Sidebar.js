@@ -6,15 +6,15 @@ import { Link } from 'react-router-dom';
 import CreatePlaylistModal from '../modals/CreatePlaylistModal';
 import { Query } from 'react-apollo'
 
-const GET_PLAYLISTS = gql `
+const GET_PLAYLISTS = gql`
     {
         playlists {
-            _id
-            title
+            _id,
+            title,
             lastUpdated
         }
     }
-`
+`;
 
 class Sidebar extends React.Component {
     constructor(props) {

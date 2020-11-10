@@ -37,7 +37,7 @@ mongoose.connect(process.env.DB, { promiseLibrary: require('bluebird'), useNewUr
 const app = express();
 
 app.use('/graphql', cors(), graphqlHTTP({
-schema: playlistSchema,
+schema: userSchema,
 rootValue: global,
 graphiql: true,
 }));
@@ -82,6 +82,9 @@ passport.use(new GoogleStrategy({
     function(accessToken, refreshToken, profile, done) {
         user = { ...profile };
         var email = profile._json.email;
+        var username = profile._json.given_name;
+        console.log(username);
+        
         // Check is user is existing user of Marvin's Studio
         UserModel.findOne({email: email}).then((currentUser) => {
             if (currentUser) {
@@ -92,7 +95,15 @@ passport.use(new GoogleStrategy({
                 bcrypt.hash(profile.id, saltRounds).then(function(hash) {
                     new UserModel( {
                         email: email,
-                        password: hash
+                        password: hash,
+                        username: username, 
+                        userPoints: 0,
+                        collaborativePlaylists: [],
+                        followedPlaylists: [],
+                        ownedPlaylisits: [],
+                        recentlyPlayed:[],
+                        mostPlayed: [],
+                        votedPlaylists: []
                     }).save().then((newUser) => {
                         return done(null, newUser)
                     });
@@ -127,7 +138,6 @@ passport.use(new LocalStrategy({
       });
     }
 ));
-
 passport.use('local-register', new LocalStrategy({  
     passReqToCallback : true,
     usernameField: 'email'
@@ -146,9 +156,16 @@ passport.use('local-register', new LocalStrategy({
                     console.log(username);
                     bcrypt.hash(password, saltRounds).then(function(hash) {
                         new UserModel( {
-                            email: username,
-                            password: hash
-                            // NEED TO ADD USER'S NAME FROM REQ.BODY.NAME
+                            email: email,
+                            password: hash,
+                            username: "PLACEHOLDER", // NEED TO ADD USER'S NAME FROM REQ.BODY.NAME
+                            userPoints: 0,
+                            collaborativePlaylists: [],
+                            followedPlaylists: [],
+                            ownedPlaylisits: [],
+                            recentlyPlayed:[],
+                            mostPlayed: [],
+                            votedPlaylists: []
                         }).save().then((newUser) => {
                             console.log(newUser);
                             return done(null, newUser);

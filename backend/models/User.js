@@ -3,25 +3,26 @@ var Playlist = require('./Playlist').schema
 
 var UserSchema = new mongoose.Schema({
     id: String,
-    collaborativePlaylists: [Playlist],
-    email: String, 
-    followedPlaylists: [Playlist],
-    mostPlayed: [{
-        id: String,
-        type: String
-    }],
-    ownedPlaylists: [Playlist],
+    email: String,
     password: String,
+    username: String,
+    userPoints: Number,
+    collaborativePlaylists: [Playlist],
+    followedPlaylists: [Playlist],
+    ownedPlaylists: [Playlist],
     recentlyPlayed: [{
         id: String,
         type: String
     }],
-    username: String,
-    userPoints: Number,
+    mostPlayed: [{
+        id: String,
+        type: String
+    }],
     votedPlaylists: [{
         playlistID: String,
         votes: Number
-    }]
+    }],
+    lastUpdated: {type: Date, default: Date.now}
     
 });
 

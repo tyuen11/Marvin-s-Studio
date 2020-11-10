@@ -3,22 +3,54 @@ var GraphQLString = require('graphql').GraphQLString;
 var GraphQLNonNull = require('graphql').GraphQLNonNull;
 var GraphQLObjectType = require('graphql').GraphQLObjectType;
 var GraphQLInt = require('graphql').GraphQLInt;
-const { GraphQLScalarType, GraphQLInputObjectType } = require('graphql');
-var GraphQLDate = require('graphql').GraphQLDate;
-const { getBlockStringIndentation } = require('graphql/language/blockString');
-const { nonExecutableDefinitionMessage } = require('graphql/validation/rules/ExecutableDefinitions');
-const { mongo } = require('mongoose');
-var GraphQLEnumType = require('graphql').GraphQLEnumType;
-var GraphQLList = require('graphql').GraphQLList
+var GraphQLList = require('graphql').GraphQLList;
+var GraphQLInputObjectType = require('graphql').GraphQLInputObjectType;
+var GraphQLDate = require('graphql-date')
+
 
 var UserModel = require('../models/User');
+var PlaylistModel = require('../models/Playlist')
 var playlistType = require('./PlaylistSchemas').getType('Playlist')
+//var playlistInputType = require('./PlaylistSchemas').getType('PlaylistInput')
+var songInputType = require('./PlaylistSchemas').getType('SongInput')
 
-var recentlyPlayedType = new GraphQLObjectType({
-    name: 'RecentlyPlayed',
+var playlistInputType = new GraphQLInputObjectType({
+    name: 'PlaylistInput',
+    fields: function() {
+        return{ 
+            genre: {
+                type: GraphQLString
+            },
+            numPlays: {
+                type: GraphQLInt
+            },
+            numTracks: {
+                type: GraphQLInt
+            },
+            ownerID: {
+                type: GraphQLString
+            },
+            playlistPoints: {
+                type: GraphQLInt
+            },
+            privacyType: {
+                type: GraphQLInt
+            },
+            songs: {
+                type: new GraphQLList(songInputType)
+            },
+            title: {
+                type: GraphQLString
+            }
+        }
+    }
+})
+
+var playedType = new GraphQLObjectType({
+    name: 'Played',
     fields: function() {
         return {
-            id: {
+            playlistId: {
                 type: GraphQLString
             },
             type: {
@@ -26,7 +58,22 @@ var recentlyPlayedType = new GraphQLObjectType({
             }
         }
     }
-})
+});
+
+var playedTypeInput = new GraphQLInputObjectType({
+    name: 'PlayedInput',
+    fields: function() {
+        return {
+            playlistId: {
+                type: GraphQLString
+            },
+            type: {
+                type: GraphQLString
+            }
+        }
+    }
+});
+
 
 var votedPlaylistsType = new GraphQLObjectType({
     name: 'VotedPlaylist',
@@ -40,7 +87,21 @@ var votedPlaylistsType = new GraphQLObjectType({
             }
         }
     }
-})
+});
+
+var votedPlaylistsInputType = new GraphQLInputObjectType({
+    name: 'VotedPlaylistInput',
+    fields: function() {
+        return {
+            playlistID: {
+                type: GraphQLString
+            },
+            votes: {
+                type: GraphQLInt
+            }
+        }
+    }
+});
 
 var userType = new GraphQLObjectType({
     name: 'User',
@@ -49,26 +110,11 @@ var userType = new GraphQLObjectType({
             _id: {
                 type: GraphQLString
             },
-            collaborativePlaylists: {
-                type: new GraphQLList(playlistType)
-            },
             email: {
                 type: GraphQLString
             },
-            followedPlaylists: {
-                type: new GraphQLList(playlistType)
-            },
-            mostPlayed: {
-                type: new GraphQLList(playlistType)
-            },
-            ownedPlaylists: {
-                type: new GraphQLList(playlistType)
-            },
             password: {
                 type: GraphQLString
-            },
-            recentlyPlayed: {
-                type: new GraphQLList(recentlyPlayedType)
             },
             username: {
                 type: GraphQLString
@@ -76,9 +122,27 @@ var userType = new GraphQLObjectType({
             userPoints: {
                 type: GraphQLInt
             },
+            collaborativePlaylists: {
+                type: new GraphQLList(playlistType)
+            },
+            ownedPlaylists: {
+                type: new GraphQLList(playlistType)
+            },
+            followedPlaylists: {
+                type: new GraphQLList(playlistType)
+            },
+            recentlyPlayed: {
+                type: new GraphQLList(playedType)
+            },
+            mostPlayed: {
+                type: new GraphQLList(playedType)
+            },
             votedPlaylists: {
                 type: new GraphQLList(votedPlaylistsType)
-            }
+            },
+            lastUpdate: {
+                type: GraphQLDate
+            },
         }
     }
 });
@@ -159,6 +223,84 @@ var mutation = new GraphQLObjectType({
                         throw new Error('Error');
                     }
                     return newUser
+                }
+            },
+            updateUser: {
+                type: userType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    collaborativePlaylists: {
+                        type: new GraphQLNonNull(GraphQLList(playlistInputType))
+                    },
+                    followedPlaylists: {
+                        type: new GraphQLNonNull(GraphQLList(playlistInputType))
+                    },
+                    ownedPlaylists: {
+                        type: new GraphQLNonNull(GraphQLList(playlistInputType))
+                    },
+                    recentlyPlayed: {
+                        type: new GraphQLNonNull(GraphQLList(playedTypeInput))
+                    },
+                    mostPlayed: {
+                        type: new GraphQLNonNull(GraphQLList(playedTypeInput))
+                    },
+                    userPoints: {
+                        type: new GraphQLNonNull(GraphQLInt)
+                    },
+                    votedPlaylists: {
+                        type: new GraphQLNonNull(GraphQLList(votedPlaylistsInputType))
+                    }
+                },
+                resolve(root, params) {
+                    return UserModel.findByIdAndUpdate( params.id, { 
+                    collaborativePlaylists: params.collaborativePlaylists, followedPlaylists: params.followedPlaylists,  ownedPlaylists: params.ownedPlaylists, 
+                    mostPlayed: params.mostPlayed, recentlyPlayed: params.recentlyPlayed,  
+                    userPoints: params.userPoints, votedPlaylists: params.votedPlaylists }, function(err) {
+                        if (err) return next(err);
+                    });
+                }
+            },
+            updateCredentials: {
+                type: userType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    email: {
+                        type: GraphQLString
+                    },
+                    password: {
+                        type: GraphQLString
+                    },
+                    username: {
+                        type: GraphQLString
+                    }
+                },
+                resolve(root, params) {
+                    return UserModel.findByIdAndUpdate( params.id, { email: params.email, 
+                        password: params.password, username: params.username }, function(err) {
+                        if (err) return next(err);
+                    });
+                }
+            },
+            removeUser: {
+                type: userType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: new GraphQLNonNull(GraphQLString)
+                    }
+                },
+                resolve(root, params) {
+                    const remUser = UserModel.findByIdAndRemove(params.id).exec();
+                    if (!remUser) {
+                        throw new Error('Error')
+                    }
+                    return remUser;
                 }
             }
         }

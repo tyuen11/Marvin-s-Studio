@@ -111,9 +111,10 @@ var queryType = new GraphQLObjectType({
 var songInputType = new GraphQLInputObjectType({
     name: "SongInput",
     fields: {
+        id: {type: GraphQLString},
         albumID: {type: GraphQLString},
         artistID: {type:GraphQLString},
-        genre: {type: GraphQLString},
+        songGenre: {type: GraphQLString},
         title: {type: GraphQLString}
     }
 })
@@ -139,16 +140,12 @@ var mutation = new GraphQLObjectType({
                     return newPlaylist;
                 }
             },
-            /*
-            editPlaylist: {
+            updatePlaylist: {
                 type: playlistType,
                 args: {
                     id: {
                         name: 'id',
                         type: new GraphQLNonNull(GraphQLString)
-                    },
-                    lastUpdated: {
-                        type: new GraphQLNonNull(GraphQLDate)
                     },
                     genre: {
                         type: new GraphQLNonNull(GraphQLString)
@@ -165,24 +162,23 @@ var mutation = new GraphQLObjectType({
                             id: new GraphQLNonNull(GraphQLString),
                             albumID: new GraphQLNonNull(GraphQLString),
                             artistID: new GraphQLNonNull(GraphQLString),
-                            genre: new GraphQLNonNull(GraphQLString),
+                            songGenre: new GraphQLNonNull(GraphQLString),
                             title: new GraphQLNonNull(GraphQLString)
                         }
                     },
                     title: {
                         type: new GraphQLNonNull(GraphQLString)
                     },
-                    resolve(root, params) {
-                        return PlaylistModel.findByIdAndUpdate( params.id, { genre: params.genre, lastUpdated: new Date(),
-                                                                numTracks: params.numTracks, privacyType: params.privacyType, 
-                                                                songs: params.songs, title: params.title },
-                                                                function(err) {
-                            if (err) return next(err);
-                        }).exec();
-                    }
+                },
+                resolve: function(root, params) {
+                    return PlaylistModel.findByIdAndUpdate( params.id, { genre: params.genre, numTracks: params.numTracks, 
+                                                            privacyType: params.privacyType, songs: params.songs, 
+                                                            title: params.title, lastUpdated: new Date() },
+                                                            function(err) {
+                        if (err) return next(err);
+                    });
                 }
             },
-            */
             removePlaylist: {
                 type: playlistType,
                 args: {

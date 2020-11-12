@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const { graphqlHTTP } = require('express-graphql');
 const fetch = require("node-fetch");
-const bodyParser = require('body-parser');
 
 const mergeSchemas = require('graphql-tools').mergeSchemas
 const UserModel = require('./models/User');
@@ -38,8 +37,6 @@ mongoose.connect(process.env.DB, { promiseLibrary: require('bluebird'), useNewUr
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/graphql', cors(), graphqlHTTP({
 schema: userSchema,
@@ -65,18 +62,19 @@ app.use(passport.session());
 
 // backend to frontend
 passport.serializeUser(function(user, done) {
-    console.log(user._id);
+    console.log(user);
     done(null, user._id);
 });
 
 // frontend to backend
 passport.deserializeUser(function(id, done) {
     UserModel.findById(id).then((user) => {
-        console.log("deserialize", user);
         done(null , user);
     })
     
 });
+
+let uid = {};
 
 // Passport setup for Google
 passport.use(new GoogleStrategy({
@@ -85,13 +83,14 @@ passport.use(new GoogleStrategy({
         callbackURL: 'http://localhost:3000/auth/google/callback'
     },
     function(accessToken, refreshToken, profile, done) {
-        user = { ...profile };
         var email = profile._json.email;
         var username = profile._json.given_name;
         console.log(username);
         
         // Check is user is existing user of Marvin's Studio
         UserModel.findOne({email: email}).then((currentUser) => {
+            console.log(currentUser);
+            uid = {user: currentUser._id};
             if (currentUser) {
                 console.log(currentUser.email);
                 return done(null, currentUser)
@@ -137,6 +136,7 @@ passport.use(new LocalStrategy({
             }
             else {
                 console.log("verification is correct");
+                uid = {user: user._id}
                 return done(null, user);
             }
         });
@@ -172,6 +172,7 @@ passport.use('local-register', new LocalStrategy({
                             votedPlaylists: []
                         }).save().then((newUser) => {
                             console.log(newUser);
+                            uid = {user: newUser._id}
                             return done(null, newUser);
                         });
                     });
@@ -199,8 +200,6 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'em
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/failed'} ) ,
     (req, res) => res.redirect('/')
 );
-app.get('/ud', (req, res) => res.send(req.session.passport));
-
 
 //Routes for using Local Strategy
 app.post('/login',
@@ -218,6 +217,8 @@ app.post('/register',
         failureFlash: true 
     })
 );
+
+app.get('/ud', (req, res) => res.send(uid));
 
 app.post('/logout', (req, res) => {
     req.logout();

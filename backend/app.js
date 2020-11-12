@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const { graphqlHTTP } = require('express-graphql');
 const fetch = require("node-fetch");
+const bodyParser = require('body-parser');
+
 const mergeSchemas = require('graphql-tools').mergeSchemas
 const UserModel = require('./models/User');
 
@@ -35,6 +37,9 @@ mongoose.connect(process.env.DB, { promiseLibrary: require('bluebird'), useNewUr
   .catch((err) => console.error(err));
 
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/graphql', cors(), graphqlHTTP({
 schema: userSchema,
@@ -144,7 +149,6 @@ passport.use('local-register', new LocalStrategy({
     },
     function(req, username, password, done) {
         UserModel.findOne({ email: username }, function (err, user) {
-            console.log(user);
             if (err) { 
                 return done(err); 
             }
@@ -156,9 +160,9 @@ passport.use('local-register', new LocalStrategy({
                     console.log(username);
                     bcrypt.hash(password, saltRounds).then(function(hash) {
                         new UserModel( {
-                            email: email,
+                            email: username,
                             password: hash,
-                            username: "PLACEHOLDER", // NEED TO ADD USER'S NAME FROM REQ.BODY.NAME
+                            username: req.body.uname,
                             userPoints: 0,
                             collaborativePlaylists: [],
                             followedPlaylists: [],

@@ -140,7 +140,7 @@ var userType = new GraphQLObjectType({
             votedPlaylists: {
                 type: new GraphQLList(votedPlaylistsType)
             },
-            lastUpdate: {
+            lastUpdated: {
                 type: GraphQLDate
             },
         }
@@ -165,30 +165,10 @@ var queryType = new GraphQLObjectType({
                     id: {
                         name: '_id',
                         type: GraphQLString
-                    },
-                    email: {
-                        name: 'email',
-                        type: GraphQLString
                     }
                 },
                 resolve: function (root, params) {
                     const userDetails = UserModel.findById(params.id).exec()
-                    if (!userDetails) {
-                        throw new Error('Error')
-                    }
-                    return userDetails
-                }
-            },
-            userVerification: {
-                type: userType,
-                args: {
-                    email: {
-                        name: 'email',
-                        type: GraphQLString
-                    }
-                },
-                resolve: function (root, params) {
-                    const userDetails = UserModel.findOne( {email:params.email}, ).exec()
                     if (!userDetails) {
                         throw new Error('Error')
                     }

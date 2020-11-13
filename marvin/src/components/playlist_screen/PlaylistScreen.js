@@ -3,6 +3,7 @@ import PlaylistSongs from './PlaylistSongs.js';
 import DeletePlaylistModal from '../modals/DeletePlaylistModal.js';
 import gql from 'graphql-tag';
 import { Query } from "react-apollo";
+import { Link } from 'react-router-dom';
 
 const GET_USER = gql`
     query user($userId: String) {
@@ -169,7 +170,11 @@ class PlaylistScreen extends React.Component {
                                     <div className="row text-light ml-3 ">
                                         <label id="songName" className="col-2 text-nowrap overflow-hidden overflow-ellipsis">{song.title}</label>
                                         <label id="artistName" className="col-2">{song.artist}</label>
-                                        <label id="albumName" className="col-2 text-nowrap overflow-hidden overflow-ellipses" style={{textOverflow:'ellipsis'}}>{song.album}</label>
+                                        <label id="albumName" className="col-2 text-nowrap overflow-hidden overflow-ellipses" style={{textOverflow:'ellipsis'}}>
+                                            <Link to='/album'>
+                                                {song.album}
+                                            </Link>
+                                        </label>
                                         <label id="date" className="col-3">01-10-1010</label>
                                         <a id="queueBtn" className="col-1" href="addQueue">
                                             <input type="image" style={{ width: "100%" }}

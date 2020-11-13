@@ -28,6 +28,12 @@ const GET_USER = gql`
                 ownerName
                 playlistPoints
                 privacyType
+                songs {
+                    albumID
+                    artistID
+                    genre
+                    title
+                }
                 title
             } 
             followedPlaylists {
@@ -38,6 +44,12 @@ const GET_USER = gql`
                 ownerName
                 playlistPoints
                 privacyType
+                songs {
+                    albumID
+                    artistID
+                    genre
+                    title
+                }
                 title
             }
             ownedPlaylists {
@@ -48,6 +60,12 @@ const GET_USER = gql`
                 ownerName
                 playlistPoints
                 privacyType
+                songs {
+                    albumID
+                    artistID
+                    genre
+                    title
+                }
                 title
             }
             recentlyPlayed {
@@ -83,6 +101,7 @@ class MainScreen extends Component {
     goToPlaylist = (e) => {
         this.setState({ currPlaylist: e })
     }
+
     render() {
         let user;
         return (
@@ -98,7 +117,7 @@ class MainScreen extends Component {
                                 <Sidebar user={user} history={this.props.history}/>
                                 <div className='col'>
                                     <Switch>
-                                        <Route path="/">
+                                        <Route exact path="/">
                                             <PlaylistScreen history={this.props.history}/>                        
                                         </Route>
                                         <Route  path="/album">

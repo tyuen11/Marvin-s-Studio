@@ -50,7 +50,7 @@ class AlbumScreen extends React.Component {
                                                                                         </input>
                                                                                 </a>
                                                                         </div>
-                                                                </div>Î
+                                                                </div>
                                                         </div>
                                                 </div>
                                         </div>
@@ -58,7 +58,7 @@ class AlbumScreen extends React.Component {
                                 <div className="row" >
 
                                         <div className="col s4"> <h3 style={{ color: "white" }}>Title</h3>  </div>
-                                        <div className="col s4"> <h3 style={{ color: "white" }}>Runtime </h3>  </div>Î
+                                        <div className="col s4"> <h3 style={{ color: "white" }}>Runtime </h3>  </div>
                                 </div>
                         </div>
                 )

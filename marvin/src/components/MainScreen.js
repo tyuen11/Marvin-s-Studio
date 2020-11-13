@@ -105,7 +105,7 @@ class MainScreen extends Component {
                                         <Route path="/artist">
                                             <ArtistScreen {...PlaylistData}/>
                                         </Route>
-                                        <Route path="/user/search">
+                                        <Route path="/search">
                                             <SearchScreen />
                                         </Route>
                                         <Route path="/profile">

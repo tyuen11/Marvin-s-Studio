@@ -24,7 +24,7 @@ var userSchema = require('./graphql/UserSchemas');
 var playlistSchema = require('./graphql/PlaylistSchemas')
 var communitySchema = require('./graphql/CommunitySchemas')
 //var schema = mergeSchemas({ 
-  //  schemas: [ userSchema, playlistSchema ]
+//  schemas: [ userSchema, playlistSchema ]
 //})
 
 //TODO: display error messages on login screen (wrong email, wrong password) and on Register Screen (email already in use and perhaps password length)
@@ -32,21 +32,21 @@ var communitySchema = require('./graphql/CommunitySchemas')
 
 // Connect to MongoDB Atlas database with mongoose
 mongoose.connect(process.env.DB, { promiseLibrary: require('bluebird'), useNewUrlParser: true })
-  .then(() =>  console.log('connection successful'))
-  .catch((err) => console.error(err));
+    .then(() => console.log('connection successful'))
+    .catch((err) => console.error(err));
 
 const app = express();
 
 
 app.use('/graphql', cors(), graphqlHTTP({
-schema: userSchema,
-rootValue: global,
-graphiql: true,
+    schema: userSchema,
+    rootValue: global,
+    graphiql: true,
 }));
 
 
 app.use(cors());
-app.use(express.urlencoded({extended: true})); // Used to parse info from login/register
+app.use(express.urlencoded({ extended: true })); // Used to parse info from login/register
 app.use(express.json()); // Used to parse info from login/register
 
 app.use(flash());
@@ -61,51 +61,51 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // backend to frontend
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     console.log(user);
     done(null, user._id);
 });
 
 // frontend to backend
-passport.deserializeUser(function(id, done) {
+passport.deserializeUser(function (id, done) {
     UserModel.findById(id).then((user) => {
-        done(null , user);
+        done(null, user);
     })
-    
+
 });
 
 let uid = {};
 
 // Passport setup for Google
 passport.use(new GoogleStrategy({
-        clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: 'http://localhost:3000/auth/google/callback'
-    },
-    function(accessToken, refreshToken, profile, done) {
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: 'http://localhost:3000/auth/google/callback'
+},
+    function (accessToken, refreshToken, profile, done) {
         var email = profile._json.email;
         var username = profile._json.given_name;
         console.log(username);
-        
+
         // Check is user is existing user of Marvin's Studio
-        UserModel.findOne({email: email}).then((currentUser) => {
+        UserModel.findOne({ email: email }).then((currentUser) => {
             console.log(currentUser);
-            uid = {user: currentUser._id};
+            uid = { user: currentUser._id };
             if (currentUser) {
                 console.log(currentUser.email);
                 return done(null, currentUser)
-            } 
+            }
             else {
-                bcrypt.hash(profile.id, saltRounds).then(function(hash) {
-                    new UserModel( {
+                bcrypt.hash(profile.id, saltRounds).then(function (hash) {
+                    new UserModel({
                         email: email,
                         password: hash,
-                        username: username, 
+                        username: username,
                         userPoints: 0,
                         collaborativePlaylists: [],
                         followedPlaylists: [],
                         ownedPlaylisits: [],
-                        recentlyPlayed:[],
+                        recentlyPlayed: [],
                         mostPlayed: [],
                         votedPlaylists: []
                     }).save().then((newUser) => {
@@ -118,48 +118,48 @@ passport.use(new GoogleStrategy({
 ))
 
 // Passport setup for username and password authentication
-passport.use(new LocalStrategy({  
-        passReqToCallback : true,
-        usernameField: 'email'
-    },
-    function(req, username, password, done) {
-      UserModel.findOne({ email: username }, function (err, user) {
-        if (err) { 
-            return done(err); 
-        }
-        if (!user) { 
-            return done(null, false, { message: 'Incorrect username.' });
-        }
-        bcrypt.compare(password, user.password).then(function(result) {
-            if (!result) {
-                return done(null, false, { message: 'Incorrect password.' });
+passport.use(new LocalStrategy({
+    passReqToCallback: true,
+    usernameField: 'email'
+},
+    function (req, username, password, done) {
+        UserModel.findOne({ email: username }, function (err, user) {
+            if (err) {
+                return done(err);
             }
-            else {
-                console.log("verification is correct");
-                uid = {user: user._id}
-                return done(null, user);
+            if (!user) {
+                return done(null, false, { message: 'Incorrect username.' });
             }
+            bcrypt.compare(password, user.password).then(function (result) {
+                if (!result) {
+                    return done(null, false, { message: 'Incorrect password.' });
+                }
+                else {
+                    console.log("verification is correct");
+                    uid = { user: user._id }
+                    return done(null, user);
+                }
+            });
         });
-      });
     }
 ));
-passport.use('local-register', new LocalStrategy({  
-    passReqToCallback : true,
+passport.use('local-register', new LocalStrategy({
+    passReqToCallback: true,
     usernameField: 'email'
-    },
-    function(req, username, password, done) {
+},
+    function (req, username, password, done) {
         UserModel.findOne({ email: username }, function (err, user) {
-            if (err) { 
-                return done(err); 
+            if (err) {
+                return done(err);
             }
-            if (user) { 
+            if (user) {
                 return done(null, false, { message: 'That email is already registered with an account' });
-            } 
+            }
             else {
                 try {
                     console.log(username);
-                    bcrypt.hash(password, saltRounds).then(function(hash) {
-                        new UserModel( {
+                    bcrypt.hash(password, saltRounds).then(function (hash) {
+                        new UserModel({
                             email: username,
                             password: hash,
                             username: req.body.uname,
@@ -167,12 +167,12 @@ passport.use('local-register', new LocalStrategy({
                             collaborativePlaylists: [],
                             followedPlaylists: [],
                             ownedPlaylisits: [],
-                            recentlyPlayed:[],
+                            recentlyPlayed: [],
                             mostPlayed: [],
                             votedPlaylists: []
                         }).save().then((newUser) => {
                             console.log(newUser);
-                            uid = {user: newUser._id}
+                            uid = { user: newUser._id }
                             return done(null, newUser);
                         });
                     });
@@ -185,10 +185,10 @@ passport.use('local-register', new LocalStrategy({
 ));
 
 const isLoggedIn = (req, res, next) => {
-    if (req.user){
+    if (req.user) {
         next();
     }
-    else{
+    else {
         res.sendStatus(401);
     }
 }
@@ -197,24 +197,24 @@ const isLoggedIn = (req, res, next) => {
 app.get('/failed', (req, res) => res.send('You failed to login.'));
 app.get('/good', isLoggedIn, (req, res) => res.redirect('/'));
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/failed'} ) ,
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/failed' }),
     (req, res) => res.redirect('/')
 );
 
 //Routes for using Local Strategy
 app.post('/login',
-  passport.authenticate('local', { 
-      successRedirect: '/', 
-      failureRedirect: '/login', 
-      failureFlash: true 
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
     })
 );
 
 app.post('/register',
     passport.authenticate('local-register', {
-        successRedirect: '/', 
-        failureRedirect: '/register', 
-        failureFlash: true 
+        successRedirect: '/',
+        failureRedirect: '/register',
+        failureFlash: true
     })
 );
 
@@ -228,3 +228,20 @@ app.post('/logout', (req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
 
+const YoutubeMusicApi = require('youtube-music-api') 
+const api = new YoutubeMusicApi()
+var searchResult;
+
+app.post('/sidebar', (request, response) => {
+    console.log('requst made!')
+    api.initalize()
+        .then(info => {
+            api.search(request.body.searchText, 'artist').then(result => {
+                searchResult = result;
+                console.log(result);
+            })
+            res.redirect('/search');
+        });
+});
+
+app.get('/search', (req, res) => res.send(searchResult));

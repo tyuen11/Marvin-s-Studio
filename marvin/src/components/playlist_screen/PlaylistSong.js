@@ -15,12 +15,12 @@ class PlaylistSong extends Component {
                     <label id="albumName" className="col-2 text-nowrap overflow-hidden overflow-ellipses" style={{textOverflow:'ellipsis'}}>{this.props.album}</label>
                     <label id="date" className="col-3">{this.props.date}</label>
                     <a id="queueBtn" className="col-1" href="addQueue">
-                        <input type="image" style={{ width: "100%" }}
+                        <input type="image" style={{ width: "80%" }}
                             src="https://i.imgur.com/sNVHPL0.png">
                         </input>
                     </a>
                     <a id="deleteSong" className="col-1 mt-1" href="deleteSong">
-                        <input type="image" style={{ width: "55%"}}
+                        <input type="image" style={{ width: "45%"}}
                             src="https://i.imgur.com/jpujrfk.png">
                         </input>
                     </a>

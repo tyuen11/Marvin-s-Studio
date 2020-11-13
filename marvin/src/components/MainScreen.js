@@ -68,7 +68,6 @@ const GET_USER = gql`
 
 class MainScreen extends Component {
     state = {
-        
     }
 
     componentDidMount = () => {
@@ -79,7 +78,10 @@ class MainScreen extends Component {
               console.log(err);
           });  
         console.log(this.state.user);
-        
+    }
+
+    goToPlaylist = (e) => {
+        this.setState({ currPlaylist: e })
     }
     render() {
         let user;
@@ -97,7 +99,7 @@ class MainScreen extends Component {
                                 <div className='col'>
                                     <Switch>
                                         <Route path="/">
-                                            <PlaylistScreen {...PlaylistData.profile.playlists[0]} />                            
+                                            <PlaylistScreen history={this.props.history}/>                        
                                         </Route>
                                         <Route  path="/album">
                                             <AlbumScreen />

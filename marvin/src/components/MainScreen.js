@@ -89,10 +89,11 @@ class MainScreen extends Component {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
                     else user = data.user;
+                    console.log(user);
                     return (
                         <div>
                             <div className="row">
-                                <Sidebar user={this.user}/>
+                                <Sidebar user={user}/>
                                 <div className='col'>
                                     <Switch>
                                         <Route path="/">

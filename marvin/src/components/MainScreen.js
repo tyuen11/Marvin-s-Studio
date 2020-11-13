@@ -93,7 +93,7 @@ class MainScreen extends Component {
                     return (
                         <div>
                             <div className="row">
-                                <Sidebar user={user}/>
+                                <Sidebar user={user} history={this.props.history}/>
                                 <div className='col'>
                                     <Switch>
                                         <Route path="/">

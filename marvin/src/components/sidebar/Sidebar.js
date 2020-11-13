@@ -64,7 +64,8 @@ class Sidebar extends React.Component {
                         <button action="submit">Logout</button>
                         </form>
                 </div>
-                <CreatePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow} user={this.props.user}/>
+                <CreatePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}
+                    user={this.props.user} history={this.props.history}/>
             </div>
         )
 

@@ -125,6 +125,7 @@ class CreatePlaylistModal extends Component {
                                         title: this.state.title
                                     };
                                     let newOP = this.props.user.ownedPlaylists;
+                                    newOP.forEach(pl => {delete pl['__typename']})
                                     newOP.push(newPL);
                                     console.log(newOP);
                                     updateUser({ variables: {
@@ -142,10 +143,12 @@ class CreatePlaylistModal extends Component {
                                         <label className="mt-2 mb-3 ">What's the name of your playlist?</label>
                                         <input className="form-control mb-4"  placeholder="My Playlist" onChange={this.playlistNameChange}/>
                                         <div className="row mb-4">
-                                            <Button type="submit" className="col-6 btn btn-primary ml-2 text-center mx-auto">Create Playlist</Button>
+                                            <Button type="submit" className="col-6 btn btn-primary ml-2 text-center mx-auto" onClick={this.props.handleClose}>Create Playlist</Button>
                                         </div>
                                     </div>
                                 </form>
+                                {loading && <p>Loading...</p>}
+                                {error && <p>Error :O water u doing ( ͡° ͜ʖ ͡°)</p>}
                             </Modal.Body>
                         </Modal>
                     </div>

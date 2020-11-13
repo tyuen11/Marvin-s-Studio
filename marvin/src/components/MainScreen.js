@@ -68,29 +68,31 @@ const GET_USER = gql`
 
 class MainScreen extends Component {
     state = {
-        user: null
+        
     }
 
     componentDidMount = () => {
         fetch('http://localhost:5000/ud')
-        .then(res => res.json())
-        .then(res => this.setState({user:res}))
-        .catch(err => {
-            console.log(err);
-        });  
-      console.log(this.state.user);
+          .then(res => res.json())
+          .then(res => this.setState({user:res.user}))
+          .catch(err => {
+              console.log(err);
+          });  
+        console.log(this.state.user);
+        
     }
-
     render() {
+        let user;
         return (
-            <Query pollInterval={500} query={GET_USER} variables={{ userId: "5faafca08d8dd72b02541ef4"}}>
+            <Query pollInterval={500} query={GET_USER} variables={{ userId: this.state.user}}>
                 {({ loading, error, data }) => {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
+                    else user = data.user;
                     return (
                         <div>
                             <div className="row">
-                                <Sidebar state={this.state}/>
+                                <Sidebar user={this.user}/>
                                 <div className='col'>
                                     <Switch>
                                         <Route path="/">

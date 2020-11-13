@@ -38,7 +38,7 @@ export default class RegisterScreen extends Component {
                             </div>
                             <div className="form-group text-left">
                                 <label className="text-light my-3">What's your name?</label>
-                                <input type="text" className="form-control"  placeholder="Enter a name"/>
+                                <input name="uname" type="text" className="form-control"  placeholder="Enter a name"/>
                             </div>
                             <button type="submit" className="btn btn-primary btn-sm rounded-pill mt-4 mb-2">Sign Up</button>
                         </form>

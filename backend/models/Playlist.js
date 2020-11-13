@@ -7,7 +7,7 @@ var playlistSchema = new mongoose.Schema({
     lastUpdated: {type: Date, default: Date.now},
     numPlays: Number,
     numTracks: Number,
-    ownerID: String,
+    ownerName: String,
     playlistPoints: Number,
     privacyType: Number,
     songs: [Song],

@@ -1,7 +1,7 @@
 import React from 'react'
 import logo from '../../icons/marvins.png'
 import gql from 'graphql-tag'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import CreatePlaylistModal from '../modals/CreatePlaylistModal';
 import { Query, Mutation } from 'react-apollo'
 
@@ -167,13 +167,21 @@ class Sidebar extends React.Component {
     }
     state = {
         show: false,
-        playlists: this.props.ownedPlaylists,
-        username: this.props.username,
-        playlistName: "",
     }
     
     createPlaylist = (e) => {
-        let newOwnedPlaylists = this.props.state;
+        let user = this.props.user;
+        let newOwnedPlaylists = user.ownedPlaylists;
+        let newPlaylist = {
+            genre: null,
+            numPlays:0,
+            numTracks: 0,
+            privacyType: 0,
+            songs: [],
+            title: e.target.value
+        }
+        user.ownedPlaylists.push(newPlaylist);
+        console.log(user);
     }
 
     handleShow = () => {
@@ -187,8 +195,9 @@ class Sidebar extends React.Component {
     }
 
     render() {
+        
         return (
-            <Mutation mutation={UPDATE_USER} key={this.props.ownedPlaylists._id}>
+            <Mutation mutation={UPDATE_USER} key={this.props.user._id} onCompleted={() => this.props.history.push(this.props.location.pathname)}>
                 {(updateUser, { loading, error }) => (
                     <div style={{ height: 934 }} >
                         <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200}}>
@@ -216,7 +225,7 @@ class Sidebar extends React.Component {
                                 </form>
                         </div>
                         <CreatePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}
-                            callback={updateUser} user={this.props}/>
+                            createPlaylist={this.createPlaylist}/>
                     </div>
                 )}
             </Mutation>

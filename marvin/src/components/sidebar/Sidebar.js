@@ -11,21 +11,6 @@ class Sidebar extends React.Component {
     state = {
         show: false,
     }
-    
-    createPlaylist = (e) => {
-        let user = this.props.user;
-        let newOwnedPlaylists = user.ownedPlaylists;
-        let newPlaylist = {
-            genre: null,
-            numPlays:0,
-            numTracks: 0,
-            privacyType: 0,
-            songs: [],
-            title: e.target.value
-        }
-        user.ownedPlaylists.push(newPlaylist);
-        console.log(user);
-    }
 
     handleShow = () => {
         this.setState({ show: true });
@@ -57,14 +42,15 @@ class Sidebar extends React.Component {
                         {this.props.user.ownedPlaylists.map((playlist, index) => (
                             <div key={index} className='text-white text-left pl-3 mb-1'
                                     style={{cursor: 'pointer'}}>
-                                <Link to={`/${playlist._id}`}>{playlist.title}</Link>
+                                <Link to={`/`} >{playlist.title}</Link>
                             </div>
                         ))}
                         <form action='/logout' method="post">
                         <button action="submit">Logout</button>
                         </form>
                 </div>
-                <CreatePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow} user={this.props.user}/>
+                <CreatePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}
+                    user={this.props.user} history={this.props.history}/>
             </div>
         )
 

@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
+import { Link } from 'react-router-dom';
 
 
 import LoginScreen from './components/LoginScreen';
@@ -35,7 +36,7 @@ ReactDOM.render(
             <Route  path="/reset" component={ResetPassword} />
             {/* <Route  path="/artist" component={() => <ArtistScreen {...PlaylistData}/> }/>
             <Route  path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/> */}
-            <Route exact path='/' component={MainScreen}/>
+            <Route exact path='/' component={MainScreen} />
           </div>
       </Router>
   </ApolloProvider>, 

@@ -28,6 +28,12 @@ const GET_USER = gql`
                 ownerName
                 playlistPoints
                 privacyType
+                songs {
+                    albumID
+                    artistID
+                    genre
+                    title
+                }
                 title
             } 
             followedPlaylists {
@@ -38,6 +44,12 @@ const GET_USER = gql`
                 ownerName
                 playlistPoints
                 privacyType
+                songs {
+                    albumID
+                    artistID
+                    genre
+                    title
+                }
                 title
             }
             ownedPlaylists {
@@ -48,6 +60,12 @@ const GET_USER = gql`
                 ownerName
                 playlistPoints
                 privacyType
+                songs {
+                    albumID
+                    artistID
+                    genre
+                    title
+                }
                 title
             }
             recentlyPlayed {
@@ -68,7 +86,6 @@ const GET_USER = gql`
 
 class MainScreen extends Component {
     state = {
-        
     }
 
     componentDidMount = () => {
@@ -79,8 +96,12 @@ class MainScreen extends Component {
               console.log(err);
           });  
         console.log(this.state.user);
-        
     }
+
+    goToPlaylist = (e) => {
+        this.setState({ currPlaylist: e })
+    }
+
     render() {
         let user;
         return (
@@ -93,11 +114,11 @@ class MainScreen extends Component {
                     return (
                         <div>
                             <div className="row">
-                                <Sidebar user={user}/>
+                                <Sidebar user={user} history={this.props.history}/>
                                 <div className='col'>
                                     <Switch>
-                                        <Route path="/">
-                                            <PlaylistScreen {...PlaylistData.profile.playlists[0]} />                            
+                                        <Route exact path="/">
+                                            <PlaylistScreen history={this.props.history}/>                        
                                         </Route>
                                         <Route  path="/album">
                                             <AlbumScreen />

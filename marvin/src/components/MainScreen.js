@@ -9,8 +9,62 @@ import Player from './Player'
 
 import ProfileScreen from './profile_screen/ProfileScreen';
 import SearchScreen from './search_screen/SearchScreen';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag'
 
-
+const GET_USER = gql`
+    query user($userId: String) {
+        user(id: $userId) {
+            _id
+            email
+            password
+            username
+            userPoints
+            collaborativePlaylists {
+                _id
+                genre
+                numPlays
+                numTracks
+                ownerName
+                playlistPoints
+                privacyType
+                title
+            } 
+            followedPlaylists {
+                _id
+                genre
+                numPlays
+                numTracks
+                ownerName
+                playlistPoints
+                privacyType
+                title
+            }
+            ownedPlaylists {
+                _id
+                genre
+                numPlays
+                numTracks
+                ownerName
+                playlistPoints
+                privacyType
+                title
+            }
+            recentlyPlayed {
+                playlistId
+                type
+            }
+            mostPlayed {
+                playlistId
+                type
+            }
+            votedPlaylists {
+                playlistID
+                votes
+            }
+        }
+    }
+`;
 
 class MainScreen extends Component {
     state = {
@@ -29,33 +83,41 @@ class MainScreen extends Component {
 
     render() {
         return (
-            <div>
-                <div className="row">
-                    <Sidebar className="col-2" {...PlaylistData}/>
-                    <div className='col'>
-                        <Switch>
-                            <Route path="/">
-                                <PlaylistScreen {...PlaylistData.profile.playlists[0]} />                            
-                            </Route>
-                            <Route  path="/album">
-                                <AlbumScreen />
-                            </Route>
-                            <Route path="/artist">
-                                <ArtistScreen {...PlaylistData}/>
-                            </Route>
-                            <Route path="/user/search">
-                                <SearchScreen />
-                            </Route>
-                            <Route path="/profile">
-                                <ProfileScreen {...PlaylistData}/>
-                            </Route>
-                        </Switch>
-                    </div>
-                </div>
-                <div className="row">
-                    <Player/>
-                </div>
-            </div>
+            <Query pollInterval={500} query={GET_USER} variables={{ userId: "5faafca08d8dd72b02541ef4"}}>
+                {({ loading, error, data }) => {
+                    if (loading) return 'Loading...';
+                    if (error) return `Error! ${error.message}`;
+                    return (
+                        <div>
+                            <div className="row">
+                                <Sidebar state={this.state}/>
+                                <div className='col'>
+                                    <Switch>
+                                        <Route path="/">
+                                            <PlaylistScreen {...PlaylistData.profile.playlists[0]} />                            
+                                        </Route>
+                                        <Route  path="/album">
+                                            <AlbumScreen />
+                                        </Route>
+                                        <Route path="/artist">
+                                            <ArtistScreen {...PlaylistData}/>
+                                        </Route>
+                                        <Route path="/user/search">
+                                            <SearchScreen />
+                                        </Route>
+                                        <Route path="/profile">
+                                            <ProfileScreen {...PlaylistData}/>
+                                        </Route>
+                                    </Switch>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <Player/>
+                            </div>
+                        </div>
+                    )
+                }}
+            </Query>
         )
     }
 }

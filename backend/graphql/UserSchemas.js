@@ -17,7 +17,10 @@ var songInputType = require('./PlaylistSchemas').getType('SongInput')
 var playlistInputType = new GraphQLInputObjectType({
     name: 'PlaylistInput',
     fields: function() {
-        return{ 
+        return{
+            _id: {
+                type: GraphQLString
+            },
             genre: {
                 type: GraphQLString
             },
@@ -27,7 +30,7 @@ var playlistInputType = new GraphQLInputObjectType({
             numTracks: {
                 type: GraphQLInt
             },
-            ownerID: {
+            ownerName: {
                 type: GraphQLString
             },
             playlistPoints: {

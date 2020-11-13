@@ -61,6 +61,9 @@ var playlistType = new GraphQLObjectType({
             numTracks: {
                 type: GraphQLInt
             },
+            ownerName: {
+                type: GraphQLString
+            },
             playlistPoints: {
                 type: GraphQLInt
             },
@@ -89,6 +92,9 @@ var playlistInputType = new GraphQLInputObjectType({
             },
             numTracks: {
                 type: GraphQLInt
+            },
+            ownerName: {
+                type: GraphQLString
             },
             playlistPoints: {
                 type: GraphQLInt
@@ -150,7 +156,7 @@ var mutation = new GraphQLObjectType({
             addPlaylist: {
                 type: playlistType,
                 args: {
-                    ownerID: {
+                    ownerName: {
                         type: new GraphQLNonNull(GraphQLString)
                     },
                     title: {

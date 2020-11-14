@@ -120,19 +120,19 @@ class MainScreen extends Component {
                                 <Sidebar user={user} history={this.props.history} playlistCallback={this.goToPlaylist}/>
                                 <div className='col'>
                                     <Switch>
-                                        <Route exact path="/playlist">
+                                        <Route path="/app/playlist">
                                             <PlaylistScreen playlist={this.state.currPlaylist} user={user} history={this.props.history}/>                        
                                         </Route>
-                                        <Route  exact path="/album">
+                                        <Route   path="/app/album">
                                             <AlbumScreen user={user} history={this.props.history}/>
                                         </Route>
-                                        <Route exact path="/">
+                                        <Route  path="/app">
                                             <ArtistScreen user={user} history={this.props.history} {...PlaylistData}/>
                                         </Route>
-                                        <Route path="/search">
+                                        <Route path="/app/search">
                                             <SearchScreen />
                                         </Route>
-                                        <Route path="/profile">
+                                        <Route path="/app/profile">
                                             <ProfileScreen {...PlaylistData}/>
                                         </Route>
                                     </Switch>

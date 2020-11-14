@@ -117,12 +117,16 @@ class CreatePlaylistModal extends Component {
         console.log(user);
     }
 
+    playlistNameChange = (e) => {
+        this.setState({ title: e.target.value })
+    }
+
     render() {
-        if (this.state.owner == null)
+        if (this.state.ownerName == null)
 			return <div>Loading...</div>
         let user = this.props.user;
         return (
-            <Mutation mutation={UPDATE_USER} key={this.props.user._id} onCompleted={() => this.props.history.push('/')}>
+            <Mutation mutation={UPDATE_USER} key={this.props.user._id} onCompleted={() => this.props.history.push('/app')}>
                 {(updateUser, { loading, error }) => (
                     <div className="container">
                         <Modal id="showCreatePlaylist" show={this.props.show} onHide={this.props.handleClose}>
@@ -141,11 +145,14 @@ class CreatePlaylistModal extends Component {
                                         privacyType: this.state.privacyType,
                                         songs: this.state.songs,
                                         title: this.state.title,
-                                        __typename: "Playlist",
-                                        _id: "5facbf98365a0b2d1d12c675"
                                     };
                                     let newOP = this.props.user.ownedPlaylists;
-                                    newOP.forEach(pl => {delete pl['__typename']})
+                                    newOP.forEach(pl => {
+                                        delete pl['__typename']
+                                        pl.songs.forEach(song => {
+                                            delete song['__typename']
+                                        })
+                                    })
                                     newOP.push(newPL);
                                     console.log(newOP);
                                     updateUser({ variables: {

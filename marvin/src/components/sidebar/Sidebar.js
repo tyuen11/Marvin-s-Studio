@@ -44,7 +44,7 @@ class Sidebar extends React.Component {
                         {this.props.user.ownedPlaylists.map((playlist, index) => (
                             <div key={index} className='text-white text-left pl-3 mb-1'
                                     style={{cursor: 'pointer'}}>
-                                <Link className='text-white pl-2' to={'/playlist'} onClick={() => this.props.playlistCallback(playlist)}>{playlist.title}</Link>
+                                <Link className='text-white pl-2' to={'/app/playlist'} onClick={() => this.props.playlistCallback(playlist)}>{playlist.title}</Link>
                             </div>
                         ))}
                         <form action='/logout' method="post">

@@ -48,7 +48,7 @@ class AddSongModal extends Component {
         console.log(ownedPlaylists);
         console.log(collaborativePlaylists);
         return (
-            <Mutation mutation={UPDATE_USER_PLAYLIST} key={this.props.user._id} onCompleted={() => this.props.history.push('/album')}>
+            <Mutation mutation={UPDATE_USER_PLAYLIST} key={this.props.user._id} onCompleted={() => this.props.history.push('/app/album')}>
             {(updatePlaylist, { loading, error}) => (
                 <div className="container">
                     <Modal id="addSongModal" show={this.props.show} onHide={this.props.handleClose}>

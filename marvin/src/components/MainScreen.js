@@ -123,11 +123,11 @@ class MainScreen extends Component {
                                         <Route exact path="/playlist">
                                             <PlaylistScreen playlist={this.state.currPlaylist} user={user} history={this.props.history}/>                        
                                         </Route>
-                                        <Route  exact path="/">
+                                        <Route  exact path="/album">
                                             <AlbumScreen user={user} history={this.props.history}/>
                                         </Route>
-                                        <Route exact path="/profile">
-                                            <ArtistScreen {...PlaylistData}/>
+                                        <Route exact path="/">
+                                            <ArtistScreen user={user} history={this.props.history} {...PlaylistData}/>
                                         </Route>
                                         <Route path="/search">
                                             <SearchScreen />

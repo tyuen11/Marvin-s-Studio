@@ -24,7 +24,7 @@ class Sidebar extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{height: 934}}>
                 <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200}}>
                     <Link to='/login'>
                         <img src={logo} height={85} alt=''/>
@@ -44,11 +44,11 @@ class Sidebar extends React.Component {
                         {this.props.user.ownedPlaylists.map((playlist, index) => (
                             <div key={index} className='text-white text-left pl-3 mb-1'
                                     style={{cursor: 'pointer'}}>
-                                <Link to={'/playlist'} onClick={() => this.props.playlistCallback(playlist)}>{playlist.title}</Link>
+                                <Link className='text-white pl-2' to={'/playlist'} onClick={() => this.props.playlistCallback(playlist)}>{playlist.title}</Link>
                             </div>
                         ))}
                         <form action='/logout' method="post">
-                        <button action="submit">Logout</button>
+                        <button action="submit" className='btn btn-primary'>Logout</button>
                         </form>
                 </div>
                 <CreatePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}

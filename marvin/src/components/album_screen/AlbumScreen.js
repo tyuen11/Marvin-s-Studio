@@ -99,7 +99,8 @@ class AlbumScreen extends React.Component {
 						))}
 
 					</div>
-					<AddSongModal user={this.props.user} show={this.state.show} song={this.state.song} album={album} handleClose={this.handleClose} handleShow={this.handleShow} />
+					<AddSongModal user={this.props.user} show={this.state.show} song={this.state.song} album={album}
+						handleClose={this.handleClose} handleShow={this.handleShow} history={this.props.history} />
 				</div>
 			)
 	}

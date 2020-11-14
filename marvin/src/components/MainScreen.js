@@ -98,8 +98,8 @@ class MainScreen extends Component {
         console.log(this.state.user);
     }
 
-    goToPlaylist = (e) => {
-        this.setState({ currPlaylist: e })
+    goToPlaylist = (playlist) => {
+        this.setState({ currPlaylist: playlist })
     }
 
     render() {
@@ -114,16 +114,16 @@ class MainScreen extends Component {
                     return (
                         <div>
                             <div className="row">
-                                <Sidebar user={user} history={this.props.history}/>
+                                <Sidebar user={user} history={this.props.history} playlistCallback={this.goToPlaylist}/>
                                 <div className='col'>
                                     <Switch>
-                                        <Route exact path="/">
-                                            <PlaylistScreen history={this.props.history}/>                        
+                                        <Route exact path="/playlist">
+                                            <PlaylistScreen playlist={this.state.currPlaylist} user={user} history={this.props.history}/>                        
                                         </Route>
-                                        <Route  path="/album">
+                                        <Route  exact path="/album">
                                             <AlbumScreen />
                                         </Route>
-                                        <Route path="/artist">
+                                        <Route exact path="/">
                                             <ArtistScreen {...PlaylistData}/>
                                         </Route>
                                         <Route path="/user/search">

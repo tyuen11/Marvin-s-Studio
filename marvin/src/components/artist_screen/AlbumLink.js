@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 class AlbumLink extends React.Component {
     constructor(props) {
@@ -12,11 +13,13 @@ class AlbumLink extends React.Component {
 
     render() {
         return (
-            <div className='col mr-5 text-white p-0' style={{cursor: 'pointer', width: 120, height: 120}}
-                onClick={this.goToAlbum}>
-                <img className='border rounded border-white w-100 h-100' src={this.props.image}></img>
-                <div className='text-center'>{this.props.title}</div>
-            </div>
+            <Link className='col-3 mb-5 text-white p-0' to={`/album/${this.props.album.browseId}`}>
+                <div style={{cursor: 'pointer', width: 150, height: 150}}
+                    onClick={this.goToAlbum}>
+                    <img className='border rounded border-white' src={this.props.album.thumbnails[0].url} height="100%" width="100%"></img>
+                    <div className='text-center'>{this.props.album.name}</div>
+                </div>
+            </Link>
         )
     }
 }

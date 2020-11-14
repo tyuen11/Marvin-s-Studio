@@ -35,7 +35,7 @@ ReactDOM.render(
             <Route  path="/reset" component={ResetPassword} />
             {/* <Route  path="/artist" component={() => <ArtistScreen {...PlaylistData}/> }/>
             <Route  path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/> */}
-            <Route exact path='/' component={MainScreen} />
+            <Route path='/' component={MainScreen} />
           </div>
       </Router>
   </ApolloProvider>, 

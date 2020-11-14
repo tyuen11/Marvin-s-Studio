@@ -225,23 +225,35 @@ app.post('/logout', (req, res) => {
     res.redirect('/login');
 })
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT);
 
-const YoutubeMusicApi = require('youtube-music-api') 
+const YoutubeMusicApi = require('youtube-music-api')    
 const api = new YoutubeMusicApi()
-var searchResult;
+var searchAlbum;
+var searchArtist;
 
-app.post('/sidebar', (request, response) => {
-    console.log('requst made!')
-    api.initalize()
-        .then(info => {
-            api.search(request.body.searchText, 'artist').then(result => {
-                searchResult = result;
-                console.log(result);
-            })
-            res.redirect('/search');
-        });
+app.post('/sidebar', (req, res) => {
+    console.log('requst made!')
+    api.initalize()
+        .then(info => {
+            api.search(req.body.searchText, 'artist').then(result => {
+                searchArtist = result;
+                //console.log(result);
+            })
+        });
+    api.initalize()
+        .then(info => {
+            api.search(req.body.searchText, 'album').then(result => {
+                searchAlbum = result;
+                //console.log(result);
+            })
+            console.log("LAIUFIGLAIDFUGLADISFUGDFLIUDFG");
+            res.redirect('/search');
+        });
 });
 
-app.get('/search', (req, res) => res.send(searchResult));
+app.get('/searchArtist', (req, res) => res.send(searchArtist));
+app.get('/searchAlbum', (req, res) => res.send(searchAlbum));
+
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT);

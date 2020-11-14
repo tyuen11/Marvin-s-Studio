@@ -34,6 +34,7 @@ const UPDATE_USER = gql`
                 songs {
                     albumID
                     artistID
+                    songID
                     genre
                     title
                 }
@@ -49,6 +50,7 @@ const UPDATE_USER = gql`
                 songs {
                     albumID
                     artistID
+                    songID
                     genre
                     title
                 }
@@ -65,6 +67,7 @@ const UPDATE_USER = gql`
                 songs {
                     albumID
                     artistID
+                    songID
                     genre
                     title
                 }
@@ -98,11 +101,26 @@ class CreatePlaylistModal extends Component {
         title: ""
     }
 
-    playlistNameChange = (e) => {
-        this.setState({title: e.target.value})
+    createPlaylist = (user) => {
+        let name = document.getElementById("newPlaylistName").value;
+        console.log(name);
+        let newOwnedPlaylists = user.ownedPlaylists;
+        let newPlaylist = {
+            genre: null,
+            numPlays:0,
+            numTracks: 0,
+            privacyType: 0,
+            songs: [],
+            title: name
+        }
+        user.ownedPlaylists.push(newPlaylist);
+        console.log(user);
     }
 
     render() {
+        if (this.state.owner == null)
+			return <div>Loading...</div>
+        let user = this.props.user;
         return (
             <Mutation mutation={UPDATE_USER} key={this.props.user._id} onCompleted={() => this.props.history.push('/')}>
                 {(updateUser, { loading, error }) => (
@@ -122,7 +140,9 @@ class CreatePlaylistModal extends Component {
                                         playlistPoints: this.state.playlistPoints,
                                         privacyType: this.state.privacyType,
                                         songs: this.state.songs,
-                                        title: this.state.title
+                                        title: this.state.title,
+                                        __typename: "Playlist",
+                                        _id: "5facbf98365a0b2d1d12c675"
                                     };
                                     let newOP = this.props.user.ownedPlaylists;
                                     newOP.forEach(pl => {delete pl['__typename']})

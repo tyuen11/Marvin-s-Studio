@@ -4,6 +4,7 @@ var songSchema = new mongoose.Schema({
     id: String,
     albumID: String,
     artistID: String,
+    songID: String,
     genre: String,
     title: String
 })

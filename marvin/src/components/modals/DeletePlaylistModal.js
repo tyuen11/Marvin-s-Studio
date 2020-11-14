@@ -89,7 +89,7 @@ const UPDATE_USER = gql`
 class DeletePlaylistModal extends Component {
     render() {
         return (
-            <Mutation mutation={UPDATE_USER} key={this.props._id} onCompleted={() => this.props.history.push('/')}>
+            <Mutation mutation={UPDATE_USER} key={this.props.id} onCompleted={() => this.props.history.push('/')}>
                 {(updateUser, { loading, error }) => (
                     <div className="container">
                         <Modal id="deletePlaylist" show={this.props.show} onHide={this.props.handleClose}>

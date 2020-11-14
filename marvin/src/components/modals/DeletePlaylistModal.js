@@ -100,7 +100,12 @@ class DeletePlaylistModal extends Component {
                                 <form onSubmit={e => {
                                     e.preventDefault();
                                     let newOP = this.props.user.ownedPlaylists;
-                                    newOP.forEach(pl => {delete pl['__typename']});
+                                    newOP.forEach(pl => {
+                                        delete pl['__typename']
+                                        pl.songs.forEach(song => {
+                                            delete song['__typename']
+                                        })
+                                    });
                                     newOP.splice(this.props.index, 1);
                                     console.log(newOP);
                                     updateUser({ variables: {

@@ -60,6 +60,10 @@ class AddSongModal extends Component {
                                 e.preventDefault();
                                 // Split the combined back to the two diff playlist types
                                 combined[this.state.index] = this.state.playlist;
+                                combined.forEach(pl => {
+                                    delete pl['__typename']
+                                    pl.songs.forEach(song => {delete song['__typename']})
+                                })
                                 ownedPlaylists = combined.splice(0, ownedPlaylists.length);
                                 collaborativePlaylists = combined;
                                 updatePlaylist({variables: {

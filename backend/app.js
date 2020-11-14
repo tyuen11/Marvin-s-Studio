@@ -227,9 +227,7 @@ app.post('/logout', (req, res) => {
 })
 
 
-var searchArtist;
-var searchAlbum;
-var temp;
+var searchArtist, searchAlbum, artist, album ;
 app.post('/sidebar', (req, res) => {
     console.log('requst made!')
     api.initalize()
@@ -250,10 +248,17 @@ app.post('/sidebar', (req, res) => {
     api.initalize()
         .then(info => {
             api.getAlbum("MPREb_wCWbCBi3xF4").then(result => {
-                temp = result;
+                album = result;
                 console.log(result);
             })
         });
+    api.initalize()
+        .then(info => {
+            api.getArtist("UCyD3XWRK9ko-izf2nBSFitw").then(result => {
+                artist = result;
+                console.log(result);
+            })
+    });
 });
 
 // app.post('/sidebar'), (req, res) => {
@@ -268,7 +273,8 @@ app.post('/sidebar', (req, res) => {
 app.get('/searchArtist', (req, res) => res.send(searchArtist));
 app.get('/searchAlbum', (req, res) => res.send(searchAlbum));
 
-app.get('/getAlbum', (req, res) => res.send(temp));
+app.get('/getAlbum', (req, res) => res.send(album));
+app.get('/getArtist', (req, res) => res.send(artist));
 
 
 const PORT = process.env.PORT || 5000;

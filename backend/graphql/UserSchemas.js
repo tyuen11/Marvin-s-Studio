@@ -270,6 +270,31 @@ var mutation = new GraphQLObjectType({
                     });
                 }
             },
+            updatePlaylist: {
+                type: userType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    collaborativePlaylists: {
+                        type: new GraphQLNonNull(GraphQLList(playlistInputType))
+                    },
+                    ownedPlaylists: {
+                        type: new GraphQLNonNull(GraphQLList(playlistInputType))
+                    }
+                },
+                resolve(root, params) {
+                    return UserModel.findByIdAndUpdate( params.id, { 
+                    ownedPlaylists: params.ownedPlaylists, collaborativePlaylists: params.collaborativePlaylists
+                    }, function(err) {
+                        if (err) {
+                            console.log(err);
+                            return next(err);
+                        }
+                    });
+                }
+            },
             removeUser: {
                 type: userType,
                 args: {

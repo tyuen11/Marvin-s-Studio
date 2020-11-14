@@ -4,11 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import './css/style.css'
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
-import { Link } from 'react-router-dom';
-
 
 import LoginScreen from './components/LoginScreen';
 import RegisterScreen from './components/RegisterScreen';
@@ -24,13 +22,14 @@ import PlaylistData from './PlaylistData.json'
 import SearchScreen from './components/search_screen/SearchScreen';
 
 
+
 const client = new ApolloClient({ uri: 'http://localhost:3000/graphql' });
 
 ReactDOM.render(
   <ApolloProvider client={client}>
       <Router>
           <div>
-          <Route  path="/login" component={LoginScreen} />
+            <Route  path="/login" component={LoginScreen} />
             <Route  path="/register" component={RegisterScreen} />
             <Route  path="/reqreset" component={RequestReset} />
             <Route  path="/reset" component={ResetPassword} />

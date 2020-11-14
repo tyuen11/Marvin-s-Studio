@@ -16,9 +16,11 @@ const session = require("express-session");
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
+
+const YoutubeMusicApi = require('youtube-music-api')
+const api = new YoutubeMusicApi()
 
 var userSchema = require('./graphql/UserSchemas');
 var playlistSchema = require('./graphql/PlaylistSchemas')
@@ -36,7 +38,6 @@ mongoose.connect(process.env.DB, { promiseLibrary: require('bluebird'), useNewUr
   .catch((err) => console.error(err));
 
 const app = express();
-
 
 app.use('/graphql', cors(), graphqlHTTP({
 schema: userSchema,
@@ -224,6 +225,51 @@ app.post('/logout', (req, res) => {
     req.logout();
     res.redirect('/login');
 })
+
+
+var searchArtist;
+var searchAlbum;
+var temp;
+app.post('/sidebar', (req, res) => {
+    console.log('requst made!')
+    api.initalize()
+        .then(info => {
+            api.search(req.body.searchText, 'song').then(result => {
+                searchArtist = result;
+                // console.log(result);
+            })
+        });
+    api.initalize()
+        .then(info => {
+            api.search(req.body.searchText, 'album').then(result => {
+                searchAlbum = result;
+                // console.log(result);
+            })
+            res.redirect('/search');
+        });
+    api.initalize()
+        .then(info => {
+            api.getAlbum("MPREb_wCWbCBi3xF4").then(result => {
+                temp = result;
+                console.log(result);
+            })
+        });
+});
+
+// app.post('/sidebar'), (req, res) => {
+//     api.initalize()
+//     .then(info => {
+//         api.getAlbum("OLAK5uy_kYxUi9rrFA8P2QynC0JzqI9azGOJhtveo").then(result => {
+//             searchAlbum = result;
+//             console.log(result);
+//         })
+//     });
+// }
+app.get('/searchArtist', (req, res) => res.send(searchArtist));
+app.get('/searchAlbum', (req, res) => res.send(searchAlbum));
+
+app.get('/getAlbum', (req, res) => res.send(temp));
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);

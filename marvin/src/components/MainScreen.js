@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PlaylistScreen from './playlist_screen/PlaylistScreen';
-import AlbumScreen from './AlbumScreen';
+import AlbumScreen from './album_screen/AlbumScreen';
 import { Switch, Route} from 'react-router';
 import Sidebar from './sidebar/Sidebar.js';
 import PlaylistData from '../PlaylistData.json'
@@ -33,6 +33,7 @@ const GET_USER = gql`
                     artistID
                     genre
                     title
+                    songID
                 }
                 title
             } 
@@ -47,6 +48,7 @@ const GET_USER = gql`
                 songs {
                     albumID
                     artistID
+                    songID
                     genre
                     title
                 }
@@ -63,6 +65,7 @@ const GET_USER = gql`
                 songs {
                     albumID
                     artistID
+                    songID
                     genre
                     title
                 }
@@ -126,7 +129,7 @@ class MainScreen extends Component {
                                         <Route exact path="/">
                                             <ArtistScreen {...PlaylistData}/>
                                         </Route>
-                                        <Route path="/user/search">
+                                        <Route path="/search">
                                             <SearchScreen />
                                         </Route>
                                         <Route path="/profile">

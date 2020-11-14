@@ -94,7 +94,7 @@ class PlaylistScreen extends React.Component {
     }
 
     render() {
-        console.log(this.state);
+        let user = this.props.user;
         return (
             <div id="playlist" className="playpage">
                 <div className="row border-light" style={{ border: "solid", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px" }}>

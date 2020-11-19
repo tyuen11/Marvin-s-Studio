@@ -33,10 +33,12 @@ class Sidebar extends React.Component {
                         <input name='searchText' className='border border-primary px-1 py-1 my-1 rounded w-75' type='text' placeholder='Search'/>
                     </form>
                     <div className='my-1 pt-1 text-center w-100 display-block' style={{background:'#3d8af7', height: 115}}>
-                        <Link to='/profile'>
+                        <Link to='/app/home'>
                             <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Home</button>
                         </Link>
-                        <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Your Library</button>
+                        <Link to='/app/profile'>
+                            <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Your Library</button>
+                        </Link>
                         <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'
                             onClick={this.handleShow}>Create Playlist</button>
                         </div>

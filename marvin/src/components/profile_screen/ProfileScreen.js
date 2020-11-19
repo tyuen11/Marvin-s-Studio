@@ -1,24 +1,53 @@
 import React from 'react'
-import Player from '../Player';
-import Sidebar from '../sidebar/Sidebar';
 import ProfilePlaylistLinks from './ProfilePlaylistLinks';
 
 class ProfileScreen extends React.Component {
-    constructor(props) {
-        super(props);
-        console.log("ProfileScreen");
+    state = {
+        playlists: this.props.user.ownedPlaylists,
+        currView: 0
+    }
+
+    viewMyPlaylists = () => {
+        this.setState({
+            playlists: this.props.user.ownedPlaylists,
+            currView: 0
+        })
+    }
+
+    viewSharedPlaylists = () => {
+        this.setState({
+            playlists: this.props.user.collaborativePlaylists,
+            currView: 1
+        })
+    }
+
+    viewFollowedPlaylists = () => {
+        this.setState({
+            playlists: this.props.user.followedPlaylists,
+            currView: 2
+        })
     }
     
     render () {
+        let myPLStyle = (this.state.currView == 0) ? "underline #2C4871" : "underline transparent"
+        let sharedStyle = (this.state.currView == 1) ? "underline #2C4871" : "underline transparent"
+        let followedStyle = (this.state.currView == 2) ? "underline #2C4871" : "underline transparent"
         return (
             <div className='d-flex h-100 p-0' style={{width: 'calc(100%-200px)'}}>
                 <div className='display-inline pl-5 pt-4 w-100'>
                     <div className='display-4 text-white border border-white border-left-0 border-right-0 border-top-0 mb-3'>
                         <img className='rounded-circle mr-3 mb-4' src={this.props.profile.image} height='80' width='80'></img>
-                        {this.props.profile.name}
-                        <div className='h4'>My Playlists</div>
+                        {this.props.user.username}
+                        <div className='row'>
+                            <div className='h4 ml-3 mr-5' style={{textDecoration: myPLStyle, cursor: "pointer"}} 
+                                onClick={this.viewMyPlaylists}>My Playlists</div>
+                            <div className='h4 mr-5' style={{textDecoration: sharedStyle, cursor: "pointer"}} 
+                                onClick={this.viewSharedPlaylists}>Shared With Me</div>
+                            <div className='h4' style={{textDecoration: followedStyle, cursor: "pointer"}} 
+                                onClick={this.viewFollowedPlaylists}>Followed Playlists</div>
+                        </div>
                     </div>
-                    <ProfilePlaylistLinks {...this.props.profile}/>
+                    <ProfilePlaylistLinks playlistCallback={this.props.playlistCallback} playlists={this.state.playlists}/>
                 </div>
             </div>
         )

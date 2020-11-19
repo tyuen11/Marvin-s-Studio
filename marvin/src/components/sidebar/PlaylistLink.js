@@ -10,7 +10,7 @@ class PlaylistLink extends React.Component {
     }
     render() {
         return (
-            <Link to='/user/playlist' {...this.props}>
+            <Link to='/app/playlist' {...this.props}>
                 <div className='text-white text-left pl-3 mb-1' style={{cursor: 'pointer'}}>
                     {this.props.name}
                 </div>

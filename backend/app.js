@@ -91,8 +91,8 @@ passport.use(new GoogleStrategy({
         // Check is user is existing user of Marvin's Studio
         UserModel.findOne({email: email}).then((currentUser) => {
             console.log(currentUser);
-            uid = {user: currentUser._id};
             if (currentUser) {
+                uid = {user: currentUser._id}
                 console.log(currentUser.email);
                 return done(null, currentUser)
             } 
@@ -110,6 +110,7 @@ passport.use(new GoogleStrategy({
                         mostPlayed: [],
                         votedPlaylists: []
                     }).save().then((newUser) => {
+                        uid = {user: newUser._id}
                         return done(null, newUser)
                     });
                 });
@@ -196,16 +197,16 @@ const isLoggedIn = (req, res, next) => {
 
 // Routes for using Google OAuth
 app.get('/failed', (req, res) => res.send('You failed to login.'));
-app.get('/good', isLoggedIn, (req, res) => res.redirect('/'));
+app.get('/good', isLoggedIn, (req, res) => res.redirect('/app'));
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/failed'} ) ,
-    (req, res) => res.redirect('/')
+    (req, res) => res.redirect('/app')
 );
 
 //Routes for using Local Strategy
 app.post('/login',
   passport.authenticate('local', { 
-      successRedirect: '/', 
+      successRedirect: '/app', 
       failureRedirect: '/login', 
       failureFlash: true 
     })
@@ -213,7 +214,7 @@ app.post('/login',
 
 app.post('/register',
     passport.authenticate('local-register', {
-        successRedirect: '/', 
+        successRedirect: '/app', 
         failureRedirect: '/register', 
         failureFlash: true 
     })
@@ -243,7 +244,6 @@ app.post('/sidebar', (req, res) => {
                 searchAlbum = result;
                 // console.log(result);
             })
-            res.redirect('/search');
         });
     api.initalize()
         .then(info => {
@@ -258,6 +258,7 @@ app.post('/sidebar', (req, res) => {
                 artist = result;
                 console.log(result);
             })
+            res.redirect('/app/album');
     });
 });
 

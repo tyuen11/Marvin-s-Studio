@@ -166,7 +166,7 @@ class PlaylistScreen extends React.Component {
                             <label id="songName" className="col-2 text-nowrap overflow-hidden overflow-ellipsis">{song.title}</label>
                             <label id="artistName" className="col-2">{song.artist}</label>
                             <label id="albumName" className="col-2 text-nowrap overflow-hidden overflow-ellipses" style={{textOverflow:'ellipsis'}}>
-                                <Link to='/album'>
+                                <Link to='/app/album'>
                                     {song.album}
                                 </Link>
                             </label>

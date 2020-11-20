@@ -9,33 +9,33 @@ class AlbumScreen extends React.Component {
 		flag: 0,
     }
 
-    componentDidMount = () => {
-        fetch('http://localhost:5000/getAlbum')
-          .then(res => res.json())
-          .then(res => this.setState({album: res}))
-          .catch(err => {
-              console.log(err);
-          });  
-        console.log(this.state.user);
-        
+	componentDidMount = () => {
+		fetch('http://localhost:5000/getAlbum')
+			.then(res => res.json())
+			.then(res => this.setState({ album: res }))
+			.catch(err => {
+				console.log(err);
+			});
+		console.log(this.state.user);
+
 	}
 	
 	handleShow = (song, flag) => {
 		console.log(song);
-        this.setState({ 
+		this.setState({
 			show: true,
 			song: song,
 			flag: flag
 		});
 		console.log("done");
 		console.log(this.state);
-    }
-
-    handleClose = () => {
-        this.setState({ show: false });
-        console.log("dosne");
 	}
-	
+
+	handleClose = () => {
+		this.setState({ show: false });
+		console.log("dosne");
+	}
+
 	render() {
 		if (this.state.album == undefined)
 			return <div>Loading...</div>
@@ -44,48 +44,47 @@ class AlbumScreen extends React.Component {
 		console.log(songs);
 
 		console.log(album);
-			return (
-				<div id="album" className="album">
-					<div className="row border-light" style={{ border: "solid", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px" }}>
-						<div id="top" className="col ml-3">
-							<div className="row">
-								<div id="AlbumInfoAndActions" className="col-8 pb-4">
-									<div id="AlbumName" className="row">
-										<h1 className="text-light ml-4 mt-5">{album.title}</h1>
-									</div>
-									<div id="Artist" className="row">
-										<h4 className="text-light ml-4"> Album by {album.artist[0].name} </h4>
-									</div>
-
-									<div id="actions" className=" ml-3 mt-5">
-										<a href="playBtn">
-											<input type="image" style={{ width: "8%" }}
-												src="https://i.imgur.com/N7tVoo7.png">
-											</input>
-										</a>
-										<a href="shuffleBtn" className="ml-3">
-											<input type="image" style={{ width: "10%"}}
-												src="https://i.imgur.com/T8JZhAk.png">
-											</input>
-										</a>
-										<a id="queueBtn" className="ml-4">
-											<input type="image" style={{ width: "12%" }}  onClick={() => this.handleShow(null, 1)}
-												src="https://i.imgur.com/sNVHPL0.png">
-											</input>
-										</a>
-										
-									</div>
+		return (
+			<div id="album" className="album">
+				<div className="row border-light" style={{ border: "solid", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px" }}>
+					<div id="top" className="col ml-3">
+						<div className="row">
+							<div id="AlbumInfoAndActions" className="col-8 pb-4">
+								<div id="AlbumName" className="row">
+									<h1 className="text-light ml-4 mt-5">{album.title}</h1>
+								</div>
+								<div id="Artist" className="row">
+									<h4 className="text-light ml-4"> Album by {album.artist[0].name} </h4>
 								</div>
 
-								<div id="img" className="col-4 mt-4" >
-										<div className="row mt-4 mb-2 text-center">
-											<a href="albumPic">
-												<input type="image" 
-													src={album.thumbnails[2].url} alt="https://dalelyles.com/musicmp3s/no_cover.jpg">
-												</input>
-											</a>
-										</div>
-									</div>
+								<div id="actions" className=" ml-3 mt-5">
+									<a href="playBtn">
+										<input type="image" style={{ width: "8%" }}
+											src="https://i.imgur.com/N7tVoo7.png">
+										</input>
+									</a>
+									<a href="shuffleBtn" className="ml-3">
+										<input type="image" style={{ width: "10%" }}
+											src="https://i.imgur.com/T8JZhAk.png">
+										</input>
+									</a>
+									<a id="queueBtn" className="ml-4">
+										<input type="image" style={{ width: "12%" }} onClick={() => this.handleShow(null, 1)}
+											src="https://i.imgur.com/sNVHPL0.png">
+										</input>
+									</a>
+
+								</div>
+							</div>
+
+							<div id="img" className="col-4 mt-4" >
+								<div className="row mt-4 mb-2 text-center">
+									<a href="albumPic">
+										<input type="image"
+											src={album.thumbnails[2].url} alt="https://dalelyles.com/musicmp3s/no_cover.jpg">
+										</input>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -105,7 +104,8 @@ class AlbumScreen extends React.Component {
 						handleClose={this.handleClose} handleShow={this.handleShow} history={this.props.history} 
 						flag={this.state.flag} />
 				</div>
-			)
+			</div>
+		)
 	}
 }
 

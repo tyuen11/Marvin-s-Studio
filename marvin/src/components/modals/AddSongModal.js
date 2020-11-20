@@ -32,6 +32,8 @@ class AddSongModal extends Component {
                 title: song.name,
                 artistID: artistID,
                 albumID: null, // Prop the album id when going to that page from search screen
+                artistName: this.props.album.artist[0].name,
+                albumName: this.props.album.title,
                 genre: null
             }
             newPlaylist.songs.push(songToAdd);
@@ -44,6 +46,8 @@ class AddSongModal extends Component {
                     title: song.name,
                     artistID: artistID,
                     albumID: null,
+                    artistName: this.props.album.artist[0].name,
+                    albumName: this.props.album.title,
                     genre: null
                 }
                 newPlaylist.songs.push(songToAdd);

@@ -29,6 +29,12 @@ var songType = new GraphQLObjectType({
             genre: {
                 type: GraphQLString
             },
+            artistName: {
+                type: GraphQLString
+            },
+            albumName: {
+                type: GraphQLString
+            },
             title: {
                 type: GraphQLString
             }
@@ -44,7 +50,9 @@ var songInputType = new GraphQLInputObjectType({
             artistID: { type: GraphQLString },
             songID: { type: GraphQLString },
             genre: { type: GraphQLString },
-            title: { type: GraphQLString } 
+            title: { type: GraphQLString },
+            albumName: { type: GraphQLString },
+            artistName: { type: GraphQLString }
         }
     }
 })

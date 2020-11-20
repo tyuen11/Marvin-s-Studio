@@ -6,8 +6,8 @@ class AlbumScreen extends React.Component {
 	state = {
 		show: false,
 		song: null,
-		flag: 0,
-    }
+		flag: 0
+	}
 
 	componentDidMount = () => {
 		fetch('http://localhost:5000/getAlbum')
@@ -56,7 +56,6 @@ class AlbumScreen extends React.Component {
 								<div id="Artist" className="row">
 									<h4 className="text-light ml-4"> Album by {album.artist[0].name} </h4>
 								</div>
-
 								<div id="actions" className=" ml-3 mt-5">
 									<a href="playBtn">
 										<input type="image" style={{ width: "8%" }}
@@ -64,19 +63,18 @@ class AlbumScreen extends React.Component {
 										</input>
 									</a>
 									<a href="shuffleBtn" className="ml-3">
-										<input type="image" style={{ width: "10%" }}
+										<input type="image" style={{ width: "10%"}}
 											src="https://i.imgur.com/T8JZhAk.png">
 										</input>
 									</a>
 									<a id="queueBtn" className="ml-4">
-										<input type="image" style={{ width: "12%" }} onClick={() => this.handleShow(null, 1)}
+										<input type="image" style={{ width: "12%" }}  onClick={() => this.handleShow(null, 1)}
 											src="https://i.imgur.com/sNVHPL0.png">
 										</input>
 									</a>
-
+									
 								</div>
 							</div>
-
 							<div id="img" className="col-4 mt-4" >
 								<div className="row mt-4 mb-2 text-center">
 									<a href="albumPic">
@@ -88,22 +86,22 @@ class AlbumScreen extends React.Component {
 							</div>
 						</div>
 					</div>
-					<div className="row ml-5 mt-3 " >
-						<div className="col-6"> <h3 style={{ color: "white" }}>Title</h3> </div>
-						<div className="col-4"> <h3 style={{ color: "white" }}>Runtime</h3> </div>
-						<div className="col-4"></div>
-					</div>
-					<div>
-						<div className="divider song-divider" />
-						{songs.map((song, index) => (
-								<AlbumSong key={index} song={song} handleShow={() => this.handleShow(song, 0)}/>
-						))}
-
-					</div>
-					<AddSongModal user={this.props.user} show={this.state.show} song={this.state.song} album={album}
-						handleClose={this.handleClose} handleShow={this.handleShow} history={this.props.history} 
-						flag={this.state.flag} />
 				</div>
+				<div className="row ml-5 mt-3 " >
+					<div className="col-6"> <h3 style={{ color: "white" }}>Title</h3> </div>
+					<div className="col-4"> <h3 style={{ color: "white" }}>Runtime</h3> </div>
+					<div className="col-4"></div>
+				</div>
+				<div>
+					<div className="divider song-divider" />
+					{songs.map((song, index) => (
+							<AlbumSong key={index} song={song} handleShow={() => this.handleShow(song, 0)}/>
+					))}
+
+				</div>
+				<AddSongModal user={this.props.user} show={this.state.show} song={this.state.song} album={album}
+					handleClose={this.handleClose} handleShow={this.handleShow} history={this.props.history} 
+					flag={this.state.flag} />
 			</div>
 		)
 	}

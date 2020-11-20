@@ -35,6 +35,8 @@ const GET_USER = gql`
                     genre
                     title
                     songID
+                    albumName
+                    artistName
                 }
                 title
             } 
@@ -52,6 +54,8 @@ const GET_USER = gql`
                     songID
                     genre
                     title
+                    albumName
+                    artistName
                 }
                 title
             }
@@ -69,6 +73,8 @@ const GET_USER = gql`
                     songID
                     genre
                     title
+                    albumName
+                    artistName
                 }
                 title
             }

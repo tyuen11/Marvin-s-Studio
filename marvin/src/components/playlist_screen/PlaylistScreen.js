@@ -164,10 +164,14 @@ class PlaylistScreen extends React.Component {
                     <div>
                         <div className="row text-light ml-3 ">
                             <label id="songName" className="col-2 text-nowrap overflow-hidden overflow-ellipsis">{song.title}</label>
-                            <label id="artistName" className="col-2">{song.artist}</label>
+                            <label id="artistName" className="col-2">
+                                <Link className='text-white' to={`/app/artist/${song.artistID}`}>
+                                    {song.artistName}
+                                </Link>
+                            </label>
                             <label id="albumName" className="col-2 text-nowrap overflow-hidden overflow-ellipses" style={{textOverflow:'ellipsis'}}>
-                                <Link to='/app/album'>
-                                    {song.album}
+                                <Link className='text-white' to='/app/album/'>
+                                    {song.albumName}
                                 </Link>
                             </label>
                             <label id="date" className="col-3">01-10-1010</label>

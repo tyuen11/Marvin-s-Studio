@@ -37,9 +37,9 @@ class ArtistScreen extends React.Component {
                         {artist.name}
                         <div className='row'>
                             <div className='h4 ml-3 mr-5' onClick={() => this.changeCurrView(true)}
-                                style={{textDecoration: albStyle}}>Albums</div>
+                                style={{textDecoration: albStyle, cursor: "pointer"}}>Albums</div>
                             <div className='h4' onClick={() => this.changeCurrView(false)}
-                                style={{textDecoration: singStyle}}>Singles</div>
+                                style={{textDecoration: singStyle, cursor: "pointer"}}>Singles</div>
                         </div>
                         
                     </div>

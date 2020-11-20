@@ -23,11 +23,11 @@ class Player extends React.Component {
                     style={{height: 80, bottom: 0, left: 0, zIndex: 99, background: '#232323'}}>
                 <img className='mr-3' src={logo} style={{height: 60, width: 60}} alt=''></img>
                 <button className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
-                    style={{fontSize: 40, cursor: buttonCursor}} disabled={playerDisabled}>P</button>
+                    style={{fontSize: 40, cursor: buttonCursor}} disabled={playerDisabled}>{'\u23ee'} </button>
                 <button className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
-                    style={{fontSize: 40, cursor: buttonCursor}} disabled = {playerDisabled}>Pl</button>
+                    style={{fontSize: 40, cursor: buttonCursor}} disabled = {playerDisabled}>{this.state.playing ? '\u23f8' : '\u25b6'} </button>
                 <button className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
-                    style={{fontSize: 40, cursor: buttonCursor}} disabled={playerDisabled}>N</button>
+                    style={{fontSize: 40, cursor: buttonCursor}} disabled={playerDisabled}>{'\u23ed'} </button>
                 <input type='range' className='w-50 mx-2' min='0'></input>
                 <div className='text-white pt-4 mx-3' style={{fontSize: 18}}>{mins}:{secs} </div>
                 <button className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'

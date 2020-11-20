@@ -11,6 +11,7 @@ import ProfileScreen from './profile_screen/ProfileScreen';
 import SearchScreen from './search_screen/SearchScreen';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag'
+import HomeScreen from './HomeScreen';
 
 const GET_USER = gql`
     query user($userId: String) {
@@ -126,14 +127,17 @@ class MainScreen extends Component {
                                         <Route   path="/app/album">
                                             <AlbumScreen user={user} history={this.props.history}/>
                                         </Route>
-                                        <Route  path="/app">
-                                            <ArtistScreen user={user} history={this.props.history} {...PlaylistData}/>
+                                        <Route  path="/app/artist">
+                                            <ArtistScreen user={user} history={this.props.history}/>
                                         </Route>
                                         <Route path="/app/search">
                                             <SearchScreen />
                                         </Route>
                                         <Route path="/app/profile">
-                                            <ProfileScreen {...PlaylistData}/>
+                                            <ProfileScreen user={user} playlistCallback={this.goToPlaylist} history={this.props.history} {...PlaylistData}/>
+                                        </Route>
+                                        <Route path="/app/home">
+                                            <HomeScreen/>
                                         </Route>
                                     </Switch>
                                 </div>

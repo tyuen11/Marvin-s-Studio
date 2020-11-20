@@ -101,22 +101,6 @@ class CreatePlaylistModal extends Component {
         title: ""
     }
 
-    createPlaylist = (user) => {
-        let name = document.getElementById("newPlaylistName").value;
-        console.log(name);
-        let newOwnedPlaylists = user.ownedPlaylists;
-        let newPlaylist = {
-            genre: null,
-            numPlays:0,
-            numTracks: 0,
-            privacyType: 0,
-            songs: [],
-            title: name
-        }
-        user.ownedPlaylists.push(newPlaylist);
-        console.log(user);
-    }
-
     playlistNameChange = (e) => {
         this.setState({ title: e.target.value })
     }
@@ -126,7 +110,7 @@ class CreatePlaylistModal extends Component {
 			return <div>Loading...</div>
         let user = this.props.user;
         return (
-            <Mutation mutation={UPDATE_USER} key={this.props.user._id} onCompleted={() => this.props.history.push('/app')}>
+            <Mutation mutation={UPDATE_USER} key={this.props.user._id} onCompleted={() => this.props.history.push('/app/home')}>
                 {(updateUser, { loading, error }) => (
                     <div className="container">
                         <Modal id="showCreatePlaylist" show={this.props.show} onHide={this.props.handleClose}>

@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const { graphqlHTTP } = require('express-graphql');
 const fetch = require("node-fetch");
+const bodyParser = require("body-parser");
 
-const mergeSchemas = require('graphql-tools').mergeSchemas
 const UserModel = require('./models/User');
 
 const passport = require("passport");
@@ -23,8 +23,9 @@ const YoutubeMusicApi = require('youtube-music-api')
 const api = new YoutubeMusicApi()
 
 var userSchema = require('./graphql/UserSchemas');
-var playlistSchema = require('./graphql/PlaylistSchemas')
-var communitySchema = require('./graphql/CommunitySchemas')
+var playlistSchema = require('./graphql/PlaylistSchemas');
+var communitySchema = require('./graphql/CommunitySchemas');
+var communityUserSchema = require('./graphql/CommunityPlaylistSchemas');
 //var schema = mergeSchemas({ 
   //  schemas: [ userSchema, playlistSchema ]
 //})
@@ -40,15 +41,18 @@ mongoose.connect(process.env.DB, { promiseLibrary: require('bluebird'), useNewUr
 const app = express();
 
 app.use('/graphql', cors(), graphqlHTTP({
-schema: userSchema,
-rootValue: global,
-graphiql: true,
+    schema: userSchema,
+    rootValue: global,
+    graphiql: true,
 }));
 
 
 app.use(cors());
 app.use(express.urlencoded({extended: true})); // Used to parse info from login/register
 app.use(express.json()); // Used to parse info from login/register
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(flash());
 app.use(session(
@@ -63,7 +67,6 @@ app.use(passport.session());
 
 // backend to frontend
 passport.serializeUser(function(user, done) {
-    console.log(user);
     done(null, user._id);
 });
 
@@ -86,7 +89,6 @@ passport.use(new GoogleStrategy({
     function(accessToken, refreshToken, profile, done) {
         var email = profile._json.email;
         var username = profile._json.given_name;
-        console.log(username);
         
         // Check is user is existing user of Marvin's Studio
         UserModel.findOne({email: email}).then((currentUser) => {
@@ -173,7 +175,6 @@ passport.use('local-register', new LocalStrategy({
                             mostPlayed: [],
                             votedPlaylists: []
                         }).save().then((newUser) => {
-                            console.log(newUser);
                             uid = {user: newUser._id}
                             return done(null, newUser);
                         });
@@ -224,55 +225,64 @@ app.get('/ud', (req, res) => res.send(uid));
 
 app.post('/logout', (req, res) => {
     req.logout();
+    uid = {};
     res.redirect('/login');
 })
 
 
-var searchArtist, searchAlbum, artist, album ;
+var search = {}
+var artist = {}, album;
 app.post('/sidebar', (req, res) => {
-    console.log('requst made!')
+    search["query"] = req.body.searchText;
+    console.log('requst made!');
+    console.log(req.body)
     api.initalize()
         .then(info => {
-            api.search(req.body.searchText, 'song').then(result => {
-                searchArtist = result;
+            api.search(req.body.searchText, 'artist').then(result => {
+                search["artists"] = result;
                 // console.log(result);
             })
         });
     api.initalize()
         .then(info => {
             api.search(req.body.searchText, 'album').then(result => {
-                searchAlbum = result;
+                search["albums"] = result;
                 // console.log(result);
+    
             })
         });
-    api.initalize()
-        .then(info => {
-            api.getAlbum("MPREb_wCWbCBi3xF4").then(result => {
-                album = result;
-                console.log(result);
-            })
-        });
-    api.initalize()
-        .then(info => {
-            api.getArtist("UCyD3XWRK9ko-izf2nBSFitw").then(result => {
-                artist = result;
-                console.log(result);
-            })
-            res.redirect('/app/album');
-    });
+
+        res.redirect('/app/search');
 });
 
-// app.post('/sidebar'), (req, res) => {
-//     api.initalize()
-//     .then(info => {
-//         api.getAlbum("OLAK5uy_kYxUi9rrFA8P2QynC0JzqI9azGOJhtveo").then(result => {
-//             searchAlbum = result;
-//             console.log(result);
-//         })
-//     });
-// }
-app.get('/searchArtist', (req, res) => res.send(searchArtist));
-app.get('/searchAlbum', (req, res) => res.send(searchAlbum));
+app.post('/artreq', (req, res) => {
+    console.log(req.body.artist);
+    var args = req.body.artist.split(" ");
+    api.initalize()
+        .then(info => {
+            api.getArtist(args[0]).then(result => {
+                artist["artist"] = result;
+                artist["pp"] = args[1];
+            })
+            res.redirect(`/app/artist/${args[0]}`);
+        });
+});
+
+
+app.post('/albreq', (req, res) => {
+    console.log(req.body.album);
+    console.log("BACKEND: AT ALREQ")
+    api.initalize()
+        .then(info => {
+            api.getAlbum(req.body.album).then(result => {
+                album = result;
+            })
+            res.redirect(`/app/album/${req.body.album}`);
+        });
+});
+app.get('/searchResult', (req, res) => res.send(search));
+
+app.get('/search', (req, res) => res.send(search));
 
 app.get('/getAlbum', (req, res) => res.send(album));
 app.get('/getArtist', (req, res) => res.send(artist));

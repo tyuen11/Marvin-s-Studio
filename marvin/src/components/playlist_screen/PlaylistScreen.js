@@ -187,7 +187,7 @@ class PlaylistScreen extends React.Component {
                     </div>
                 ))}
                 <DeletePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}
-                    user={this.props.user} history={this.props.history} index={0}/>
+                    user={this.props.user} history={this.props.history} index={this.props.index}/>
             </div>
         )
     }

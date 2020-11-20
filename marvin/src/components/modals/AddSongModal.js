@@ -22,23 +22,39 @@ class AddSongModal extends Component {
 
     }
 
-    addSong = (playlist, index) => {
+    addSong = (playlist, index, flag) => {
         let newPlaylist = playlist;
-        let song = this.props.song;
         let artistID = this.props.album.artist[0].browseId;
-        let songToAdd = {
-            songID: song.videoId,
-            title: song.name,
-            artistID: artistID,
-            albumID: null, // Prop the album id when going to that page from search screen
-            genre: null
+        if (!flag) {       
+            let song = this.props.song;
+            let songToAdd = {
+                songID: song.videoId,
+                title: song.name,
+                artistID: artistID,
+                albumID: null, // Prop the album id when going to that page from search screen
+                genre: null
+            }
+            newPlaylist.songs.push(songToAdd);
         }
-        newPlaylist.songs.push(songToAdd);
+        else {
+            let album = this.props.album;
+            album.tracks.forEach(song => {
+                let songToAdd= {
+                    songID: song.videoId,
+                    title: song.name,
+                    artistID: artistID,
+                    albumID: null,
+                    genre: null
+                }
+                newPlaylist.songs.push(songToAdd);
+            })
+        }
         this.setState({
             playlist: newPlaylist,
             index: index
         })
         console.log(this.state);
+        this.props.handleClose();
     }
     render() {
         let ownedPlaylists = this.props.user.ownedPlaylists;
@@ -74,7 +90,7 @@ class AddSongModal extends Component {
                             }}>
                                 <div className="form-group col-8 text-center mx-auto">
                                     {combined.map((playlist, index) => (
-                                        <button className="btn default"type="submit" onClick={this.addSong.bind(this, playlist, index)}>{playlist.title}</button>
+                                        <button className="btn default"type="submit" onClick={this.addSong.bind(this, playlist, index, this.props.flag)}>{playlist.title}</button>
                                     ))}
                                 </div>
                             </form>

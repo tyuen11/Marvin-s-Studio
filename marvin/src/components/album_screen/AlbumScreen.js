@@ -5,7 +5,8 @@ import AddSongModal from '../modals/AddSongModal'
 class AlbumScreen extends React.Component {
 	state = {
 		show: false,
-		song: null
+		song: null,
+		flag: 0,
     }
 
     componentDidMount = () => {
@@ -19,11 +20,12 @@ class AlbumScreen extends React.Component {
         
 	}
 	
-	handleShow = (song) => {
+	handleShow = (song, flag) => {
 		console.log(song);
         this.setState({ 
 			show: true,
-			song: song
+			song: song,
+			flag: flag
 		});
 		console.log("done");
 		console.log(this.state);
@@ -67,7 +69,7 @@ class AlbumScreen extends React.Component {
 											</input>
 										</a>
 										<a id="queueBtn" className="ml-4">
-											<input type="image" style={{ width: "12%" }}  onClick={this.handleShow}
+											<input type="image" style={{ width: "12%" }}  onClick={() => this.handleShow(null, 1)}
 												src="https://i.imgur.com/sNVHPL0.png">
 											</input>
 										</a>
@@ -95,12 +97,13 @@ class AlbumScreen extends React.Component {
 					<div>
 						<div className="divider song-divider" />
 						{songs.map((song, index) => (
-								<AlbumSong key={index} song={song} handleShow={this.handleShow}/>
+								<AlbumSong key={index} song={song} handleShow={() => this.handleShow(song, 0)}/>
 						))}
 
 					</div>
 					<AddSongModal user={this.props.user} show={this.state.show} song={this.state.song} album={album}
-						handleClose={this.handleClose} handleShow={this.handleShow} history={this.props.history} />
+						handleClose={this.handleClose} handleShow={this.handleShow} history={this.props.history} 
+						flag={this.state.flag} />
 				</div>
 			)
 	}

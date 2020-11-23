@@ -35,6 +35,8 @@ const GET_USER = gql`
                     genre
                     title
                     songID
+                    albumName
+                    artistName
                 }
                 title
             } 
@@ -52,6 +54,8 @@ const GET_USER = gql`
                     songID
                     genre
                     title
+                    albumName
+                    artistName
                 }
                 title
             }
@@ -69,6 +73,8 @@ const GET_USER = gql`
                     songID
                     genre
                     title
+                    albumName
+                    artistName
                 }
                 title
             }
@@ -102,8 +108,8 @@ class MainScreen extends Component {
         console.log(this.state.user);
     }
 
-    goToPlaylist = (playlist) => {
-        this.setState({ currPlaylist: playlist })
+    goToPlaylist = (playlist, index) => {
+        this.setState({ currPlaylist: playlist, playlistIndex: index })
     }
 
     render() {
@@ -117,12 +123,12 @@ class MainScreen extends Component {
                     console.log(user);
                     return (
                         <div>
-                            <div className="row">
+                            <div className="row flex-nowrap mr-0">
                                 <Sidebar user={user} history={this.props.history} playlistCallback={this.goToPlaylist}/>
-                                <div className='col'>
+                                <div className='col overflow-auto' style={{paddingBottom: 100}}>
                                     <Switch>
                                         <Route path="/app/playlist">
-                                            <PlaylistScreen playlist={this.state.currPlaylist} user={user} history={this.props.history}/>                        
+                                            <PlaylistScreen playlist={this.state.currPlaylist} index={this.state.playlistIndex} user={user} history={this.props.history}/>                        
                                         </Route>
                                         <Route   path="/app/album">
                                             <AlbumScreen user={user} history={this.props.history}/>
@@ -142,7 +148,7 @@ class MainScreen extends Component {
                                     </Switch>
                                 </div>
                             </div>
-                            <div className="row">
+                            <div className="row fixed-bottom">
                                 <Player/>
                             </div>
                         </div>

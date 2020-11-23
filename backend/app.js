@@ -25,7 +25,7 @@ const api = new YoutubeMusicApi()
 var userSchema = require('./graphql/UserSchemas');
 var playlistSchema = require('./graphql/PlaylistSchemas');
 var communitySchema = require('./graphql/CommunitySchemas');
-var communityUserSchema = require('./graphql/CommunityPlaylistSchemas');
+//var communityUserSchema = require('./graphql/CommunityPlaylistSchemas');
 //var schema = mergeSchemas({ 
   //  schemas: [ userSchema, playlistSchema ]
 //})

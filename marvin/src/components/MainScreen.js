@@ -123,7 +123,7 @@ class MainScreen extends Component {
                     console.log(user);
                     return (
                         <div>
-                            <div className="row">
+                            <div className="row flex-nowrap mr-0">
                                 <Sidebar user={user} history={this.props.history} playlistCallback={this.goToPlaylist}/>
                                 <div className='col overflow-auto' style={{paddingBottom: 100}}>
                                     <Switch>

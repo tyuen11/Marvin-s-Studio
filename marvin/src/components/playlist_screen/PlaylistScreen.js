@@ -1,9 +1,15 @@
 import React from 'react';
-import PlaylistSongs from './PlaylistSongs.js';
 import DeletePlaylistModal from '../modals/DeletePlaylistModal.js';
 import gql from 'graphql-tag';
-import { Query } from "react-apollo";
 import { Link } from 'react-router-dom';
+import { Dropdown, DropdownButton } from 'react-bootstrap'
+import playButton from '../../icons/play-button.png'
+import shuffleButton from '../../icons/shuffle.png'
+import deleteButton from '../../icons/delete.png'
+import moreButton from '../../icons/more.png'
+import likeButton from '../../icons/like.png'
+import dislikeButton from '../../icons/dislike.png'
+import addToQueueButton from '../../icons/playlist.png'
 
 const GET_USER = gql`
     query user($userId: String) {
@@ -108,62 +114,63 @@ class PlaylistScreen extends React.Component {
                                     <h4 className="text-light ml-4"> Playlist by {this.props.playlist.ownerName} </h4>
                                 </div>
 
-                                <div id="actions" className=" ml-3" style={{marginTop:60}}>
-                                    <a href="playBtn">
-                                        <input type="image" style={{ width: "6%" }}
-                                            src="https://i.imgur.com/N7tVoo7.png">
-                                        </input>
-                                    </a>
-                                    <a href="shuffleBtn" className="ml-3">
-                                        <input type="image" style={{ width: "11%"}}
-                                            src="https://i.imgur.com/T8JZhAk.png">
-                                        </input>
-                                    </a>
-                                    <a id="trash" className="ml-4">
-                                        <input type="image" style={{ width: "10%" }}  onClick={this.handleShow}
-                                            src="https://i.imgur.com/jpujrfk.png">
-                                        </input>
-                                    </a>
-                                    <a id="moreActions" className="ml-4">
-                                        <input type="image" style={{ width: "10%" }}
-                                            src="https://i.imgur.com/6mXgQgP.png">
-                                        </input>
-                                    </a>
+                                <div id="actions" className="row ml-3" style={{marginTop:60}}>
+                                    <button className='btn btn-outline-primary border-0 bg-transparent'>
+                                        <img src={playButton} style={{ height: 40 }}/>
+                                    </button>
+                                    <button className='btn btn-outline-primary border-0 bg-transparent'>
+                                        <img src={shuffleButton} style={{ height: 40 }}/>
+                                    </button>
+                                    <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShow}>
+                                        <img src={deleteButton} style={{ height: 40 }}/>
+                                    </button>
+                                    <Dropdown drop='right'>
+                                        <Dropdown.Toggle id='more' className='btn btn-outline-primary border-0 bg-transparent'>
+                                            <img src={moreButton} style={{ height: 40 }}/>
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item href='#'>Copy Playlist</Dropdown.Item>
+                                            <Dropdown.Item href='#'>Add to Library</Dropdown.Item>
+                                            <Dropdown.Item href='#'>Share</Dropdown.Item>
+                                            <Dropdown.Item href='#'>Edit Playlist Name</Dropdown.Item>
+                                            <Dropdown.Item href='#'>Privacy Settings</Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
                                 </div>
                             </div>
 
-                            <div id="imgAndVotes" className="col-4 mt-4" >
-                                    <div className="row mt-4 mb-2 text-center">
+                            <div id="imgAndVotes" className="col-3 ml-2 mt-3" >
+                                    <div className="row mt-4 mb-2 justify-content-center">
                                         <a href="albumPic">
-                                            <input type="image" style={{ width: "70%" }}
+                                            <input type="image" style={{ height: 170 }}
                                                 src="https://dalelyles.com/musicmp3s/no_cover.jpg">
                                             </input>
                                         </a>
                                     </div>
-                                    <div className="row mx-2">
-                                        <input type="image" style={{ width: "10%", height:"10%"}} className="mx-2"
-                                            src="https://i.imgur.com/NYr5rnm.png">
-                                        </input>
-                                        <label id="playlistPoints" className="text-light">100</label>
-                                        <input type="image" style={{ width: "10%", height:"10%"}} className="mx-2"
-                                            src="https://i.imgur.com/zYcZbNp.png">
-                                        </input>
+                                    <div className="row justify-content-center">
+                                        <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'>
+                                            <img src={likeButton} style={{ height: 25 }}/>
+                                        </button>
+                                        <div id="playlistPoints" className="col-3 mx-0 mt-auto h4 text-light text-center">100</div>
+                                        <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'>
+                                            <img src={dislikeButton} style={{ height: 25 }}/>
+                                        </button>
                                     </div>Î
                                 </div>
                         </div>
                     </div>
                 </div> 
-                <div className="row mt-3 ml-3" >
-                    <div className="col-2"> <h3 style={{ color: "white" }}>Title</h3>  </div>
+                <div className="row mt-3 ml-2" >
+                    <div className="col-3"> <h3 style={{ color: "white" }}>Title</h3>  </div>
                     <div className="col-2"> <h3 style={{ color: "white" }}>Artist </h3>  </div>
                     <div className="col-2"> <h3 style={{ color: "white" }}>Album </h3>  </div>
-                    <div className="col-2"> <h3 style={{ color: "white" }}>Date Added </h3>  </div>
+                    <div className="col-3"> <h3 style={{ color: "white" }}>Date Added </h3>  </div>
                 </div>
                 <div className="divider song-divider" />
                 {this.props.playlist.songs.map((song) => (
                     <div>
-                        <div className="row text-light ml-3 ">
-                            <label id="songName" className="col-2 text-nowrap overflow-hidden overflow-ellipsis">{song.title}</label>
+                        <div className="row text-light ml-2 ">
+                            <label id="songName" className="col-3 text-truncate overflow-hidden overflow-ellipsis">{song.title}</label>
                             <label id="artistName" className="col-2">
                                 <Link className='text-white' to={`/app/artist/${song.artistID}`}>
                                     {song.artistName}
@@ -174,18 +181,15 @@ class PlaylistScreen extends React.Component {
                                     {song.albumName}
                                 </Link>
                             </label>
-                            <label id="date" className="col-3">01-10-1010</label>
-                            <a id="queueBtn" className="col-1" href="addQueue">
-                                <input type="image" style={{ width: "100%" }}
-                                    src="https://i.imgur.com/sNVHPL0.png">
-                                </input>
-                            </a>
-                            <a id="deleteSong" className="col-1 mt-1" href="deleteSong">
-                                <input type="image" style={{ width: "55%"}}
-                                    src="https://i.imgur.com/jpujrfk.png">
-                                </input>
-                            </a>
-                                            
+                            <label id="date" className="col-2">01-10-1010</label>
+                            <div id="controls" className='col-2 ml-3'>
+                                <button className="btn btn-outline-primary bg-transparent border-0 p-1">
+                                    <img src={addToQueueButton} style={{ height: 25 }} />
+                                </button>
+                                <button className='btn btn-outline-primary bg-transparent border-0 p-1 ml-4'>
+                                    <img src={deleteButton} style= {{ height: 25 }}/>
+                                </button>
+                            </div>            
                         </div>
                         <div className="divider song-divider"/>
                     </div>

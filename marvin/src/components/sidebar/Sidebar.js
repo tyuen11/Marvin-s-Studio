@@ -24,7 +24,7 @@ class Sidebar extends React.Component {
 
     render() {
         return (
-            <div className='overflow-auto sticky-top' style={{height: 510}}>
+            <div className='overflow-auto sticky-top' style={{height: 550}}>
                 <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200}}>
                     <Link to='/login'>
                         <img src={logo} height={85} alt=''/>
@@ -43,12 +43,12 @@ class Sidebar extends React.Component {
                             onClick={this.handleShow}>Create Playlist</button>
                         </div>
                         <div className='h4 text-primary'>My Playlists</div>
-                        {this.props.user.ownedPlaylists.map((playlist, index) => (
+                        {this.props.user != null ? this.props.user.ownedPlaylists.map((playlist, index) => (
                             <div key={index} className='text-white text-left pl-3 mb-1'
                                     style={{cursor: 'pointer'}}>
                                 <Link className='text-white pl-2' to={'/app/playlist'} onClick={() => this.props.playlistCallback(playlist, index)}>{playlist.title}</Link>
                             </div>
-                        ))}
+                        )) : <div></div> }
                         <form action='/logout' method="post">
                         <button action="submit" className='btn btn-primary'>Logout</button>
                         </form>

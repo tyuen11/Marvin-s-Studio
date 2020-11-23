@@ -27,13 +27,11 @@ class AlbumScreen extends React.Component {
 			song: song,
 			flag: flag
 		});
-		console.log("done");
 		console.log(this.state);
 	}
 
 	handleClose = () => {
 		this.setState({ show: false });
-		console.log("dosne");
 	}
 
 	render() {
@@ -41,9 +39,7 @@ class AlbumScreen extends React.Component {
 			return <div>Loading...</div>
 		let album = this.state.album;
 		let songs = album.tracks;
-		console.log(songs);
 
-		console.log(album);
 		return (
 			<div id="album" className="album">
 				<div className="row border-light" style={{ border: "solid", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px" }}>
@@ -95,7 +91,7 @@ class AlbumScreen extends React.Component {
 				<div>
 					<div className="divider song-divider" />
 					{songs.map((song, index) => (
-							<AlbumSong key={index} song={song} handleShow={() => this.handleShow(song, 0)}/>
+						<AlbumSong key={index} style={{cursor: 'pointer'}} handleSongChange={this.props.handleSongChange} song={song} handleShow={() => this.handleShow(song, 0)}/>
 					))}
 
 				</div>

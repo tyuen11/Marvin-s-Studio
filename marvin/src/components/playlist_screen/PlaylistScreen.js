@@ -86,16 +86,16 @@ class PlaylistScreen extends React.Component {
     }
 
     state = {
-        show: false
+        showAddSong: false
     }
 
     handleShow = () => {
-        this.setState({ show: true });
+        this.setState({ showAddSong: true });
         console.log("done");
     }
 
     handleClose = () => {
-        this.setState({ show: false });
+        this.setState({ showAddSong: false });
         console.log("dosne");
     }
 

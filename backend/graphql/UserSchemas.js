@@ -30,6 +30,9 @@ var playlistInputType = new GraphQLInputObjectType({
             numTracks: {
                 type: GraphQLInt
             },
+            ownerID: {
+                type: GraphQLString
+            },
             ownerName: {
                 type: GraphQLString
             },

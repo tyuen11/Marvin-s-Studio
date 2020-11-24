@@ -1,6 +1,10 @@
 import React from 'react'
 import AlbumSong from './AlbumSong'
 import AddSongModal from '../modals/AddSongModal'
+import playButton from '../../icons/play-button.png'
+import shuffleButton from '../../icons/shuffle.png'
+import addToQueueButton from '../../icons/playlist.png'
+import addToPlaylistButton from '../../icons/addBlue.png'
 
 class AlbumScreen extends React.Component {
 	state = {
@@ -53,22 +57,21 @@ class AlbumScreen extends React.Component {
 									<h4 className="text-light ml-4"> Album by {album.artist[0].name} </h4>
 								</div>
 								<div id="actions" className=" ml-3 mt-5">
-									<a href="playBtn">
-										<input type="image" style={{ width: "8%" }}
-											src="https://i.imgur.com/N7tVoo7.png">
-										</input>
-									</a>
-									<a href="shuffleBtn" className="ml-3">
-										<input type="image" style={{ width: "10%"}}
-											src="https://i.imgur.com/T8JZhAk.png">
-										</input>
-									</a>
-									<a id="queueBtn" className="ml-4">
-										<input type="image" style={{ width: "12%" }}  onClick={() => this.handleShow(null, 1)}
-											src="https://i.imgur.com/sNVHPL0.png">
-										</input>
-									</a>
+									<button className='btn btn-outline-primary border-0 bg-transparent'>
+                                        <img src={playButton} style={{ height: 40 }}/>
+                                    </button>
+
+									<button className='btn btn-outline-primary border-0 bg-transparent'>
+                                        <img src={shuffleButton} style={{ height: 40 }}/>
+                                    </button>
+			
+									<button className='btn btn-outline-primary border-0 bg-transparent'>
+                                        <img src={addToQueueButton} style={{ height: 40 }}/>
+                                    </button>
 									
+									<button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShow}>
+                                        <img src={addToPlaylistButton} style={{ height: 40 }}/>
+                                    </button>
 								</div>
 							</div>
 							<div id="img" className="col-4 mt-4" >

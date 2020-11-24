@@ -56,7 +56,7 @@ class Sidebar extends React.Component {
                         </form>
                 </div>
                
-               { this.props.user !== null ? 
+               { (this.props.user != null) ? 
                 <CreatePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}
                     user={this.props.user} history={this.props.history} />
                 : <div/>

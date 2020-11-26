@@ -27,7 +27,7 @@ class Sidebar extends React.Component {
         return (
             <div className='overflow-auto sticky-top' style={{height: 550}}>
                 <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200}}>
-                    <Link to='/login'>
+                    <Link to='/app/community'>
                         <img src={logo} height={85} alt='' />
                     </Link>
                     <form action='/sidebar' method='post'>

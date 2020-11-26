@@ -12,6 +12,7 @@ import SearchScreen from './search_screen/SearchScreen';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag'
 import HomeScreen from './HomeScreen';
+import CommunityScreen from './CommunityScreen';
 
 const GET_USER = gql`
     query user($userId: String) {
@@ -168,6 +169,9 @@ class MainScreen extends Component {
                                         </Route>
                                         <Route path="/app/home">
                                             <HomeScreen/>
+                                        </Route>
+                                        <Route path="/app/community">
+                                            <CommunityScreen/>
                                         </Route>
                                     </Switch>
                                 </div>

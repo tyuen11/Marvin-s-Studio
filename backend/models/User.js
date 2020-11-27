@@ -8,8 +8,11 @@ var UserSchema = new mongoose.Schema({
     username: String,
     userPoints: Number,
     collaborativePlaylists: [Playlist],
+    collaborativePlaylistsID: [String],
     followedPlaylists: [Playlist],
+    followedPlaylistsID: [String],
     ownedPlaylists: [Playlist],
+    ownedPlaylistsID: [String],
     recentlyPlayed: [{
         id: String,
         type: String

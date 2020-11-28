@@ -15,7 +15,8 @@ class Player extends React.Component {
     state = {
         playing: false,
         seeking: false,
-        played: 0
+        played: 0,
+        songs: []
     }
 
     ref = player => {
@@ -53,15 +54,29 @@ class Player extends React.Component {
         this.setState({ duration })
     }
 
+    handlePrevSongP = (played) => {
+        let x = this.props.handlePrevSong(played);
+        if (x == 0) 
+            this.player.seekTo(parseFloat(0));
+        
+    }
+
+    componentDidUpdate = (prevProps) => {
+        // If a new song is pressed, automatically start playing the song
+        if (prevProps.songs[0] != this.props.songs[0])
+            this.setState({playing: true}); 
+    }
+
     render () {
         let playerDisabled = this.state.currSong == null;
         let buttonCursor = this.state.playerDisabled ? "disabled" : "not-allowed"
-
+        
         const playing = this.state.playing, seeking = this.state.seeking, played = this.state.played, duration = this.state.duration;
-        let song = "https://www.youtube.com/watch?v=" + this.props.currSong.videoId;
-        console.log("song is ", song);
-        console.log("player says", this.state.playing);
-        console.log(this.state.song);
+        let songs = this.props.songs, song, index = this.props.index;
+        if (songs[0] != undefined)
+            song = "https://www.youtube.com/watch?v=" + songs[index].song.videoId;
+        if (played >= 1)
+            this.props.handleNextSong();
 
      
         return (
@@ -73,12 +88,20 @@ class Player extends React.Component {
                     onDuration={this.handleDuration}
                     onReady={() => console.log('onReady')}
                     seeking={seeking} ref={this.ref}/>
-                <img className='mr-3 mt-1' src={logo} style={{height: 60, width: 60}} alt=''></img>
+                <img className='mr-3' src={logo} style={{height: 60, width: 60}} alt=''></img>
+               
+                {/* <button id="prev" src="https://imgur.com/UAuIPlX" className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
+                    style={{fontSize: 40, cursor: buttonCursor}} onClick={this.handlePrevSongP.bind(this, played)}>{'\u23ee'} </button>
+               
+                <button id="play" src="https://imgur.com/xZlEws8" className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
+                    style={{fontSize: 40}} onClick={this.handlePlayPause}>{this.state.playing ? '\u23f8' : '\u25b6'} </button>
+               
+                <button id="next" className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
+                    style={{fontSize: 40, cursor: buttonCursor}} onClick={this.props.handleNextSong}>{'\u23ed'} </button> */}
                
                 <button id="prev" className='btn btn-outline-primary border-0 mr-2'
-                        style={{cursor: buttonCursor}}>
+                        style={{cursor: buttonCursor}} onClick={this.handlePrevSongP.bind(this, played)}>
                     <img src={prevButton} style={{ height: 25 }}/>
-                    {/*disabled={playerDisabled}*/}
                 </button>
 
                 <button id="playPause" className='btn btn-outline-primary border-0 mr-2'
@@ -87,7 +110,7 @@ class Player extends React.Component {
                 </button>
 
                 <button id="next" className='btn btn-outline-primary border-0 mr-3'
-                        style={{cursor: buttonCursor}}>
+                        style={{cursor: buttonCursor}} onClick={this.props.handleNextSong}>
                     <img src={nextButton} style={{ height: 25 }}/>
                 </button>
 

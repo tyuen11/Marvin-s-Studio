@@ -45,6 +45,13 @@ class CreatePlaylistModal extends Component {
     playlistNameChange = (e) => {
         this.setState({ title: e.target.value })
     }
+    
+    componentDidMount = () => {
+        if (this.state.ownerName == null)
+			return <div>Loading...</div>
+        let user = this.props.user
+        this.setState({ownerName: user.userName});
+    }
 
     render() {
         if (this.state.ownerName == null)

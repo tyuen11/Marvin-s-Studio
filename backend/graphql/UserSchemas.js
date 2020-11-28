@@ -262,8 +262,8 @@ var queryType = new GraphQLObjectType({
                 },
                 resolve: function(root, params) {
                     const user = UserModel.findById(params.id).exec();
-                    if (!user) throw new Error('Error');
-                    if (!user.ownedPlaylistsID) throw new Error('Error');
+                    if (!user) throw new Error('user undef err');
+                    if (user.ownedPlaylistsID == null) throw new Error('owned pl id undef err');
                     let playlists = [];
                     user.ownedPlaylistsID.forEach(pl_id => {
                         let playlistToAdd = PlaylistModel.findById(pl_id).exec();
@@ -466,7 +466,6 @@ var mutation = new GraphQLObjectType({
                     
                     const newPlaylist = playlistModel.save();
                     if (!newPlaylist) throw new Error("Error");
-                    console.log(newPlaylist);
                     return newPlaylist;
                 }
             },

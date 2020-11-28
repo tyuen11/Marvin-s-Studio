@@ -22,6 +22,7 @@ const GET_USER = gql`
             password
             username
             userPoints
+            collaborativePlaylistsID
             collaborativePlaylists {
                 _id
                 genre
@@ -41,6 +42,7 @@ const GET_USER = gql`
                 }
                 title
             } 
+            followedPlaylistsID
             followedPlaylists {
                 _id
                 genre
@@ -60,6 +62,7 @@ const GET_USER = gql`
                 }
                 title
             }
+            ownedPlaylistsID
             ownedPlaylists {
                 _id
                 genre

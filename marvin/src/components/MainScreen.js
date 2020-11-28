@@ -154,9 +154,8 @@ class MainScreen extends Component {
                                 <Sidebar user={user} history={this.props.history} playlistCallback={this.goToPlaylist}/>
                                 <div className='col overflow-auto' style={{paddingBottom: 100}}>
                                     <Switch>
-                                        <Route path="/app/playlist">
-                                            <PlaylistScreen playlist={this.state.currPlaylist} index={this.state.playlistIndex} user={user} history={this.props.history}/>                        
-                                        </Route>
+                                        <Route path="/app/playlist/:id" render={(props) => (<PlaylistScreen {...props} user={user}/>)}
+                                        />
                                         <Route  path="/app/album">
                                             <AlbumScreen user={user} history={this.props.history}
                                                 handlePlaylist={this.handlePlayPlaylist} handleSongChange={this.handleSongChange}/>

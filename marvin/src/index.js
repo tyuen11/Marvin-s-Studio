@@ -20,6 +20,7 @@ import ProfileScreen from './components/profile_screen/ProfileScreen.js';
 import PlaylistScreen from './components/playlist_screen/PlaylistScreen'
 import PlaylistData from './PlaylistData.json'
 import SearchScreen from './components/search_screen/SearchScreen';
+import Switch from 'react-bootstrap/esm/Switch';
 
 
 
@@ -29,10 +30,10 @@ ReactDOM.render(
   <ApolloProvider client={client}>
       <Router>
           <div>
-            <Route  path="/login" component={LoginScreen} />
-            <Route  path="/register" component={RegisterScreen} />
-            <Route  path="/reqreset" component={RequestReset} />
-            <Route  path="/reset" component={ResetPassword} />
+            <Route path="/login" component={LoginScreen} />
+            <Route path="/register" component={RegisterScreen} />
+            <Route path="/reqreset" component={RequestReset} />
+            <Route path="/reset" component={ResetPassword} />
             {/* <Route  path="/artist" component={() => <ArtistScreen {...PlaylistData}/> }/>
             <Route  path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/> */}
             <Route path='/app' component={MainScreen} />

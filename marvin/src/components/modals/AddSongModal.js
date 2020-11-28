@@ -64,9 +64,6 @@ class AddSongModal extends Component {
         let ownedPlaylists = this.props.user.ownedPlaylists;
         let collaborativePlaylists = this.props.user.collaborativePlaylists;
         let combined = ownedPlaylists.concat(collaborativePlaylists);
-        console.log(combined);
-        console.log(ownedPlaylists);
-        console.log(collaborativePlaylists);
         return (
             <Mutation mutation={UPDATE_USER_PLAYLIST} key={this.props.user._id} onCompleted={() => this.props.history.push('/app/album')}>
             {(updatePlaylist, { loading, error}) => (

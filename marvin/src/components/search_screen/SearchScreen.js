@@ -1,5 +1,4 @@
 import React from 'react'
-import SongSearchLinks from './SongSearchLinks';
 import { Link, useLocation } from 'react-router-dom';
 
 
@@ -42,11 +41,11 @@ class SearchScreen extends React.Component {
         });
 
         console.log(this.state);
+        
     }
 
     render() {
 
-       // this.fetchData();
         if (this.state.initial) 
             return (
                 <div className="mt-4 w-25">
@@ -57,7 +56,7 @@ class SearchScreen extends React.Component {
             )
         let art = this.state.artists.slice(0, 5);
         let alb = this.state.albums.slice(0, 5);
-        console.log(this.state);
+    
 
         return (
             <div id="playlist" className="mt-4">

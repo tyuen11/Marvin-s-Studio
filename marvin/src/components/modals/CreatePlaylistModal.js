@@ -24,67 +24,7 @@ const UPDATE_USER = gql`
             userPoints: $userPoints
             votedPlaylists: $votedPlaylists
         ) {
-            collaborativePlaylists {
-                genre
-                numPlays
-                numTracks
-                ownerName
-                playlistPoints
-                privacyType
-                songs {
-                    albumID
-                    artistID
-                    songID
-                    genre
-                    title
-                }
-                title
-            }
-            followedPlaylists {
-                genre
-                numPlays
-                numTracks
-                ownerName
-                playlistPoints
-                privacyType
-                songs {
-                    albumID
-                    artistID
-                    songID
-                    genre
-                    title
-                }
-                title
-            }
-            ownedPlaylists {
-                _id
-                genre
-                numPlays
-                numTracks
-                ownerName
-                playlistPoints
-                privacyType
-                songs {
-                    albumID
-                    artistID
-                    songID
-                    genre
-                    title
-                }
-                title
-            }
-            recentlyPlayed {
-                playlistId
-                type
-            }
-            mostPlayed {
-                playlistId
-                type
-            }
-            votedPlaylists {
-                playlistID
-                votes
-            }
+            lastUpdated
         }
     }
 `;
@@ -95,6 +35,7 @@ class CreatePlaylistModal extends Component {
         numPlays: 0,
         numTracks: 0,
         ownerName: this.props.user.username,
+        ownerID: this.props.user._id,
         playlistPoints: 0,
         privacyType: 0,
         songs: [],
@@ -107,7 +48,7 @@ class CreatePlaylistModal extends Component {
 
     render() {
         if (this.state.ownerName == null)
-			return <div>Loading...</div>
+			return <div>s</div>
         let user = this.props.user;
         return (
             <Mutation mutation={UPDATE_USER} key={this.props.user._id} onCompleted={() => this.props.history.push('/app/home')}>
@@ -124,6 +65,7 @@ class CreatePlaylistModal extends Component {
                                         genre: this.state.genre,
                                         numPlays: this.state.numPlays,
                                         numTracks: this.state.numTracks,
+                                        ownerID: this.state.ownerID,
                                         ownerName: this.state.ownerName,
                                         playlistPoints: this.state.playlistPoints,
                                         privacyType: this.state.privacyType,

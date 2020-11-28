@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 class HomeScreen extends React.Component {
     render () {
@@ -38,7 +39,16 @@ class HomeScreen extends React.Component {
                         <button className='btn btn-light mt-1'>+</button>
                     </div>
                 </div>
-                <div className='row h4 ml-3 mt-5 text-white'>Community Curated</div>
+                <div className='row mt-5'>
+                    <div className='h4 ml-3 text-white'>Community Curated</div>
+                    <Link to={{
+                        pathname:'/app/community',
+                        state: {
+                            viewComm: true
+                        }
+                        }} 
+                        className='h5 ml-auto text-white'>See More</Link>
+                </div>
                 <div className='divider'></div>
                 <div className='row h4 ml-3 mt-5 text-white'>Public</div>
                 <div className='divider'></div>

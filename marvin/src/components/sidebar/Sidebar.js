@@ -7,6 +7,7 @@ class Sidebar extends React.Component {
     constructor(props) {
         super(props);
         console.log("Sidebar")
+        console.log(props);
     }
     state = {
         show: false,
@@ -26,11 +27,11 @@ class Sidebar extends React.Component {
         return (
             <div className='overflow-auto sticky-top' style={{height: 550}}>
                 <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200}}>
-                    <Link to='/login'>
-                        <img src={logo} height={85} alt=''/>
+                    <Link to='/app/community'>
+                        <img src={logo} height={85} alt='' />
                     </Link>
                     <form action='/sidebar' method='post'>
-                        <input name='searchText' className='border border-primary px-1 py-1 my-1 rounded w-75' type='text' placeholder='Search'/>
+                        <input name='searchText' className='border border-primary px-1 py-1 my-1 rounded w-75' type='text' placeholder='Search' />
                     </form>
                     <div className='my-1 pt-1 text-center w-100 display-block' style={{background:'#3d8af7', height: 115}}>
                         <Link to='/app/home'>
@@ -41,7 +42,8 @@ class Sidebar extends React.Component {
                         </Link>
                         <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'
                             onClick={this.handleShow}>Create Playlist</button>
-                        </div>
+                    </div>
+        
                         <div className='h4 text-primary'>My Playlists</div>
                         {this.props.user != null ? this.props.user.ownedPlaylists.map((playlist, index) => (
                             <div key={index} className='text-white text-left pl-3 mb-1'
@@ -53,8 +55,13 @@ class Sidebar extends React.Component {
                         <button action="submit" className='btn btn-primary'>Logout</button>
                         </form>
                 </div>
+               
+               { (this.props.user != null) ? 
                 <CreatePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}
-                    user={this.props.user} history={this.props.history}/>
+                    user={this.props.user} history={this.props.history} />
+                : <div/>
+                }
+                    
             </div>
         )
 

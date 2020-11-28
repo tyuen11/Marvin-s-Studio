@@ -2,7 +2,7 @@ import React from 'react';
 import DeletePlaylistModal from '../modals/DeletePlaylistModal.js';
 import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
-import { Dropdown, DropdownButton } from 'react-bootstrap'
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import playButton from '../../icons/play-button.png'
 import shuffleButton from '../../icons/shuffle.png'
 import deleteButton from '../../icons/delete.png'
@@ -10,6 +10,7 @@ import moreButton from '../../icons/more.png'
 import likeButton from '../../icons/like.png'
 import dislikeButton from '../../icons/dislike.png'
 import addToQueueButton from '../../icons/playlist.png'
+import EditPlaylistNameModal from '../modals/EditPlaylistNameModal.js';
 
 const GET_USER = gql`
     query user($userId: String) {
@@ -86,17 +87,32 @@ class PlaylistScreen extends React.Component {
     }
 
     state = {
-        show: false
+        showDelete: false,
+        showEditName: false,
+        showDropdown: false
     }
 
-    handleShow = () => {
-        this.setState({ show: true });
+    handleShowDelete = () => {
+        this.setState({ showDelete: true });
         console.log("done");
     }
 
-    handleClose = () => {
-        this.setState({ show: false });
+    handleShowEditName = () => {
+        this.setState({ showEditName: true })
+    }
+
+    handleCloseDelete = () => {
+        this.setState({ showDelete: false });
         console.log("dosne");
+    }
+
+    handleCloseEditName = () => {
+        this.setState({ showEditName: false })
+    }
+
+    toggleDropdown = () => {
+        let show = !this.state.showDropdown;
+        this.setState({ showDropdown: show })
     }
 
     render() {
@@ -114,27 +130,27 @@ class PlaylistScreen extends React.Component {
                                     <h4 className="text-light ml-4"> Playlist by {this.props.playlist.ownerName} </h4>
                                 </div>
 
-                                <div id="actions" className="row ml-3" style={{marginTop:60}}>
+                                <div id="actions" className="row overflow-visible ml-3" style={{marginTop:60}}>
                                     <button className='btn btn-outline-primary border-0 bg-transparent'>
                                         <img src={playButton} style={{ height: 40 }}/>
                                     </button>
                                     <button className='btn btn-outline-primary border-0 bg-transparent'>
                                         <img src={shuffleButton} style={{ height: 40 }}/>
                                     </button>
-                                    <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShow}>
+                                    <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShowDelete}>
                                         <img src={deleteButton} style={{ height: 40 }}/>
                                     </button>
-                                    <Dropdown drop='right'>
-                                        <Dropdown.Toggle id='more' className='btn btn-outline-primary border-0 bg-transparent'>
+                                    <Dropdown direction='right' toggle={this.toggleDropdown} isOpen={this.state.showDropdown}>
+                                        <DropdownToggle className='btn btn-outline-primary border-0 bg-transparent' caret={false}>
                                             <img src={moreButton} style={{ height: 40 }}/>
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item href='#'>Copy Playlist</Dropdown.Item>
-                                            <Dropdown.Item href='#'>Add to Library</Dropdown.Item>
-                                            <Dropdown.Item href='#'>Share</Dropdown.Item>
-                                            <Dropdown.Item href='#'>Edit Playlist Name</Dropdown.Item>
-                                            <Dropdown.Item href='#'>Privacy Settings</Dropdown.Item>
-                                        </Dropdown.Menu>
+                                        </DropdownToggle>
+                                        <DropdownMenu>
+                                            <DropdownItem href='#'>Copy Playlist</DropdownItem>
+                                            <DropdownItem href='#'>Add to Library</DropdownItem>
+                                            <DropdownItem href='#'>Share</DropdownItem>
+                                            <DropdownItem href='#' onClick={this.handleShowEditName}>Edit Playlist Name</DropdownItem>
+                                            <DropdownItem href='#'>Privacy Settings</DropdownItem>
+                                        </DropdownMenu>
                                     </Dropdown>
                                 </div>
                             </div>
@@ -194,8 +210,10 @@ class PlaylistScreen extends React.Component {
                         <div className="divider song-divider"/>
                     </div>
                 ))}
-                <DeletePlaylistModal show={this.state.show} handleClose={this.handleClose} handleShow={this.handleShow}
+                <DeletePlaylistModal show={this.state.showDelete} handleClose={this.handleCloseDelete} handleShow={this.handleShowDelete}
                     user={this.props.user} history={this.props.history} index={this.props.index}/>
+                <EditPlaylistNameModal show={this.state.showEditName} handleClose={this.handleCloseEditName} handleShow={this.handleShowEditName}
+                    user={this.props.user} playlist={this.props.playlist}/>
             </div>
         )
     }

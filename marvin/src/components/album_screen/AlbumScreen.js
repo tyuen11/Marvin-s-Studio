@@ -39,6 +39,7 @@ class AlbumScreen extends React.Component {
 	}
 
 	render() {
+		let user = this.props.user;
 		if (this.state.album == undefined)
 			return <div>Loading...</div>
 		let album = this.state.album;
@@ -58,7 +59,7 @@ class AlbumScreen extends React.Component {
 								</div>
 								<div id="actions" className=" ml-3 mt-5">
 									<button className='btn btn-outline-primary border-0 bg-transparent'>
-                                        <img src={playButton} style={{ height: 40 }}/>
+                                        <img src={playButton} style={{ height: 40 }} onClick={this.props.handlePlayPlaylist.bind(this, songs)}/>
                                     </button>
 
 									<button className='btn btn-outline-primary border-0 bg-transparent'>
@@ -94,13 +95,16 @@ class AlbumScreen extends React.Component {
 				<div>
 					<div className="divider song-divider" />
 					{songs.map((song, index) => (
-						<AlbumSong key={index} style={{cursor: 'pointer'}} handleSongChange={this.props.handleSongChange} song={song} handleShow={() => this.handleShow(song, 0)}/>
+						<AlbumSong key={index} style={{cursor: 'pointer'}} 
+							handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong}
+							song={song} handleShow={() => this.handleShow(song, 0)}/>
 					))}
 
 				</div>
-				<AddSongModal user={this.props.user} show={this.state.show} song={this.state.song} album={album}
+
+				{user !== null ? <AddSongModal user={this.props.user} show={this.state.show} song={this.state.song} album={album}
 					handleClose={this.handleClose} handleShow={this.handleShow} history={this.props.history} 
-					flag={this.state.flag} />
+					flag={this.state.flag} /> : <div/>}
 			</div>
 		)
 	}

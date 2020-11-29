@@ -30,7 +30,7 @@ class AlbumSong extends Component {
                     <button className="btn btn-outline-primary bg-transparent border-0 p-1" onClick={this.props.handleShow.bind(this, song)}>
                         <img src={addToPlaylistButton} style={{ height: 25 }} />
                     </button>  
-                    <button className="btn btn-outline-primary bg-transparent border-0 p-1 ml-5">
+                    <button className="btn btn-outline-primary bg-transparent border-0 p-1 ml-5" onClick={this.props.handleQueueSong.bind(this, song)}>
                         <img src={addToQueueButton} style={{ height: 25 }} />
                     </button>       
                 </div>

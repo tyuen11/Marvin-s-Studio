@@ -56,10 +56,10 @@ class CreatePlaylistModal extends Component {
     }
     
     componentDidMount = () => {
-        if (this.state.ownerName == null)
+        if (this.state.ownername == null)
 			return <div>Loading...</div>
         let user = this.props.user
-        this.setState({ownerName: user.userName});
+        this.setState({ownerName: user.username});
     }
 
     render() {

@@ -100,7 +100,8 @@ const GET_USER = gql`
 
 class MainScreen extends Component {
     state = {
-        queue: [{song: undefined, queued: false}],
+        songs: [],
+        index: 0,
         playing: false
     }
 
@@ -112,8 +113,6 @@ class MainScreen extends Component {
               console.log(err);
           });  
         console.log(this.state.user);
-
-        this.setState({currSong: ""});
     }
 
     goToPlaylist = (playlist, index) => {
@@ -122,25 +121,70 @@ class MainScreen extends Component {
 
     handleSongChange = (song) => {
         console.log("changing song to ", song.name);
-        var queue = {song: song, queued: false};
-        console.log("queue:", queue);
-        this.setState({currSong: song, playing: true});
-
-    }
-    handlePlayPlaylist = (songs) => {
-        var queue;
-        for (var x = 0; x < songs.length; x++) {
-            queue.append({song: songs[x], queued: false});
-        }
-        this.setState({queue: queue});
+        // Get all the queued songs
+        let songs = [{song: song, queued: false}], queued = this.getQueuedSongs();
+        // First add the song to play then all the queued songs
+        if (queued !== undefined)
+            songs = songs.concat(queued);
+        this.setState({songs: songs})
     }
     
-    render() {
-        let user, currSong = this.state.currSong, playing = this.state.playing;
-        let queue = this.state.queue;
-        console.log("queue is", queue);
-        console.log("main screen says", this.state.playing);
+    handleQueueSong = (song) => {
+        let songs = this.state.songs, queue = this.getQueuedSongs();
+        let queueLength = queue.length + 1; // Get the index that the queued song will be in (end of queue)
+        songs.splice(this.state.index + queueLength, 0, {song: song, queued: true});
+        this.setState({songs: songs});
+        console.log("queueing song");
+    }
 
+    handlePlayPlaylist = (songs) => {
+        let playlist = [], queued = this.getQueuedSongs();
+        for (var x = 0; x < songs.length; x++) {
+            playlist.push({song: songs[x], queued: false});
+            if (x == 0 && queued !== undefined) 
+                playlist = playlist.concat(queued);
+            // vs
+            // this.handleSongChange(songs[x])
+        }
+        this.setState({songs: playlist});
+    }
+
+    handleNextSong = () => {
+        // WHAT IF WE REACHED THE END OF THE SONGS???
+        let index = this.state.index;
+        this.setState({index: index+1})
+    }
+
+    handlePrevSong = (played) => {
+         // WHAT IF WE AT THE START OF THE SONGS???
+        console.log(played);
+        let index = this.state.index;
+        if (played > 0 || index == 0){
+            this.setState({index: index});
+            return 0;
+        }
+        else {    
+            this.setState({index: index-1});
+            return 1;
+        }
+    }
+
+    getQueuedSongs() {
+        let songs = this.state.songs, queue = [];
+        console.log("queue:", songs);
+        for (let x = 0; x < songs.length; x++){ 
+            console.log(songs[x], songs[x].queued);
+            if (songs[x].queued == true) 
+                queue.push(songs[x]);
+        }
+        return queue;
+    }
+
+    
+    render() {
+        let user, playing = this.state.playing, songs = this.state.songs, index = this.state.index;
+        console.log("songs is", songs);
+        console.log("main screen says", this.state.playing);
 
         return (
             <Query pollInterval={500} query={GET_USER} variables={{ userId: this.state.user}}>
@@ -158,7 +202,8 @@ class MainScreen extends Component {
                                         />
                                         <Route  path="/app/album">
                                             <AlbumScreen user={user} history={this.props.history}
-                                                handlePlaylist={this.handlePlayPlaylist} handleSongChange={this.handleSongChange}/>
+                                                handlePlaylist={this.handlePlayPlaylist} handleSongChange={this.handleSongChange} 
+                                                handleQueueSong={this.handleQueueSong} handlePlayPlaylist={this.handlePlayPlaylist} />
                                         </Route>
                                         <Route  path="/app/artist">
                                             <ArtistScreen user={user} history={this.props.history}/>
@@ -167,7 +212,8 @@ class MainScreen extends Component {
                                             <SearchScreen />
                                         </Route>
                                         <Route path="/app/profile">
-                                            <ProfileScreen user={user} playlistCallback={this.goToPlaylist} history={this.props.history} {...PlaylistData}/>
+                                            {user !== null ? <ProfileScreen user={user} playlistCallback={this.goToPlaylist} history={this.props.history} {...PlaylistData}/> 
+                                            : <div/>}
                                         </Route>
                                         <Route path="/app/home">
                                             <HomeScreen/>
@@ -179,7 +225,8 @@ class MainScreen extends Component {
                                 </div>
                             </div>
                             <div className="row fixed-bottom">
-                                <Player queue={queue} currSong={currSong} playing={playing}/>
+                                <Player songs={songs} playing={playing} index={index} 
+                                    handleNextSong={this.handleNextSong} handlePrevSong={this.handlePrevSong}/>
                             </div>
                         </div>
                     )

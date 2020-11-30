@@ -91,7 +91,9 @@ class AddSongModal extends Component {
                             }}>
                                 <div className="form-group col-8 text-center mx-auto">
                                     {combined.map((playlist, index) => (
-                                        <button className="btn default"type="submit" onClick={this.addSong.bind(this, playlist, index, this.props.flag)}>{playlist.title}</button>
+                                        <div key={index}>
+                                            <button className="btn default"type="submit" onClick={this.addSong.bind(this, playlist, index, this.props.flag)}>{playlist.title}</button>
+                                        </div>
                                     ))}
                                 </div>
                             </form>

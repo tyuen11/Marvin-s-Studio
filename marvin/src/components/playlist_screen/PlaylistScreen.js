@@ -172,9 +172,9 @@ class PlaylistScreen extends React.Component {
                                     <div className="divider song-divider"/>
                                 </div>
                             ))}
-                            {/*<DeletePlaylistModal show={this.state.showDelete} handleClose={this.handleCloseDelete} handleShow={this.handleShowDelete}
-                                user={this.props.user} history={this.props.history} index={this.props.index}/>
-                            <EditPlaylistNameModal show={this.state.showEditName} handleClose={this.handleCloseEditName} handleShow={this.handleShowEditName}
+                            <DeletePlaylistModal show={this.state.showDelete} handleClose={this.handleCloseDelete} handleShow={this.handleShowDelete}
+                                user={this.props.user} history={this.props.history} playlist={playlist}/>
+                            {/*<EditPlaylistNameModal show={this.state.showEditName} handleClose={this.handleCloseEditName} handleShow={this.handleShowEditName}
                             user={this.props.user} playlist={playlist}/>*/}
                         </div>
                     )

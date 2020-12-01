@@ -154,9 +154,8 @@ class MainScreen extends Component {
                                         <Route path="/app/search">
                                             <SearchScreen />
                                         </Route>
-                                        <Route path="/app/profile">
-                                            {user !== null ? <ProfileScreen user={user} playlistCallback={this.goToPlaylist} history={this.props.history} {...PlaylistData}/> 
-                                            : <div/>}
+                                        <Route path="/app/profile" render={(props) => 
+                                            user != null ? <ProfileScreen {...props} user={user}/> : <div/>}>
                                         </Route>
                                         <Route path="/app/home">
                                             <HomeScreen/>

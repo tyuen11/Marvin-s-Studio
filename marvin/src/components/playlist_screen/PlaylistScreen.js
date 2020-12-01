@@ -26,7 +26,9 @@ const GET_PLAYLIST = gql`
             privacyType
             songs {
                 albumID
+                albumName
                 artistID
+                artistName
                 genre
                 title
             }
@@ -73,12 +75,17 @@ class PlaylistScreen extends React.Component {
     render() {
         //let user = this.props.user;
         let playlist;
+        let user = this.props.user;
+        let disableEdit;
         return (
             <Query pollInterval={500} query={GET_PLAYLIST} variables={{ playlistID: this.props.match.params.id}}>
                 {({ loading, error, data }) => {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
-                    else playlist = data.playlist;
+                    else {
+                        playlist = data.playlist;
+                        disableEdit = playlist.ownerID != user._id;
+                    }
                     return(
                         <div id="playlist" className="playpage">
                             <div className="row border-light" style={{ border: "solid", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px" }}>
@@ -99,7 +106,7 @@ class PlaylistScreen extends React.Component {
                                                 <button className='btn btn-outline-primary border-0 bg-transparent'>
                                                     <img src={shuffleButton} style={{ height: 40 }}/>
                                                 </button>
-                                                <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShowDelete}>
+                                                <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShowDelete} disabled={disableEdit}>
                                                     <img src={deleteButton} style={{ height: 40 }}/>
                                                 </button>
                                                 <Dropdown direction='right' toggle={this.toggleDropdown} isOpen={this.state.showDropdown}>
@@ -110,7 +117,7 @@ class PlaylistScreen extends React.Component {
                                                         <DropdownItem href='#'>Copy Playlist</DropdownItem>
                                                         <DropdownItem href='#'>Add to Library</DropdownItem>
                                                         <DropdownItem href='#'>Share</DropdownItem>
-                                                        <DropdownItem href='#' onClick={this.handleShowEditName}>Edit Playlist Name</DropdownItem>
+                                                        <DropdownItem href='#' onClick={this.handleShowEditName} disabled={disableEdit}>Edit Playlist Name</DropdownItem>
                                                         <DropdownItem href='#'>Privacy Settings</DropdownItem>
                                                     </DropdownMenu>
                                                 </Dropdown>
@@ -174,8 +181,8 @@ class PlaylistScreen extends React.Component {
                             ))}
                             <DeletePlaylistModal show={this.state.showDelete} handleClose={this.handleCloseDelete} handleShow={this.handleShowDelete}
                                 user={this.props.user} history={this.props.history} playlist={playlist}/>
-                            {/*<EditPlaylistNameModal show={this.state.showEditName} handleClose={this.handleCloseEditName} handleShow={this.handleShowEditName}
-                            user={this.props.user} playlist={playlist}/>*/}
+                            <EditPlaylistNameModal show={this.state.showEditName} handleClose={this.handleCloseEditName} handleShow={this.handleShowEditName}
+                                playlist={playlist}/>
                         </div>
                     )
                 }}

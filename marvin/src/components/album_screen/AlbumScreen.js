@@ -70,7 +70,7 @@ class AlbumScreen extends React.Component {
                                         <img src={addToQueueButton} style={{ height: 40 }}/>
                                     </button>
 									
-									<button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShow}>
+									<button className='btn btn-outline-primary border-0 bg-transparent' onClick={() => this.handleShow(null, 1)}>
                                         <img src={addToPlaylistButton} style={{ height: 40 }}/>
                                     </button>
 								</div>

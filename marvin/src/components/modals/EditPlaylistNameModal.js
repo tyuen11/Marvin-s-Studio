@@ -3,16 +3,14 @@ import { Modal } from 'react-bootstrap'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 
-const UPDATE_USER_PLAYLIST = gql`
-    mutation updatePlaylist(
+const UPDATE_PLAYLIST_NAME = gql`
+    mutation updatePlaylistName(
         $id: String!
-        $collaborativePlaylists: [PlaylistInput]!
-        $ownedPlaylists: [PlaylistInput]!
+        $title: String!
     ) {
-        updatePlaylist(
+        updatePlaylistName(
             id: $id
-            collaborativePlaylists: $collaborativePlaylists
-            ownedPlaylists: $ownedPlaylists
+            title: $title
         ) {
             _id
         }
@@ -29,12 +27,9 @@ class EditPlaylistNameModal extends React.Component {
     }
 
     render () {
-        let ownedPlaylists = this.props.user.ownedPlaylists;
-        let collaborativePlaylists = this.props.user.collaborativePlaylists;
-        let combined = ownedPlaylists.concat(collaborativePlaylists);
         return (
-            <Mutation mutation={UPDATE_USER_PLAYLIST} key={this.props.user._id}>
-                {(updatePlaylist, { loading, error}) => (
+            <Mutation mutation={UPDATE_PLAYLIST_NAME} key={this.props.playlist._id}>
+                {(updatePlaylistName, { loading, error}) => (
                     <div className='container'>
                         <Modal id='editPlaylistNameModal' show={this.props.show} onHide={this.props.handleClose}>
                             <Modal.Header closeButton={true}>
@@ -43,18 +38,10 @@ class EditPlaylistNameModal extends React.Component {
                             <Modal.Body id="editPlaylistNameModalBody">
                                 <form onSubmit={e => {
                                     e.preventDefault();
-                                    combined.forEach(pl => {
-                                        if (pl._id == this.props.playlist._id) pl.title = this.state.title;
-                                        delete pl['__typename']
-                                        pl.songs.forEach(song => delete song['__typename'])
-                                    })
-                                    ownedPlaylists = combined.splice(0, ownedPlaylists.length);
-                                    collaborativePlaylists = combined;
-                                    updatePlaylist({ variables: {
-                                        id: this.props.user._id,
-                                        collaborativePlaylists: collaborativePlaylists,
-                                        ownedPlaylists: ownedPlaylists
-                                    }});
+                                    updatePlaylistName({ variables: {
+                                        id: this.props.playlist._id,
+                                        title: this.state.title
+                                    }})
                                 }}>
                                     <div className='form-group col-8 text-center mx-auto'>
                                         <label className='mt-2 mb-3'>Enter a new name for your playlist</label>

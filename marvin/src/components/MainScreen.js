@@ -23,65 +23,8 @@ const GET_USER = gql`
             username
             userPoints
             collaborativePlaylistsID
-            collaborativePlaylists {
-                _id
-                genre
-                numPlays
-                numTracks
-                ownerName
-                playlistPoints
-                privacyType
-                songs {
-                    albumID
-                    artistID
-                    genre
-                    title
-                    songID
-                    albumName
-                    artistName
-                }
-                title
-            } 
             followedPlaylistsID
-            followedPlaylists {
-                _id
-                genre
-                numPlays
-                numTracks
-                ownerName
-                playlistPoints
-                privacyType
-                songs {
-                    albumID
-                    artistID
-                    songID
-                    genre
-                    title
-                    albumName
-                    artistName
-                }
-                title
-            }
             ownedPlaylistsID
-            ownedPlaylists {
-                _id
-                genre
-                numPlays
-                numTracks
-                ownerName
-                playlistPoints
-                privacyType
-                songs {
-                    albumID
-                    artistID
-                    songID
-                    genre
-                    title
-                    albumName
-                    artistName
-                }
-                title
-            }
             recentlyPlayed {
                 playlistId
                 type

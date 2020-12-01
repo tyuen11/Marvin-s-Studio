@@ -13,7 +13,7 @@ var UserModel = require('../models/User');
 // PLAYLIST MODEL AND TYPES
 var PlaylistModel = require('../models/Playlist')
 var playlistType = require('./PlaylistSchemas').getType('Playlist')
-var songInputType = require('./PlaylistSchemas').getType('SongInput')
+//var songInputType = require('./PlaylistSchemas').getType('SongInput')
 //var playlistInputType = require('./PlaylistSchemas').getType('PlaylistInput')
 
 // COMMUNITY MODEL AND TYPES
@@ -25,6 +25,20 @@ var communityType = require('./CommunitySchemas').getType('Community')
 /*
 --- PLAYLIST TYPES ---
 */
+var songInputType = new GraphQLInputObjectType({
+    name: 'SongInput',
+    fields: function() {
+        return { 
+            albumID: { type: GraphQLString },
+            artistID: { type: GraphQLString },
+            songID: { type: GraphQLString },
+            genre: { type: GraphQLString },
+            title: { type: GraphQLString },
+            albumName: { type: GraphQLString },
+            artistName: { type: GraphQLString }
+        }
+    }
+})
 
 var playlistInputType = new GraphQLInputObjectType({
     name: 'PlaylistInput',
@@ -63,7 +77,6 @@ var playlistInputType = new GraphQLInputObjectType({
         }
     }
 })
-
 
 /*
 --- USER TYPES ---
@@ -365,31 +378,6 @@ var mutation = new GraphQLObjectType({
                     });
                 }
             },
-            updatePlaylist: {
-                type: userType,
-                args: {
-                    id: {
-                        name: 'id',
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    collaborativePlaylists: {
-                        type: new GraphQLNonNull(GraphQLList(playlistInputType))
-                    },
-                    ownedPlaylists: {
-                        type: new GraphQLNonNull(GraphQLList(playlistInputType))
-                    }
-                },
-                resolve(root, params) {
-                    return UserModel.findByIdAndUpdate( params.id, { 
-                    ownedPlaylists: params.ownedPlaylists, collaborativePlaylists: params.collaborativePlaylists
-                    }, function(err) {
-                        if (err) {
-                            console.log(err);
-                            return next(err);
-                        }
-                    });
-                }
-            },
             updatePlaylistIDs: {
                 type: userType,
                 args: {
@@ -469,7 +457,47 @@ var mutation = new GraphQLObjectType({
                     return newPlaylist;
                 }
             },
-            updatePlaylistByID: {
+            updatePlaylistName: {
+                type: playlistType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    title: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    }
+                },
+                resolve: function(root, params) {
+                    return PlaylistModel.findByIdAndUpdate( params.id,
+                        { title: params.title },
+                        function(err) {
+                            if(err) return next(err);
+                        }
+                    )
+                }
+            },
+            updatePlaylistSongs: {
+                type: playlistType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    songs: {
+                        type: new GraphQLNonNull(GraphQLList(songInputType))
+                    }
+                },
+                resolve: function(root, params) {
+                    return PlaylistModel.findByIdAndUpdate(params.id, 
+                        { songs: params.songs },
+                        function(err) {
+                            if(err) return next(err);
+                        }
+                    )
+                }
+            },
+            updatePlaylist: {
                 type: playlistType,
                 args: {
                     id: {

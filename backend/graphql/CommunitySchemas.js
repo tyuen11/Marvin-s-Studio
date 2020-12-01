@@ -2,6 +2,7 @@ var GraphQLSchema = require('graphql').GraphQLSchema
 var GraphQLList = require('graphql').GraphQLList
 var GraphQLObjectType = require('graphql').GraphQLObjectType
 var GraphQLInt = require('graphql').GraphQLInt
+var GraphQLString = require('graphql').GraphQLString
 
 var CommunityModel = require('../models/Community')
 var playlistType = require('./PlaylistSchemas').getType('Playlist')
@@ -25,14 +26,23 @@ var communityType = new GraphQLObjectType({
     name: 'Community',
     fields: function() {
        return{
+            _id: {
+               type: GraphQLString
+            },
             communityPlaylists: {
                 type: new GraphQLList(playlistType)
+            },
+            communityPlaylistsID: {
+                type: new GraphQLList(GraphQLString)
             },
             gotwPlaylist: {
                 type: playlistType
             },
             publicPlaylists: {
                 type: new GraphQLList(playlistType)
+            },
+            publicPlaylistsID: {
+                type: new GraphQLList(GraphQLString)
             },
             song1: {
                 type: sotdType

@@ -9,9 +9,12 @@ var sotdSchema = new mongoose.Schema({
 
 
 var communitySchema = new mongoose.Schema({
+    id: String,
     communityPlaylists: [playlist],
+    communityPlaylistsID: [String],
     gotwPlaylist: playlist,
     publicPlaylists: [playlist],
+    publicPlaylistsID: [String],
     song1: sotdSchema,
     song2: sotdSchema,
     song3: sotdSchema

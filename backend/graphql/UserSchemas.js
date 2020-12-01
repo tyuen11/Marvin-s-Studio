@@ -192,7 +192,23 @@ var userType = new GraphQLObjectType({
     }
 });
 
+/* 
+--- COMMUNITY TYPES
+*/
 
+var sotdInputType = new GraphQLInputObjectType({
+    name: 'sotdInput',
+    fields: function() {
+        return {
+            song: {
+                type: songInputType
+            },
+            sotdVotes: {
+                type: GraphQLInt
+            }
+        }
+    }
+})
 
 var queryType = new GraphQLObjectType({
     name: 'Query',
@@ -224,18 +240,24 @@ var queryType = new GraphQLObjectType({
                 }
             },
             // COMMUNITY QUERIES
-            community: {
-                type: communityType,
+            communities: {
+                type: GraphQLList(communityType),
                 resolve: function() {
                     const community = CommunityModel.find().exec()
                     if(!community) throw new Error('Error')
                     return community
                 }
             },
-            communityPlaylists: {
-                type: new GraphQLList(playlistType),
-                resolve: function() {
-                    const communityPlaylists = CommunityModel.find().exec()
+            community: {
+                type: communityType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: GraphQLString
+                    }
+                },
+                resolve: function(root, params) {
+                    const communityPlaylists = CommunityModel.findById(params.id).exec()
                     if (!communityPlaylists) throw new Error('Error')
                     return communityPlaylists
                 }
@@ -497,6 +519,26 @@ var mutation = new GraphQLObjectType({
                     )
                 }
             },
+            updatePlaylistPrivacy: {
+                type: playlistType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    privacyType: {
+                        type: new GraphQLNonNull(GraphQLInt)
+                    }
+                },
+                resolve: function(root, params) {
+                    return PlaylistModel.findByIdAndUpdate( params.id,
+                        { privacyType: params.privacyType },
+                        function(err) {
+                            if(err) return next(err);
+                        }    
+                    )
+                }
+            },
             updatePlaylist: {
                 type: playlistType,
                 args: {
@@ -558,7 +600,102 @@ var mutation = new GraphQLObjectType({
                 }
             },
             // COMMUNITY MUTATIONS
-            
+            addCommunity: {
+                type: communityType,
+                resolve: function() {
+                    const communityModel = new CommunityModel({
+                        communityPlaylistsID:[],
+                        gotwPlaylist: null,
+                        publicPlaylistsID: [],
+                        song1: null,
+                        song2: null,
+                        song3: null
+                    })
+                    const newCommunity = communityModel.save();
+                    if(!newCommunity) throw new Error('Error');
+                    return newCommunity;
+                }
+            },
+            updatePublicPlaylists: {
+                type: communityType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: GraphQLString
+                    },
+                    publicPlaylistsID: {
+                        type: new GraphQLNonNull(GraphQLList(GraphQLString))
+                    }
+                },
+                resolve: function(root, params) {
+                    return CommunityModel.findByIdAndUpdate( params.id, 
+                        { publicPlaylistsID: params.publicPlaylistsID },
+                        function(err) {
+                            if(err) return next(err)
+                        }
+                    )
+                }
+            },
+            updateCommunityPlaylists: {
+                type: communityType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    communityPlaylistsID: {
+                        type: new GraphQLNonNull(GraphQLList(GraphQLString))
+                    }
+                },
+                resolve: function(root, params) {
+                    return CommunityModel.findByIdAndUpdate(params.id,
+                        { communityPlaylistsID: params.communityPlaylistsID },
+                        function(err) {
+                            if(err) return next(err)
+                        }    
+                    )
+                }
+            },
+            updateSongs: {
+                type: communityType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    song1: {
+                        type: new GraphQLNonNull(sotdInputType)
+                    },
+                    song2: {
+                        type: new GraphQLNonNull(sotdInputType)
+                    },
+                    song3: {
+                        type: new GraphQLNonNull(sotdInputType)
+                    }
+                },
+                resolve: function(root, params) {
+                    return CommunityModel.findByIdAndUpdate(params.id,
+                        { song1: params.song1, song2: params.song2, song3: params.song3},
+                        function(err) {
+                            if (err) return next(err)
+                        }
+                    )
+                }
+            },
+            removeCommunity: {
+                type: communityType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: new GraphQLNonNull(GraphQLString)
+                    }
+                },
+                resolve: function(root, params) {
+                    const remCommunity = CommunityModel.findByIdAndRemove(params.id)
+                    if (!remCommunity) throw new Error('Error')
+                    return remCommunity
+                }
+            }
         }
     }
 });

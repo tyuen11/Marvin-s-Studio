@@ -12,6 +12,7 @@ import dislikeButton from '../../icons/dislike.png'
 import addToQueueButton from '../../icons/playlist.png'
 import EditPlaylistNameModal from '../modals/EditPlaylistNameModal.js';
 import { Query } from 'react-apollo';
+import ChangePrivacyModal from '../modals/ChangePrivacyModal.js';
 
 const GET_PLAYLIST = gql`
     query playlist($playlistID: String) {
@@ -46,7 +47,12 @@ class PlaylistScreen extends React.Component {
     state = {
         showDelete: false,
         showEditName: false,
-        showDropdown: false
+        showDropdown: false,
+        showPrivacy: false
+    }
+
+    handleShowPrivacy = () => {
+        this.setState({ showPrivacy: true })
     }
 
     handleShowDelete = () => {
@@ -56,6 +62,10 @@ class PlaylistScreen extends React.Component {
 
     handleShowEditName = () => {
         this.setState({ showEditName: true })
+    }
+
+    handleClosePrivacy = () => {
+        this.setState({ showPrivacy: false})
     }
 
     handleCloseDelete = () => {
@@ -118,7 +128,7 @@ class PlaylistScreen extends React.Component {
                                                         <DropdownItem href='#'>Add to Library</DropdownItem>
                                                         <DropdownItem href='#'>Share</DropdownItem>
                                                         <DropdownItem href='#' onClick={this.handleShowEditName} disabled={disableEdit}>Edit Playlist Name</DropdownItem>
-                                                        <DropdownItem href='#'>Privacy Settings</DropdownItem>
+                                                        <DropdownItem href='#' onClick={this.handleShowPrivacy} disabled={disableEdit}>Privacy Settings</DropdownItem>
                                                     </DropdownMenu>
                                                 </Dropdown>
                                             </div>
@@ -182,6 +192,8 @@ class PlaylistScreen extends React.Component {
                             <DeletePlaylistModal show={this.state.showDelete} handleClose={this.handleCloseDelete} handleShow={this.handleShowDelete}
                                 user={this.props.user} history={this.props.history} playlist={playlist}/>
                             <EditPlaylistNameModal show={this.state.showEditName} handleClose={this.handleCloseEditName} handleShow={this.handleShowEditName}
+                                playlist={playlist}/>
+                            <ChangePrivacyModal show={this.state.showPrivacy} handleClose={this.handleClosePrivacy} handleShow={this.handleShowPrivacy}
                                 playlist={playlist}/>
                         </div>
                     )

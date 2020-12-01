@@ -23,65 +23,8 @@ const GET_USER = gql`
             username
             userPoints
             collaborativePlaylistsID
-            collaborativePlaylists {
-                _id
-                genre
-                numPlays
-                numTracks
-                ownerName
-                playlistPoints
-                privacyType
-                songs {
-                    albumID
-                    artistID
-                    genre
-                    title
-                    songID
-                    albumName
-                    artistName
-                }
-                title
-            } 
             followedPlaylistsID
-            followedPlaylists {
-                _id
-                genre
-                numPlays
-                numTracks
-                ownerName
-                playlistPoints
-                privacyType
-                songs {
-                    albumID
-                    artistID
-                    songID
-                    genre
-                    title
-                    albumName
-                    artistName
-                }
-                title
-            }
             ownedPlaylistsID
-            ownedPlaylists {
-                _id
-                genre
-                numPlays
-                numTracks
-                ownerName
-                playlistPoints
-                privacyType
-                songs {
-                    albumID
-                    artistID
-                    songID
-                    genre
-                    title
-                    albumName
-                    artistName
-                }
-                title
-            }
             recentlyPlayed {
                 playlistId
                 type
@@ -211,9 +154,8 @@ class MainScreen extends Component {
                                         <Route path="/app/search">
                                             <SearchScreen />
                                         </Route>
-                                        <Route path="/app/profile">
-                                            {user !== null ? <ProfileScreen user={user} playlistCallback={this.goToPlaylist} history={this.props.history} {...PlaylistData}/> 
-                                            : <div/>}
+                                        <Route path="/app/profile" render={(props) => 
+                                            user != null ? <ProfileScreen {...props} user={user}/> : <div/>}>
                                         </Route>
                                         <Route path="/app/home">
                                             <HomeScreen/>

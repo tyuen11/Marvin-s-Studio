@@ -14,9 +14,6 @@ var songType = new GraphQLObjectType({
     name: 'Song',
     fields: function() {
         return {
-            _id: {
-                type: GraphQLString
-            },
             albumID: {
                 type: GraphQLString
             },

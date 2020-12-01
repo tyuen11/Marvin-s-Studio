@@ -1,31 +1,48 @@
 import React, { Component } from 'react'
 import {Modal, Button} from 'react-bootstrap'
 import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo'
+import { Mutation, Query } from 'react-apollo'
 
-const UPDATE_USER_PLAYLIST = gql`
-    mutation updatePlaylist(
-        $id: String!,
-        $collaborativePlaylists: [PlaylistInput]!
-        $ownedPlaylists: [PlaylistInput]! ) {
-            updatePlaylist(
-                id: $id
-                collaborativePlaylists: $collaborativePlaylists
-                ownedPlaylists: $ownedPlaylists) {
-                    _id
-                }      
+const UPDATE_PLAYLIST_SONGS = gql`
+    mutation updatePlaylistSongs(
+        $id: String!
+        $songs: [SongInput]!
+    ) {
+        updatePlaylistSongs(
+            id: $id
+            songs: $songs
+        ) {
+            _id
         }
-`;
+    }
+`
+
+const GET_PLAYLIST = gql `
+    query playlist($playlistID: String) {
+        playlist(id: $playlistID) {
+            _id
+            title
+            songs {
+                title
+                songID
+                artistID
+                artistName
+                albumName
+                genre
+            }
+        }
+    }
+`
 
 class AddSongModal extends Component {
     state = {
 
     }
 
-    addSong = (playlist, index, flag) => {
-        let newPlaylist = playlist;
+    addSong = (playlist, flag) => {
+        let songs = playlist.songs;
         let artistID = this.props.album.artist[0].browseId;
-        if (!flag) {       
+        if (!flag) {
             let song = this.props.song;
             let songToAdd = {
                 songID: song.videoId,
@@ -36,7 +53,7 @@ class AddSongModal extends Component {
                 albumName: this.props.album.title,
                 genre: null
             }
-            newPlaylist.songs.push(songToAdd);
+            songs.push(songToAdd);
         }
         else {
             let album = this.props.album;
@@ -50,23 +67,22 @@ class AddSongModal extends Component {
                     albumName: this.props.album.title,
                     genre: null
                 }
-                newPlaylist.songs.push(songToAdd);
+                songs.push(songToAdd);
             })
         }
         this.setState({
-            playlist: newPlaylist,
-            index: index
+            songs: songs,
+            id: playlist._id
         })
         console.log(this.state);
         this.props.handleClose();
     }
     render() {
-        let ownedPlaylists = this.props.user.ownedPlaylists;
-        let collaborativePlaylists = this.props.user.collaborativePlaylists;
-        let combined = ownedPlaylists.concat(collaborativePlaylists);
+        let ownedIDs = this.props.user.ownedPlaylistsID;
+        let collabIDs = this.props.user.collaborativePlaylistsID;
         return (
-            <Mutation mutation={UPDATE_USER_PLAYLIST} key={this.props.user._id} onCompleted={() => this.props.history.push('/app/album')}>
-            {(updatePlaylist, { loading, error}) => (
+            <Mutation mutation={UPDATE_PLAYLIST_SONGS} key={this.props.user._id} onCompleted={() => this.props.history.push('/app/album')}>
+            {(updatePlaylistSongs, { loading, error}) => (
                 <div className="container">
                     <Modal id="addSongModal" show={this.props.show} onHide={this.props.handleClose}>
                         <Modal.Header closeButton={true}>
@@ -75,26 +91,38 @@ class AddSongModal extends Component {
                         <Modal.Body id="addSongModalBody">
                             <form onSubmit={e => {
                                 e.preventDefault();
-                                // Split the combined back to the two diff playlist types
-                                combined[this.state.index] = this.state.playlist;
-                                combined.forEach(pl => {
-                                    delete pl['__typename']
-                                    pl.songs.forEach(song => {delete song['__typename']})
+                                let newSongs = this.state.songs;
+                                newSongs.forEach(song => {
+                                    delete song['__typename']
                                 })
-                                ownedPlaylists = combined.splice(0, ownedPlaylists.length);
-                                collaborativePlaylists = combined;
-                                updatePlaylist({variables: {
-                                    id: this.props.user._id, 
-                                    collaborativePlaylists: collaborativePlaylists,
-                                    ownedPlaylists: ownedPlaylists 
-                                }});
+                                updatePlaylistSongs({ variables: {
+                                    id: this.state.id,
+                                    songs: newSongs
+                                }})
                             }}>
                                 <div className="form-group col-8 text-center mx-auto">
+                                    {ownedIDs.map((id, index) => (
+                                        <Query pollInterval={500} query={GET_PLAYLIST} variables={{ playlistID: id }}>
+                                            {({ loading, error, data }) => {
+                                                let playlist;
+                                                if(loading) return 'Loading...';
+                                                if(error) return `Error! ${error.message}`;
+                                                else playlist = data.playlist;
+                                                return(
+                                                    <div key={index}>
+                                                        <button className="btn default" type="submit" onClick={() => this.addSong(playlist, this.props.flag)}>{playlist.title}</button>
+                                                    </div>
+                                                )
+                                            }}
+                                        </Query>
+                                    ))}
+                                    {/*}
                                     {combined.map((playlist, index) => (
                                         <div key={index}>
                                             <button className="btn default"type="submit" onClick={this.addSong.bind(this, playlist, index, this.props.flag)}>{playlist.title}</button>
                                         </div>
                                     ))}
+                                    */}
                                 </div>
                             </form>
                             {loading && <p>Loading...</p>}

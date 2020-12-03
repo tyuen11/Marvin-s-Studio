@@ -3,6 +3,7 @@ var Song = require('./Song').schema
 
 var playlistSchema = new mongoose.Schema({
     id: String,
+    collaborators: [String],
     genre: String,
     lastUpdated: {type: Date, default: Date.now},
     numPlays: Number,

@@ -239,6 +239,19 @@ var queryType = new GraphQLObjectType({
                     return userDetails
                 }
             },
+            userByEmail: {
+                type: userType,
+                args: {
+                    email: {
+                        type: GraphQLString
+                    }
+                },
+                resolve: function(root, params) {
+                    const userDetails = UserModel.findOne({email: params.email}).exec()
+                    if(!userDetails) throw new Error('Error')
+                    return userDetails
+                }
+            },
             // COMMUNITY QUERIES
             communities: {
                 type: GraphQLList(communityType),
@@ -430,6 +443,26 @@ var mutation = new GraphQLObjectType({
                     })
                 }
             },
+            updateCollaborativePlaylists: {
+                type: userType,
+                args: {
+                    email: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    collaborativePlaylistsID: {
+                        type: new GraphQLNonNull(GraphQLList(GraphQLString))
+                    }
+                },
+                resolve: function(root, params) {
+                    return UserModel.findOneAndUpdate(
+                        { email: params.email },
+                        { collaborativePlaylistsID: params.collaborativePlaylistsID },
+                        function(err) {
+                            if (err) return next(err)
+                        }
+                    )
+                }
+            },
             removeUser: {
                 type: userType,
                 args: {
@@ -536,6 +569,26 @@ var mutation = new GraphQLObjectType({
                         function(err) {
                             if(err) return next(err);
                         }    
+                    )
+                }
+            },
+            updatePlaylistCollaborators: {
+                type: playlistType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    collaborators: {
+                        type: new GraphQLNonNull(GraphQLList(GraphQLString))
+                    }
+                },
+                resolve: function(root, params) {
+                    return PlaylistModel.findByIdAndUpdate( params.id, 
+                        { collaborators: params.collaborators },
+                        function(err) {
+                            if(err) return next(err)
+                        }
                     )
                 }
             },

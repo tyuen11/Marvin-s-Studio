@@ -13,11 +13,13 @@ import addToQueueButton from '../../icons/playlist.png'
 import EditPlaylistNameModal from '../modals/EditPlaylistNameModal.js';
 import { Query } from 'react-apollo';
 import ChangePrivacyModal from '../modals/ChangePrivacyModal.js';
+import CollaboratorSettingsModal from '../modals/CollaboratorSettingsModal.js';
 
 const GET_PLAYLIST = gql`
     query playlist($playlistID: String) {
         playlist(id: $playlistID) {
             _id
+            collaborators
             genre
             numPlays
             numTracks
@@ -48,7 +50,12 @@ class PlaylistScreen extends React.Component {
         showDelete: false,
         showEditName: false,
         showDropdown: false,
-        showPrivacy: false
+        showPrivacy: false,
+        showCollab: false
+    }
+
+    handleShowCollab = () => {
+        this.setState({ showCollab: true })
     }
 
     handleShowPrivacy = () => {
@@ -62,6 +69,10 @@ class PlaylistScreen extends React.Component {
 
     handleShowEditName = () => {
         this.setState({ showEditName: true })
+    }
+
+    handleCloseCollab = () => {
+        this.setState({ showCollab: false })
     }
 
     handleClosePrivacy = () => {
@@ -124,16 +135,15 @@ class PlaylistScreen extends React.Component {
                                                         <img src={moreButton} style={{ height: 40 }}/>
                                                     </DropdownToggle>
                                                     <DropdownMenu>
-                                                        <DropdownItem href='#'>Copy Playlist</DropdownItem>
-                                                        <DropdownItem href='#'>Add to Library</DropdownItem>
-                                                        <DropdownItem href='#'>Share</DropdownItem>
-                                                        <DropdownItem href='#' onClick={this.handleShowEditName} disabled={disableEdit}>Edit Playlist Name</DropdownItem>
-                                                        <DropdownItem href='#' onClick={this.handleShowPrivacy} disabled={disableEdit}>Privacy Settings</DropdownItem>
+                                                        <DropdownItem >Copy Playlist</DropdownItem>
+                                                        <DropdownItem >Follow Playlist</DropdownItem>
+                                                        <DropdownItem onClick={this.handleShowCollab} disabled={disableEdit}>Collaborator Settings</DropdownItem>
+                                                        <DropdownItem onClick={this.handleShowEditName} disabled={disableEdit}>Edit Playlist Name</DropdownItem>
+                                                        <DropdownItem onClick={this.handleShowPrivacy} disabled={disableEdit}>Privacy Settings</DropdownItem>
                                                     </DropdownMenu>
                                                 </Dropdown>
                                             </div>
                                         </div>
-
                                         <div id="imgAndVotes" className="col-3 ml-2 mt-3" >
                                                 <div className="row mt-4 mb-2 justify-content-center">
                                                     <a href="albumPic">
@@ -194,6 +204,8 @@ class PlaylistScreen extends React.Component {
                             <EditPlaylistNameModal show={this.state.showEditName} handleClose={this.handleCloseEditName} handleShow={this.handleShowEditName}
                                 playlist={playlist}/>
                             <ChangePrivacyModal show={this.state.showPrivacy} handleClose={this.handleClosePrivacy} handleShow={this.handleShowPrivacy}
+                                playlist={playlist}/>
+                            <CollaboratorSettingsModal show={this.state.showCollab} handleClose={this.handleCloseCollab} handleShow={this.handleShowCollab}
                                 playlist={playlist}/>
                         </div>
                     )

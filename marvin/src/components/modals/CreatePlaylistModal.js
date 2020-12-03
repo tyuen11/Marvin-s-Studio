@@ -46,7 +46,7 @@ class CreatePlaylistModal extends Component {
         ownerName: this.props.user.username,
         ownerID: this.props.user._id,
         playlistPoints: 0,
-        privacyType: 0,
+        privacyType: 1,
         songs: [],
         title: ""
     }

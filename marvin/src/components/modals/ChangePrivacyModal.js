@@ -52,10 +52,6 @@ class ChangePrivacyModal extends React.Component {
         this.setState({ privacy: 1 })
     }
 
-    privacyCollaborative = () => {
-        this.setState({ privacy: 2 })
-    }
-
     render() {
         let publicPlaylists;
         return(
@@ -115,9 +111,6 @@ class ChangePrivacyModal extends React.Component {
                                                                     <input type='radio' name='optradio' className='mr-2'></input>
                                                                     Private
                                                                 </label>
-                                                            </div>
-                                                            <div className='radio' onClick={this.privacyCollaborative}>
-                                                                <label className=''><input type='radio' name='optradio' className='mr-2'></input>Collaborative</label>
                                                             </div>
                                                             <button type='submit' className='col-6 btn btn-primary mt-2 text-center mx-auto' onClick={this.props.handleClose}>Submit</button>
                                                         </div>

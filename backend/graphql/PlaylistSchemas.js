@@ -20,7 +20,7 @@ var songType = new GraphQLObjectType({
             artistID: {
                 type: GraphQLString
             },
-            songID: {
+            videoId: {
                 type: GraphQLString
             },
             genre: {
@@ -45,7 +45,7 @@ var songInputType = new GraphQLInputObjectType({
         return { 
             albumID: { type: GraphQLString },
             artistID: { type: GraphQLString },
-            songID: { type: GraphQLString },
+            videoId: { type: GraphQLString },
             genre: { type: GraphQLString },
             title: { type: GraphQLString },
             albumName: { type: GraphQLString },

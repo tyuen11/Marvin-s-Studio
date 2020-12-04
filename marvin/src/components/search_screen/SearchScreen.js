@@ -7,32 +7,11 @@ import { Link, useLocation } from 'react-router-dom';
 class SearchScreen extends React.Component {
 
     state = {
-        initial: true
-    }
-
-    fetchData = () => {
-        fetch('http://localhost:5000/searchResult')
-        .then(res => res.json())
-        .then(res => this.setState({ initial: false, artists: res.artists.content, albums: res.albums.content, query: res.query}))
-        .catch(err => {
-            console.log(err);
-        });
-
-        console.log(this.state);
+        initial: true,
+        prevArtists: null
     }
 
     componentDidMount = () => {
-       // this.fetchData();
-        // try {
-        //     const res = await fetch('http://localhost:5000/searchResult');
-        //     const json = await res.json();
-        //     console.log(json);
-        //     if (json !== null)
-        //         this.setState({ initial: false, artists: json.artists.content, albums: json.albums.content, query: json.query});
-        // } catch(e) {
-        //     console.log(e);
-        // }
-
         fetch('http://localhost:5000/searchResult')
         .then(res => res.json())
         .then(res => this.setState({ initial: false, artists: res.artists.content, albums: res.albums.content, query: res.query}))
@@ -44,8 +23,16 @@ class SearchScreen extends React.Component {
         
     }
 
-    render() {
+    componentDidUpdate = () => {
+        fetch('http://localhost:5000/searchResult')
+        .then(res => res.json())
+        .then(res => this.setState({ initial: false, artists: res.artists.content, albums: res.albums.content, query: res.query}))
+        .catch(err => {
+            console.log(err);
+        });
+    }
 
+    render() {
         if (this.state.initial) 
             return (
                 <div className="mt-4 w-25">

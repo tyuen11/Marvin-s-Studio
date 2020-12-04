@@ -231,7 +231,7 @@ app.post('/logout', (req, res) => {
 
 
 var search = {}
-var artist = {}, album;
+var artist = {}, album = {};
 app.post('/sidebar', (req, res) => {
     search["query"] = req.body.searchText;
     console.log('requst made!');
@@ -275,7 +275,8 @@ app.post('/albreq', (req, res) => {
     api.initalize()
         .then(info => {
             api.getAlbum(req.body.album).then(result => {
-                album = result;
+                album["album"] = result;
+                album["albumId"] = req.body.album
             })
             res.redirect(`/app/album/${req.body.album}`);
         });

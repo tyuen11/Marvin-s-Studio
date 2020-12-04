@@ -26,7 +26,7 @@ class AlbumSong extends Component {
                             src="https://i.imgur.com/NkGNthq.png">
                         </input>
                     </a>   
-        */}
+                    */}
                     <button className="btn btn-outline-primary bg-transparent border-0 p-1" onClick={this.props.handleShow.bind(this, song)}>
                         <img src={addToPlaylistButton} style={{ height: 25 }} />
                     </button>  

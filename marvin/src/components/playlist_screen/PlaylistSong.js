@@ -1,4 +1,8 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
+import addToQueueButton from '../../icons/playlist.png'
+import deleteButton from '../../icons/delete.png'
+
 
 class PlaylistSong extends Component {
     constructor(props) {
@@ -7,24 +11,31 @@ class PlaylistSong extends Component {
     }
 
     render() {
+        let song = this.props.song;
         return (
             <div>
-                <div className="row text-light ml-3 ">
-                    <label id="songName" className="col-2 text-nowrap overflow-hidden overflow-ellipsis">{this.props.title}</label>
-                    <label id="artistName" className="col-2">{this.props.artist}</label>
-                    <label id="albumName" className="col-2 text-nowrap overflow-hidden overflow-ellipses" style={{textOverflow:'ellipsis'}}>{this.props.album}</label>
-                    <label id="date" className="col-3">{this.props.date}</label>
-                    <a id="queueBtn" className="col-1" href="addQueue">
-                        <input type="image" style={{ width: "100%" }}
-                            src="https://i.imgur.com/sNVHPL0.png">
-                        </input>
-                    </a>
-                    <a id="deleteSong" className="col-1 mt-1" href="deleteSong">
-                        <input type="image" style={{ width: "55%"}}
-                            src="https://i.imgur.com/jpujrfk.png">
-                        </input>
-                    </a>
-                                    
+                <div className="row text-light ml-2 ">
+                    <a id="songName" className="col-3 text-light text-truncate overflow-hidden overflow-ellipsis"
+                        onClick={this.props.handleSongChange.bind(this, this.props.song)}>{song.title}</a>
+                    <label id="artistName" className="col-2">
+                        <Link className='text-white' to={`/app/artist/${song.artistID}`}>
+                            {song.artistName}
+                        </Link>
+                    </label>
+                    <label id="albumName" className="col-2 text-nowrap overflow-hidden overflow-ellipses" style={{textOverflow:'ellipsis'}}>
+                        <Link className='text-white' to='/app/album/'>
+                            {song.albumName}
+                        </Link>
+                    </label>
+                    <label id="date" className="col-2">01-10-1010</label>
+                    <div id="controls" className='col-2 ml-3'>
+                        <button className="btn btn-outline-primary bg-transparent border-0 p-1" onClick={this.props.handleQueueSong.bind(this, song)}>
+                            <img src={addToQueueButton} style={{ height: 25 }} />
+                        </button>
+                        <button className='btn btn-outline-primary bg-transparent border-0 p-1 ml-4'>
+                            <img src={deleteButton} style= {{ height: 25 }}/>
+                        </button>
+                    </div>       
                 </div>
                 <div className="divider song-divider"/>
             </div>

@@ -97,7 +97,7 @@ class PlaylistScreen extends React.Component {
         //let user = this.props.user;
         let playlist;
         let user = this.props.user;
-        let disableEdit;
+        let owned;
         return (
             <Query pollInterval={500} query={GET_PLAYLIST} variables={{ playlistID: this.props.match.params.id}}>
                 {({ loading, error, data }) => {
@@ -105,7 +105,7 @@ class PlaylistScreen extends React.Component {
                     if (error) return `Error! ${error.message}`;
                     else {
                         playlist = data.playlist;
-                        disableEdit = playlist.ownerID != user._id;
+                        owned = (playlist.ownerID == user._id);
                     }
                     return(
                         <div id="playlist" className="playpage">
@@ -127,20 +127,27 @@ class PlaylistScreen extends React.Component {
                                                 <button className='btn btn-outline-primary border-0 bg-transparent'>
                                                     <img src={shuffleButton} style={{ height: 40 }}/>
                                                 </button>
-                                                <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShowDelete} disabled={disableEdit}>
-                                                    <img src={deleteButton} style={{ height: 40 }}/>
-                                                </button>
+                                                {owned ? 
+                                                    <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShowDelete}>
+                                                        <img src={deleteButton} style={{ height: 40 }}/>
+                                                    </button> : null
+                                                }
                                                 <Dropdown direction='right' toggle={this.toggleDropdown} isOpen={this.state.showDropdown}>
                                                     <DropdownToggle className='btn btn-outline-primary border-0 bg-transparent' caret={false}>
                                                         <img src={moreButton} style={{ height: 40 }}/>
                                                     </DropdownToggle>
-                                                    <DropdownMenu>
-                                                        <DropdownItem >Copy Playlist</DropdownItem>
-                                                        <DropdownItem >Follow Playlist</DropdownItem>
-                                                        <DropdownItem onClick={this.handleShowCollab} disabled={disableEdit}>Collaborator Settings</DropdownItem>
-                                                        <DropdownItem onClick={this.handleShowEditName} disabled={disableEdit}>Edit Playlist Name</DropdownItem>
-                                                        <DropdownItem onClick={this.handleShowPrivacy} disabled={disableEdit}>Privacy Settings</DropdownItem>
-                                                    </DropdownMenu>
+                                                    {owned ? 
+                                                        <DropdownMenu>
+                                                            <DropdownItem>Copy Playlist</DropdownItem>
+                                                            <DropdownItem onClick={this.handleShowCollab}>Collaborator Settings</DropdownItem>
+                                                            <DropdownItem onClick={this.handleShowEditName}>Edit Playlist Name</DropdownItem>
+                                                            <DropdownItem onClick={this.handleShowPrivacy}>Privacy Settings</DropdownItem>
+                                                        </DropdownMenu> :
+                                                        <DropdownMenu>
+                                                            <DropdownItem>Copy Playlist</DropdownItem>
+                                                            <DropdownItem>Follow Playlist</DropdownItem>
+                                                        </DropdownMenu>
+                                                    }
                                                 </Dropdown>
                                             </div>
                                         </div>

@@ -198,16 +198,16 @@ const isLoggedIn = (req, res, next) => {
 
 // Routes for using Google OAuth
 app.get('/failed', (req, res) => res.send('You failed to login.'));
-app.get('/good', isLoggedIn, (req, res) => res.redirect('/app'));
+app.get('/good', isLoggedIn, (req, res) => res.redirect('/app/home'));
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/failed'} ) ,
-    (req, res) => res.redirect('/app')
+    (req, res) => res.redirect('/app/home')
 );
 
 //Routes for using Local Strategy
 app.post('/login',
   passport.authenticate('local', { 
-      successRedirect: '/app', 
+      successRedirect: '/app/home', 
       failureRedirect: '/login', 
       failureFlash: true 
     })
@@ -215,7 +215,7 @@ app.post('/login',
 
 app.post('/register',
     passport.authenticate('local-register', {
-        successRedirect: '/app', 
+        successRedirect: '/app/home', 
         failureRedirect: '/register', 
         failureFlash: true 
     })

@@ -72,15 +72,22 @@ class Sidebar extends React.Component {
                                 }}
                             </Query>
                         )) : <div></div> }
+                        {this.props.user != null ? this.props.user.collaborativePlaylistsID.map((playlistID, index) => (
+                            <Query pollInterval={500} query={GET_PLAYLIST} variables={{ playlistID: playlistID}} fetchPolicy='network-only'>
+                                {({ loading, error, data }) => {
+                                    if (loading) return 'Loading...';
+                                    if (error) return `Error! ${error.message}`;
+                                    else playlist = data.playlist;
+                                    return(
+                                        <div key={index} className='text-white text-left pl-3 mb-1'
+                                                style={{cursor: 'pointer'}}>
+                                            <Link className='text-white pl-2' to={`/app/playlist/${playlist._id}`}>{playlist.title}</Link>
+                                        </div>
+                                    )
+                                }}
+                            </Query>
+                        )) : <div></div> }
 
-
-
-                        {/*this.props.user != null ? this.props.user.ownedPlaylists.map((playlist, index) => (
-                            <div key={index} className='text-white text-left pl-3 mb-1'
-                                    style={{cursor: 'pointer'}}>
-                                <Link className='text-white pl-2' to={'/app/playlist'} onClick={() => this.props.playlistCallback(playlist, index)}>{playlist.title}</Link>
-                            </div>
-                        )) : <div></div> */}
                         <form action='/logout' method="post">
                         <button action="submit" className='btn btn-primary'>Logout</button>
                         </form>

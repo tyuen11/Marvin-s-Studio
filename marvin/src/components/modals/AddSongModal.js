@@ -116,13 +116,21 @@ class AddSongModal extends Component {
                                             }}
                                         </Query>
                                     ))}
-                                    {/*}
-                                    {combined.map((playlist, index) => (
-                                        <div key={index}>
-                                            <button className="btn default"type="submit" onClick={this.addSong.bind(this, playlist, index, this.props.flag)}>{playlist.title}</button>
-                                        </div>
+                                    {collabIDs.map((id, index) => (
+                                        <Query pollInterval={500} query={GET_PLAYLIST} variables={{ playlistID: id }}>
+                                            {({ loading, error, data }) => {
+                                                let playlist;
+                                                if(loading) return 'Loading...';
+                                                if(error) return `Error! ${error.message}`;
+                                                else playlist = data.playlist;
+                                                return (
+                                                    <div key={index}>
+                                                        <button className='btn default' type='submit' onClick={() => this.addSong(playlist, this.props.flag)}>{playlist.title}</button>
+                                                    </div>
+                                                )
+                                            }}
+                                        </Query>
                                     ))}
-                                    */}
                                 </div>
                             </form>
                             {loading && <p>Loading...</p>}

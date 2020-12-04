@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 import React, { useState } from 'react'
-import { Mutation, useQuery } from 'react-apollo'
+import { Mutation, Query, useQuery } from 'react-apollo'
 import { Modal } from 'react-bootstrap'
 import xMarkButton from '../../icons/x-mark.png'
 
@@ -43,15 +43,17 @@ const GET_USERS = gql`
 
 function CollaboratorSettingsModal(props) {
     const [nextCollaborator, setNextCollaborator] = useState("")
-    const [collaborators, setCollaborators] = useState([])
+    const [collaborators, setCollaborators] = useState(props.playlist.collaborators)
+    const [error, setError] = useState(false)
+    const [invalid, setInvalid] = useState("")
 
     const updateNextCollaborator = (e) => {
         setNextCollaborator(e.target.value)
     }
 
     const keyPress = (e, collaborators) => {
-        if (e.key === "Enter")
-            updateCollaborators(collaborators)
+        if (e.key == "Enter")
+            updateCollaborators()
     }
 
     const deleteCollaborator = (index) => {
@@ -60,20 +62,14 @@ function CollaboratorSettingsModal(props) {
         setCollaborators(tempCollaborators)
     }
 
-    const updateCollaborators = (collaborators) => {
+    const updateCollaborators = () => {
         let tempCollaborators = [...collaborators]
         tempCollaborators.push(nextCollaborator)
         setNextCollaborator("")
         setCollaborators(tempCollaborators)
     }
-
-    if(nextCollaborator == null){
-        setCollaborators([...props.playlist.collaborators])
-        setNextCollaborator("")
-    }
     
-    const {data} = useQuery(GET_USERS)
-
+    const { data } = useQuery(GET_USERS)
     return(
         <Mutation mutation={UPDATE_PLAYLIST_COLLABORATORS} key={props.playlist._id}>
             {(updatePlaylistCollaborators, { collaboratorLoading, collaboratorError }) => (
@@ -86,6 +82,7 @@ function CollaboratorSettingsModal(props) {
                             <Modal.Body id='collaboratorSettingsModalBody'>
                                 <form onSubmit={e => {
                                     e.preventDefault()
+                                    if(nextCollaborator != "") updateCollaborators()
 
                                     // check if collaborators need to be deleted
                                     let collToDelete = []
@@ -94,9 +91,16 @@ function CollaboratorSettingsModal(props) {
                                         if (!find) collToDelete.push(currCollaborator)
                                     })
                                     // delete playlist from users' collaborative playlists
-                                    collToDelete.forEach(deleteColl => {
+                                    collToDelete.forEach((deleteColl, i) => {
                                         if (data) {
                                             let user = data.users.find(user => user.email == deleteColl)
+                                            if(!user){
+                                                setError(true)
+                                                setInvalid(deleteColl)
+                                                setNextCollaborator("")
+                                                return
+                                            }
+                                            else setError(false)
                                             let collabPlaylists = [...user.collaborativePlaylistsID]
                                             let index = collabPlaylists.findIndex(playlistID => playlistID == props.playlist._id)
                                             // check that playlist to delete is in user's set, then delete
@@ -117,9 +121,16 @@ function CollaboratorSettingsModal(props) {
                                         if(!find) collToAdd.push(currCollaborator)
                                     })
                                     // add playlist to each users' collaborative playlists
-                                    collToAdd.forEach(addColl => {
+                                    collToAdd.forEach((addColl, i) => {
                                         if (data) {
                                             let user = data.users.find(user => user.email == addColl)
+                                            if(!user) {
+                                                setError(true)
+                                                setInvalid(addColl)
+                                                deleteCollaborator(i)
+                                                return
+                                            }
+                                            else setError(false)
                                             let collabPlaylists = [...user.collaborativePlaylistsID]
                                             let index = collabPlaylists.findIndex(playlistID => playlistID == props.playlist._id)
                                             // check if playlist to add is not in user's set, if so add playlist
@@ -134,8 +145,7 @@ function CollaboratorSettingsModal(props) {
                                     updatePlaylistCollaborators({ variables: {
                                         id: props.playlist._id,
                                         collaborators: collaborators
-                                    }})
-                                    props.handleClose();
+                                    }})//.then(props.handleClose())
                                 }}>
                                     <div className='form-group col-8 text-center mx-auto'>
                                         <div>
@@ -143,7 +153,7 @@ function CollaboratorSettingsModal(props) {
                                                 <div key={index} className='row mb-1'>
                                                     <div className='col-9 mt-1'>{collaborator}</div>
                                                     <div className='col-2'>
-                                                        <button className='btn p-1' onClick={() => deleteCollaborator(index)}>
+                                                        <button className='btn p-1' type='submit' onClick={() => deleteCollaborator(index)}>
                                                             <img src={xMarkButton} height={22}></img>
                                                         </button>
                                                     </div>
@@ -153,15 +163,16 @@ function CollaboratorSettingsModal(props) {
                                         <div className='input-group mb-1'>
                                             <input type='text' className='form-control' value={nextCollaborator} 
                                                 onChange={updateNextCollaborator} 
-                                                onKeyPress={(e) => keyPress(e, collaborators)}
                                             ></input>
                                             <div className='input-group-append'>
-                                                <button className='btn btn-primary' type='button' onClick={() => updateCollaborators(collaborators)}>+</button>
+                                                <button className='btn btn-primary' type='submit' onClick={() => updateCollaborators()}>+</button>
                                             </div>
                                         </div>
-                                        <button type='submit' className='btn btn-primary'>Submit</button>
+                                        {/* <button type='submit' className='btn btn-primary'>Submit</button> */}
                                     </div>
                                 </form>
+                                {(collaboratorLoading || playlistLoading) && <p>Loading...</p> }
+                                {(playlistError || error) && <p>Error getting collaborator {invalid}</p>}
                             </Modal.Body>
                         </Modal>
                     )}

@@ -108,7 +108,7 @@ class ChangePrivacyModal extends React.Component {
                                                             </div>
                                                             <div className='radio' onClick={this.privacyPrivate}>
                                                                 <label>
-                                                                    <input type='radio' name='optradio' className='mr-2'></input>
+                                                                    <input type='radio' name='optradio' className='mr-2' checked={this.state.privacy == 1}></input>
                                                                     Private
                                                                 </label>
                                                             </div>

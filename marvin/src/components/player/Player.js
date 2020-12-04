@@ -79,7 +79,6 @@ class Player extends React.Component {
 
     render () {
         let playerDisabled = this.state.currSong == null;
-        let buttonCursor = this.state.playerDisabled ? "disabled" : "not-allowed"
         
         const playing = this.state.playing, seeking = this.state.seeking, played = this.state.played, duration = this.state.duration;
         let shuffle = this.props.shufffle;
@@ -89,59 +88,54 @@ class Player extends React.Component {
         if (played >= 1)
             this.handleNextSongP();
 
-     
+        let buttonCursor = playing ? "pointer" : "disabled"
         return (
-            <div className="row w-100 pl-5 pt-2 display-inherit border border-white border-left-0 border-bottom-0 border-right-0"
-                    style={{height: 80, bottom: 0, left: 0, zIndex: 99, background: '#232323'}}>
-                <ReactPlayer width='0%' height='0%' url={song} ref={this.ref}
-                    playing={playing}
-                    onProgress={this.handleProgress}
-                    onDuration={this.handleDuration}
-                    onReady={() => console.log('onReady')}
-                    seeking={seeking} ref={this.ref}/>
-                <img className='mr-3' src={logo} style={{height: 60, width: 60}} alt=''></img>
-               
-                {/* <button id="prev" src="https://imgur.com/UAuIPlX" className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
-                    style={{fontSize: 40, cursor: buttonCursor}} onClick={this.handlePrevSongP.bind(this, played)}>{'\u23ee'} </button>
-               
-                <button id="play" src="https://imgur.com/xZlEws8" className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
-                    style={{fontSize: 40}} onClick={this.handlePlayPause}>{this.state.playing ? '\u23f8' : '\u25b6'} </button>
-               
-                <button id="next" className='btn btn-outline-primary border-0 text-primary font-weight-bold mx-3'
-                    style={{fontSize: 40, cursor: buttonCursor}} onClick={this.props.handleNextSong}>{'\u23ed'} </button> */}
-               
-                <button id="prev" className='btn btn-outline-primary border-0 mr-2'
-                        style={{cursor: buttonCursor}} onClick={this.handlePrevSongP.bind(this, played)}>
-                    <img src={prevButton} style={{ height: 25 }}/>
-                </button>
+            songs[index] ?
+                <div className="row w-100 pl-5 pt-2 display-inherit border border-white border-left-0 border-bottom-0 border-right-0"
+                        style={{height: 80, bottom: 0, left: 0, zIndex: 99, background: '#232323'}}>
+                    <ReactPlayer width='0%' height='0%' url={song} ref={this.ref}
+                        playing={playing}
+                        onProgress={this.handleProgress}
+                        onDuration={this.handleDuration}
+                        onReady={() => console.log('onReady')}
+                        seeking={seeking} ref={this.ref}/>
+                    <img className='mr-3' src={logo} style={{height: 60, width: 60}} alt=''></img>
+                    <div className='mr-1 text-white text-truncate'style={{width: '10%'}}>{songs[index].song.title}
+                        <div className='text-white'> by {songs[index].song.artistName}</div>
+                    </div>
+                    <button id="prev" className='btn btn-outline-primary border-0 mr-2'
+                            style={{cursor: buttonCursor}} onClick={this.handlePrevSongP.bind(this, played)}>
+                        <img src={prevButton} style={{ height: 25 }}/>
+                    </button>
 
-                <button id="playPause" className='btn btn-outline-primary border-0 mr-2'
-                        style={{cursor: buttonCursor}} onClick={this.handlePlayPause}>
-                    <img src={this.state.playing ? pauseButton : playButton} style={{ height: 25 }}/>
-                </button>
+                    <button id="playPause" className='btn btn-outline-primary border-0 mr-2'
+                            style={{cursor: buttonCursor}} onClick={this.handlePlayPause}>
+                        <img src={this.state.playing ? pauseButton : playButton} style={{ height: 25 }}/>
+                    </button>
 
-                <button id="next" className='btn btn-outline-primary border-0 mr-3'
-                        style={{cursor: buttonCursor}} onClick={this.handleNextSongP.bind()}>
-                    <img src={nextButton} style={{ height: 25 }}/>
-                </button>
-
-                <input id="seek" type='range' min={0} max={0.999999} step='any' className='mr-2' style={{ width: '60%'}} 
-                    onMouseDown={this.handleSeekMouseDown} value={played}
-                    onChange={this.handleSeekChange}
-                    onMouseUp={this.handleSeekMouseUp}
-                />
-
-                <Duration className="text-light  ml-2 mt-4 text-center" seconds={(duration * played)!= NaN ? (duration * played) : 0 } />
-                <button id='shuffle' className='btn btn-outline-primary border-0 ml-auto'
-                        style={{cursor: buttonCursor}} onClick={this.props.handleToggleShuffle}>
-                    <img src={shuffleButton} style={{ height: 25 }}/>
-                </button>
-                
-                <button id='queue' className='btn btn-outline-primary border-0 ml-3 mr-4'
-                        style={{cursor: buttonCursor}}>
-                    <img src={queueButton} style={{ height: 35 }}/>
-                </button> 
-            </div>
+                    <button id="next" className='btn btn-outline-primary border-0 mr-3'
+                            style={{cursor: buttonCursor}} onClick={this.handleNextSongP.bind()}>
+                        <img src={nextButton} style={{ height: 25 }}/>
+                    </button>
+                    <Duration className="text-light  mr-2 mt-4 text-center" seconds={(duration * played)!= NaN ? (duration * played) : 0 } />
+                    
+                    <input id="seek" type='range' min={0} max={0.999999} step='any' className='mr-2 w-50'
+                        onMouseDown={this.handleSeekMouseDown} value={played}
+                        onChange={this.handleSeekChange}
+                        onMouseUp={this.handleSeekMouseUp}
+                    />
+                    <button id='shuffle' className='btn btn-outline-primary border-0 ml-auto'
+                            style={{cursor: buttonCursor}} onClick={this.props.handleToggleShuffle}>
+                        <img src={shuffleButton} style={{ height: 25 }}/>
+                    </button>
+                    
+                    <button id='queue' className='btn btn-outline-primary border-0 ml-3 mr-4'
+                            style={{cursor: buttonCursor}}>
+                        <img src={queueButton} style={{ height: 35 }}/>
+                    </button> 
+                </div> :
+                <div/>
+            
         )
     }
 }

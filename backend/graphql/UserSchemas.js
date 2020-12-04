@@ -502,7 +502,7 @@ var mutation = new GraphQLObjectType({
                         ownerID: params.id,
                         ownerName: params.username,
                         playlistPoints: 0,
-                        privacyType: 0,
+                        privacyType: 1,
                         songs: [],
                         title: params.title
                     })

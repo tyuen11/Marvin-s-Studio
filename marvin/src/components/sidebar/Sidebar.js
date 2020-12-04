@@ -37,7 +37,7 @@ class Sidebar extends React.Component {
     render() {
         let playlist;
         return (
-            <div className='overflow-auto sticky-top' style={{height: 550}}>
+            <div className='overflow-auto sticky-top' style={{height: 605}}>
                 <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200}}>
                     <Link to='/app/community'>
                         <img src={logo} height={85} alt='' />
@@ -62,7 +62,7 @@ class Sidebar extends React.Component {
                                 {({ loading, error, data }) => {
                                     if (loading) return 'Loading...';
                                     if (error) return `Error! ${error.message}`;
-                                    else playlist = data.playlist;
+                                    else playlist = (data.playlist) ? data.playlist : [];
                                     return(
                                         <div key={index} className='text-white text-left pl-3 mb-1'
                                                 style={{cursor: 'pointer'}}>
@@ -77,7 +77,7 @@ class Sidebar extends React.Component {
                                 {({ loading, error, data }) => {
                                     if (loading) return 'Loading...';
                                     if (error) return `Error! ${error.message}`;
-                                    else playlist = data.playlist;
+                                    else playlist = (data.playlist) ? data.playlist : [];
                                     return(
                                         <div key={index} className='text-white text-left pl-3 mb-1'
                                                 style={{cursor: 'pointer'}}>

@@ -61,6 +61,16 @@ class Player extends React.Component {
         
     }
 
+    handleNextSongP = () => {
+        let x = this.props.handleNextSong();
+        if (x == 0) {
+            this.setState({playing: false});
+            this.player.seekTo(parseFloat(0));
+        }
+        this.setState({played: 0});
+
+    }
+
     componentDidUpdate = (prevProps) => {
         // If a new song is pressed, automatically start playing the song
         if (prevProps.songs[0] != this.props.songs[0])
@@ -72,11 +82,12 @@ class Player extends React.Component {
         let buttonCursor = this.state.playerDisabled ? "disabled" : "not-allowed"
         
         const playing = this.state.playing, seeking = this.state.seeking, played = this.state.played, duration = this.state.duration;
-        let songs = this.props.songs, song, index = this.props.index;
+        let shuffle = this.props.shufffle;
+        let songs = shuffle?this.props.shufled:this.props.songs, song, index = shuffle?this.props.shuffled_index:this.props.index;
         if (songs[0] != undefined)
             song = "https://www.youtube.com/watch?v=" + songs[index].song.videoId;
         if (played >= 1)
-            this.props.handleNextSong();
+            this.handleNextSongP();
 
      
         return (
@@ -110,7 +121,7 @@ class Player extends React.Component {
                 </button>
 
                 <button id="next" className='btn btn-outline-primary border-0 mr-3'
-                        style={{cursor: buttonCursor}} onClick={this.props.handleNextSong}>
+                        style={{cursor: buttonCursor}} onClick={this.handleNextSongP.bind()}>
                     <img src={nextButton} style={{ height: 25 }}/>
                 </button>
 
@@ -122,7 +133,7 @@ class Player extends React.Component {
 
                 <Duration className="text-light  ml-2 mt-4 text-center" seconds={(duration * played)!= NaN ? (duration * played) : 0 } />
                 <button id='shuffle' className='btn btn-outline-primary border-0 ml-auto'
-                        style={{cursor: buttonCursor}}>
+                        style={{cursor: buttonCursor}} onClick={this.props.handleToggleShuffle}>
                     <img src={shuffleButton} style={{ height: 25 }}/>
                 </button>
                 

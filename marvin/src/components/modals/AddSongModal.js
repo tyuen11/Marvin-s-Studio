@@ -24,7 +24,7 @@ const GET_PLAYLIST = gql `
             title
             songs {
                 title
-                songID
+                videoId
                 artistID
                 artistName
                 albumName
@@ -45,10 +45,10 @@ class AddSongModal extends Component {
         if (!flag) {
             let song = this.props.song;
             let songToAdd = {
-                songID: song.videoId,
+                videoId: song.videoId,
                 title: song.name,
                 artistID: artistID,
-                albumID: null, // Prop the album id when going to that page from search screen
+                albumID: this.props.albumId, // Prop the album id when going to that page from search screen
                 artistName: this.props.album.artist[0].name,
                 albumName: this.props.album.title,
                 genre: null
@@ -59,10 +59,10 @@ class AddSongModal extends Component {
             let album = this.props.album;
             album.tracks.forEach(song => {
                 let songToAdd= {
-                    songID: song.videoId,
+                    videoId: song.videoId,
                     title: song.name,
                     artistID: artistID,
-                    albumID: null,
+                    albumID: this.props.albumId,
                     artistName: this.props.album.artist[0].name,
                     albumName: this.props.album.title,
                     genre: null

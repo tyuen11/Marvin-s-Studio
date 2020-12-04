@@ -18,6 +18,16 @@ class ArtistScreen extends React.Component {
         console.log(this.state.user)
     }
 
+    componentDidUpdate  = () => {
+        fetch('http://localhost:5000/getArtist')
+            .then(res => res.json())
+            .then(res => this.setState({ artist: res.artist, pp: res.pp }))
+            .catch(err => {
+                console.log(err)
+            })
+        console.log(this.state.user)
+    }
+
     changeCurrView = (val) => {
         this.setState({ viewArtist: val })
     }

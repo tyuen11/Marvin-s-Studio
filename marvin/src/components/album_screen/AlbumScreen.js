@@ -16,7 +16,17 @@ class AlbumScreen extends React.Component {
 	componentDidMount = () => {
 		fetch('http://localhost:5000/getAlbum')
 			.then(res => res.json())
-			.then(res => this.setState({ album: res }))
+			.then(res => this.setState({ album: res.album, albumId: res.albumId }))
+			.catch(err => {
+				console.log(err);
+			});
+		console.log(this.state.user);
+
+	}
+	componentDidUpdate = () => {
+		fetch('http://localhost:5000/getAlbum')
+			.then(res => res.json())
+			.then(res => this.setState({ album: res.album, albumId: res.albumId }))
 			.catch(err => {
 				console.log(err);
 			});
@@ -42,7 +52,7 @@ class AlbumScreen extends React.Component {
 		let user = this.props.user;
 		if (this.state.album == undefined)
 			return <div>Loading...</div>
-		let album = this.state.album;
+		let album = this.state.album, albumId = this.state.albumId;
 		let songs = album.tracks;
 
 		return (
@@ -102,7 +112,7 @@ class AlbumScreen extends React.Component {
 
 				</div>
 
-				{user !== null ? <AddSongModal user={this.props.user} show={this.state.show} song={this.state.song} album={album}
+				{user !== null ? <AddSongModal user={this.props.user} albumId={albumId} show={this.state.show} song={this.state.song} album={album}
 					handleClose={this.handleClose} handleShow={this.handleShow} history={this.props.history} 
 					flag={this.state.flag} /> : <div/>}
 			</div>

@@ -14,6 +14,9 @@ import gql from 'graphql-tag'
 import HomeScreen from './HomeScreen';
 import CommunityScreen from './CommunityScreen';
 
+var shuffle = require('knuth-shuffle').knuthShuffle;
+
+
 const GET_USER = gql`
     query user($userId: String) {
         user(id: $userId) {
@@ -45,7 +48,10 @@ class MainScreen extends Component {
     state = {
         songs: [],
         index: 0,
-        playing: false
+        playing: false,
+        shuffle: false,
+        shuffled: [],
+        shuffled_index: 0,
     }
 
     componentDidMount = () => {
@@ -62,6 +68,26 @@ class MainScreen extends Component {
         this.setState({ currPlaylist: playlist, playlistIndex: index })
     }
 
+    createShuffleSongs = () => {
+        let songs = this.state.songs;
+        let start_song = songs[this.state.index];
+        songs.splice(start_song, 1);
+        let shuffled = shuffle(songs.slice(0));
+        shuffled.unshift(start_song);
+        // Fix this.state.songs since it was change from songs.splice (shallow copy manipulation)
+        songs.splice(this.state.index, 0, start_song);
+        this.setState({shuffle: true, shuffled: shuffled, shuffled_index: 0});
+    }
+
+    handleToggleShuffle = () => {
+        if (this.state.shuffle == false) {;
+           this.createShuffleSongs();
+        }
+        else {
+            this.setState({shuffle: false});
+        }
+    }
+
     handleSongChange = (song) => {
         console.log("changing song to ", song.name);
         // Get all the queued songs
@@ -69,7 +95,11 @@ class MainScreen extends Component {
         // First add the song to play then all the queued songs
         if (queued !== undefined)
             songs = songs.concat(queued);
-        this.setState({songs: songs})
+        this.setState({songs: songs}, () => {
+            if (this.state.shuffle == true) {
+                this.createShuffleSongs();
+            }
+        });
     }
     
     handleQueueSong = (song) => {
@@ -92,17 +122,44 @@ class MainScreen extends Component {
         this.setState({songs: playlist});
     }
 
+    nextShuffledIndex(index) {
+        let song = this.state.shuffled[index];
+        let song_index_songs = this.state.songs.findIndex(s => s === song)
+        this.setState({shuffled_index: index, index: song_index_songs });
+    }
+
     handleNextSong = () => {
         // WHAT IF WE REACHED THE END OF THE SONGS???
-        let index = this.state.index;
-        this.setState({index: index+1})
+        let shuffle = this.state.shuffle;
+        let index = shuffle?this.state.shuffled_index:this.state.index;
+        let length = shuffle?this.state.shuffled.length:this.state.songs.length;
+        index+=1;
+        if (index == length) { 
+            if (this.state.shuffle) {
+                this.nextShuffledIndex(0);
+            }
+            else{
+                this.setState({index: 0});
+            }
+            return 0;
+        }
+        else {    
+            // If shuffle is toggled, incr the shuffle_index and set index to curr song index in songs
+            if (this.state.shuffle) {
+                this.nextShuffledIndex(index);
+            }
+            else{
+                this.setState({index: index});
+            }
+            return 1;
+        }
     }
 
     handlePrevSong = (played) => {
          // WHAT IF WE AT THE START OF THE SONGS???
         console.log(played);
         let index = this.state.index;
-        if (played > 0 || index == 0){
+        if (played > 0.03 || index == 0){
             this.setState({index: index});
             return 0;
         }
@@ -125,7 +182,8 @@ class MainScreen extends Component {
 
     
     render() {
-        let user, playing = this.state.playing, songs = this.state.songs, index = this.state.index;
+        let user, playing = this.state.playing, songs = this.state.songs, index = this.state.index, 
+            shuffled = this.state.shuffled, shuffle = this.state.shuffle,  shuffled_index = this.state.shuffled_index;
         console.log("songs is", songs);
         console.log("main screen says", this.state.playing);
 
@@ -141,9 +199,12 @@ class MainScreen extends Component {
                                 <Sidebar user={user} history={this.props.history} playlistCallback={this.goToPlaylist}/>
                                 <div className='col overflow-auto' style={{paddingBottom: 100}}>
                                     <Switch>
-                                        <Route path="/app/playlist/:id" render={(props) => (<PlaylistScreen {...props} user={user}/>)}
+                                        <Route path="/app/playlist/:id" render={(props) => (<PlaylistScreen {...props} user={user}
+                                            handlePlaylist={this.handlePlayPlaylist} handleSongChange={this.handleSongChange} 
+                                            handleQueueSong={this.handleQueueSong} handlePlayPlaylist={this.handlePlayPlaylist} 
+                                            />)}
                                         />
-                                        <Route  path="/app/album">
+                                        <Route path="/app/album">
                                             <AlbumScreen user={user} history={this.props.history}
                                                 handlePlaylist={this.handlePlayPlaylist} handleSongChange={this.handleSongChange} 
                                                 handleQueueSong={this.handleQueueSong} handlePlayPlaylist={this.handlePlayPlaylist} />
@@ -167,8 +228,8 @@ class MainScreen extends Component {
                                 </div>
                             </div>
                             <div className="row fixed-bottom">
-                                <Player songs={songs} playing={playing} index={index} 
-                                    handleNextSong={this.handleNextSong} handlePrevSong={this.handlePrevSong}/>
+                                <Player songs={songs} playing={playing} index={index} shuffled={shuffle} shuffle={shuffle} shuffled_index={shuffled_index}
+                                    handleNextSong={this.handleNextSong} handlePrevSong={this.handlePrevSong} handleToggleShuffle={this.handleToggleShuffle}/>
                             </div>
                         </div>
                     )

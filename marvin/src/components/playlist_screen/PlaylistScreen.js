@@ -11,6 +11,7 @@ import likeButton from '../../icons/like.png'
 import dislikeButton from '../../icons/dislike.png'
 import addToQueueButton from '../../icons/playlist.png'
 import EditPlaylistNameModal from '../modals/EditPlaylistNameModal.js';
+import PlaylistSong from './PlaylistSong'
 import { Query } from 'react-apollo';
 
 const GET_PLAYLIST = gql`
@@ -31,6 +32,7 @@ const GET_PLAYLIST = gql`
                 artistName
                 genre
                 title
+                videoId
             }
             title
         }
@@ -73,7 +75,6 @@ class PlaylistScreen extends React.Component {
     }
 
     render() {
-        //let user = this.props.user;
         let playlist;
         let user = this.props.user;
         let disableEdit;
@@ -101,7 +102,7 @@ class PlaylistScreen extends React.Component {
 
                                             <div id="actions" className="row overflow-visible ml-3" style={{marginTop:60}}>
                                                 <button className='btn btn-outline-primary border-0 bg-transparent'>
-                                                    <img src={playButton} style={{ height: 40 }}/>
+                                                    <img src={playButton} style={{ height: 40 }} onClick={this.props.handlePlayPlaylist.bind(this, playlist.songs)}/>
                                                 </button>
                                                 <button className='btn btn-outline-primary border-0 bg-transparent'>
                                                     <img src={shuffleButton} style={{ height: 40 }}/>
@@ -152,32 +153,10 @@ class PlaylistScreen extends React.Component {
                                 <div className="col-3"> <h3 style={{ color: "white" }}>Date Added </h3>  </div>
                             </div>
                             <div className="divider song-divider" />
-                            {playlist.songs.map((song) => (
-                                <div>
-                                    <div className="row text-light ml-2 ">
-                                        <label id="songName" className="col-3 text-truncate overflow-hidden overflow-ellipsis">{song.title}</label>
-                                        <label id="artistName" className="col-2">
-                                            <Link className='text-white' to={`/app/artist/${song.artistID}`}>
-                                                {song.artistName}
-                                            </Link>
-                                        </label>
-                                        <label id="albumName" className="col-2 text-nowrap overflow-hidden overflow-ellipses" style={{textOverflow:'ellipsis'}}>
-                                            <Link className='text-white' to='/app/album/'>
-                                                {song.albumName}
-                                            </Link>
-                                        </label>
-                                        <label id="date" className="col-2">01-10-1010</label>
-                                        <div id="controls" className='col-2 ml-3'>
-                                            <button className="btn btn-outline-primary bg-transparent border-0 p-1">
-                                                <img src={addToQueueButton} style={{ height: 25 }} />
-                                            </button>
-                                            <button className='btn btn-outline-primary bg-transparent border-0 p-1 ml-4'>
-                                                <img src={deleteButton} style= {{ height: 25 }}/>
-                                            </button>
-                                        </div>       
-                                    </div>
-                                    <div className="divider song-divider"/>
-                                </div>
+                            {playlist.songs.map((song, index) => (
+                                <PlaylistSong key={index} style={{cursor: 'pointer'}} 
+                                    handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong}
+                                    song={song} />
                             ))}
                             <DeletePlaylistModal show={this.state.showDelete} handleClose={this.handleCloseDelete} handleShow={this.handleShowDelete}
                                 user={this.props.user} history={this.props.history} playlist={playlist}/>

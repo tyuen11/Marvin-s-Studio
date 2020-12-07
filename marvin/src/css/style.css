@@ -6,6 +6,10 @@
     position: relative;
     text-align: center;
 }
+
+.song-divider {
+    opacity: 0.5;
+}
 .divider .divider-title {
     background: #232323;
     font-size: 12px;

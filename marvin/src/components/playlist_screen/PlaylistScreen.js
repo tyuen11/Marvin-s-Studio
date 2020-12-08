@@ -30,10 +30,12 @@ const GET_PLAYLIST = gql`
             playlistPoints
             privacyType
             songs {
-                albumID
-                artistID
-                genre
                 title
+                videoId
+                artistID
+                artistName
+                albumName
+                genre
             }
             title
         }
@@ -142,10 +144,7 @@ class PlaylistScreen extends React.Component {
 
                                                     <div id="actions" className="row overflow-visible ml-3" style={{ marginTop: 60 }}>
                                                         <button className='btn btn-outline-primary border-0 bg-transparent'>
-                                                            <img src={playButton} style={{ height: 40 }} />
-                                                        </button>
-                                                        <button className='btn btn-outline-primary border-0 bg-transparent'>
-                                                            <img src={shuffleButton} style={{ height: 40 }} />
+                                                            <img src={playButton} style={{ height: 40 }} onClick={this.props.handlePlayPlaylist.bind(this, playlist.songs)}/>
                                                         </button>
                                                         <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShowDelete}>
                                                             <img src={deleteButton} style={{ height: 40 }} />
@@ -202,46 +201,9 @@ class PlaylistScreen extends React.Component {
                                     </div>
                                     <div className="divider song-divider" />
                                     {playlist.songs.map((song, index) => (
-                                        <div>
-                                            <div className="row text-light ml-2 ">
-                                                <label id="songName" className="col-3 text-truncate overflow-hidden overflow-ellipsis">{song.title}</label>
-                                                <label id="artistName" className="col-2">
-                                                    <Link className='text-white' to={`/app/artist/${song.artistID}`}>
-                                                        {song.artistName}
-                                                    </Link>
-                                                </label>
-                                                <label id="albumName" className="col-2 text-nowrap overflow-hidden overflow-ellipses" style={{ textOverflow: 'ellipsis' }}>
-                                                    <Link className='text-white' to='/app/album/'>
-                                                        {song.albumName}
-                                                    </Link>
-                                                </label>
-                                                <label id="date" className="col-2">01-10-1010</label>
-                                                <div id="controls" className='col-2 ml-3'>
-                                                    <button className="btn btn-outline-primary bg-transparent border-0 p-1" onClick={this.props.handleQueueSong.bind(this, song)}>
-                                                        <img src={addToQueueButton} style={{ height: 25 }} />
-                                                    </button>
-                                                    <button className='btn btn-outline-primary bg-transparent border-0 p-1 ml-4'
-                                                        onClick={e => {
-                                                            e.preventDefault();
-                                                            let newSongs = playlist.songs;
-                                                            newSongs.splice(index, 1)
-                                                            newSongs.forEach(song => {
-                                                                delete song['__typename']
-                                                            })
-                                                            updatePlaylistSongs({
-                                                                variables: {
-                                                                    id: playlist._id,
-                                                                    songs: newSongs
-                                                                }
-                                                            })
-                                                        }}>
-                                                        <img src={deleteButton} style={{ height: 25 }} />
-                                                    </button>
-
-                                                </div>
-                                            </div>
-                                            <div className="divider song-divider" />
-                                        </div>
+                                        <PlaylistSong key={index} style={{cursor: 'pointer'}} 
+                                            handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong}
+                                            song={song} updatePlaylistSongs={updatePlaylistSongs} playlist={playlist}/>
                                     ))}
                                     <DeletePlaylistModal show={this.state.showDelete} handleClose={this.handleCloseDelete} handleShow={this.handleShowDelete}
                                         user={this.props.user} history={this.props.history} playlist={playlist} />

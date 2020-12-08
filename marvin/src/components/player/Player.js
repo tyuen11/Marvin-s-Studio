@@ -42,7 +42,7 @@ class Player extends React.Component {
     }
 
     handleProgress = state => {
-        console.log('onProgress', state)
+        //console.log('onProgress', state)
         // We only want to update time slider if we are not currently seeking
         if (!this.state.seeking) {
           this.setState(state)
@@ -79,6 +79,7 @@ class Player extends React.Component {
 
     render () {
         let playerDisabled = this.state.currSong == null;
+        console.log("playing is ", this.state.playing);
         
         const playing = this.state.playing, seeking = this.state.seeking, played = this.state.played, duration = this.state.duration;
         let shuffle = this.props.shufffle;

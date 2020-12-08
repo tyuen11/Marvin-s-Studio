@@ -20,8 +20,6 @@ class AlbumScreen extends React.Component {
 			.catch(err => {
 				console.log(err);
 			});
-		console.log(this.state.user);
-
 	}
 	componentDidUpdate = () => {
 		fetch('http://localhost:5000/getAlbum')
@@ -30,8 +28,6 @@ class AlbumScreen extends React.Component {
 			.catch(err => {
 				console.log(err);
 			});
-		console.log(this.state.user);
-
 	}
 	
 	handleShow = (song, flag) => {

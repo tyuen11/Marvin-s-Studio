@@ -8,7 +8,9 @@ var songSchema = new mongoose.Schema({
     genre: String,
     albumName: String,
     artistName: String,
-    title: String
+    title: String,
+    lastUpdated: {type: Date, default: Date.now}
+
 })
 
 module.exports = mongoose.model('Song', songSchema)

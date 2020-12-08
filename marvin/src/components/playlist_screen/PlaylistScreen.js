@@ -36,6 +36,7 @@ const GET_PLAYLIST = gql`
                 artistName
                 albumName
                 genre
+                lastUpdated
             }
             title
         }

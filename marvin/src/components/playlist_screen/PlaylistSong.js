@@ -14,7 +14,8 @@ class PlaylistSong extends Component {
 
     render() {
         let song = this.props.song;
-        let playlist = this.props.playlist
+        let playlist = this.props.playlist;
+        console.log(song);
         return (
             <div>
                 <div className="row text-light ml-2 ">
@@ -30,7 +31,7 @@ class PlaylistSong extends Component {
                             {song.albumName}
                         </Link>
                     </label>
-                    <label id="date" className="col-2">01-10-1010</label>
+                    <label id="date" className="col-2">{song.lastUpdated.slice(0,10)}</label>
                     <div id="controls" className='col-2 ml-3'>
                         <button className="btn btn-outline-primary bg-transparent border-0 p-1" onClick={this.props.handleQueueSong.bind(this, song)}>
                             <img src={addToQueueButton} style={{ height: 25 }} />

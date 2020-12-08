@@ -24,7 +24,10 @@ class Player extends React.Component {
     }
 
     handlePlayPause = () => {
-        this.setState({ playing: !this.state.playing })
+        if (this.state.loaded < 0.01 && this.state.playing) // Fixes issue of song still playing even when paused in beginning
+            return;
+        else
+            this.setState({ playing: !this.state.playing });
     }
 
     handleSeekMouseDown = e => {
@@ -42,7 +45,7 @@ class Player extends React.Component {
     }
 
     handleProgress = state => {
-        //console.log('onProgress', state)
+        console.log('onProgress', state)
         // We only want to update time slider if we are not currently seeking
         if (!this.state.seeking) {
           this.setState(state)
@@ -66,8 +69,9 @@ class Player extends React.Component {
         if (x == 0) {
             this.setState({playing: false});
             this.player.seekTo(parseFloat(0));
+            this.setState({played: 0});
         }
-        this.setState({played: 0});
+        this.setState({played: 0, loaded: 0});
 
     }
 
@@ -82,8 +86,9 @@ class Player extends React.Component {
         console.log("playing is ", this.state.playing);
         
         const playing = this.state.playing, seeking = this.state.seeking, played = this.state.played, duration = this.state.duration;
-        let shuffle = this.props.shufffle;
-        let songs = shuffle?this.props.shufled:this.props.songs, song, index = shuffle?this.props.shuffled_index:this.props.index;
+        let shuffle = this.props.shuffle;
+        let songs = shuffle?this.props.shuffled:this.props.songs, song, index = shuffle?this.props.shuffled_index:this.props.index;
+        console.log(songs);
         if (songs[0] != undefined)
             song = "https://www.youtube.com/watch?v=" + songs[index].song.videoId;
         if (played >= 1)

@@ -95,7 +95,7 @@ class MainScreen extends Component {
         // First add the song to play then all the queued songs
         if (queued !== undefined)
             songs = songs.concat(queued);
-        this.setState({songs: songs}, () => {
+        this.setState({songs: songs, index: 0}, () => {
             if (this.state.shuffle == true) {
                 this.createShuffleSongs();
             }

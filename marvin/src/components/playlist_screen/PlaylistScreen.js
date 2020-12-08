@@ -128,7 +128,10 @@ class PlaylistScreen extends React.Component {
                         {({ loading, error, data }) => {
                             if (loading) return 'Loading...';
                             if (error) return `Error! ${error.message}`;
-                            else playlist = data.playlist;
+                            else {
+                                playlist = data.playlist;
+                                owned = user._id == playlist.ownerID;
+                            }
                             return (
                                 <div id="playlist" className="playpage">
                                     <div className="row border-light" style={{ border: "solid", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px" }}>
@@ -146,9 +149,11 @@ class PlaylistScreen extends React.Component {
                                                         <button className='btn btn-outline-primary border-0 bg-transparent'>
                                                             <img src={playButton} style={{ height: 40 }} onClick={this.props.handlePlayPlaylist.bind(this, playlist.songs)}/>
                                                         </button>
-                                                        <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShowDelete}>
-                                                            <img src={deleteButton} style={{ height: 40 }} />
-                                                        </button>
+                                                        {owned ?
+                                                            <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShowDelete}>
+                                                                <img src={deleteButton} style={{ height: 40 }} />
+                                                            </button>
+                                                        : <div/>}
                                                         <Dropdown direction='right' toggle={this.toggleDropdown} isOpen={this.state.showDropdown}>
                                                             <DropdownToggle className='btn btn-outline-primary border-0 bg-transparent' caret={false}>
                                                                 <img src={moreButton} style={{ height: 40 }} />
@@ -201,7 +206,7 @@ class PlaylistScreen extends React.Component {
                                     </div>
                                     <div className="divider song-divider" />
                                     {playlist.songs.map((song, index) => (
-                                        <PlaylistSong key={index} style={{cursor: 'pointer'}} 
+                                        <PlaylistSong key={index} index={index} style={{cursor: 'pointer'}} 
                                             handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong}
                                             song={song} updatePlaylistSongs={updatePlaylistSongs} playlist={playlist}/>
                                     ))}

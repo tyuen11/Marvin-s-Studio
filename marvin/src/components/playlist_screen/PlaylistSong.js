@@ -38,7 +38,7 @@ class PlaylistSong extends Component {
                         <button className='btn btn-outline-primary bg-transparent border-0 p-1 ml-4' onClick={e => {
                             e.preventDefault();
                             let newSongs = playlist.songs;
-                            newSongs.splice(this.props.key, 1);
+                            newSongs.splice(this.props.index, 1);
                             newSongs.forEach(song => {
                                 delete song['__typename']
                             })

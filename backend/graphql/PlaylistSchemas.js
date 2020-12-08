@@ -61,6 +61,9 @@ var playlistType = new GraphQLObjectType({
             _id: {
                 type: GraphQLString
             },
+            collaborators: {
+                type: new GraphQLList(GraphQLString)
+            },
             genre: {
                 type: GraphQLString
             },
@@ -96,6 +99,9 @@ var playlistInputType = new GraphQLInputObjectType({
     name: 'PlaylistInput',
     fields: function() {
         return{ 
+            collaborators: {
+                type: new GraphQLList(GraphQLString)
+            },
             genre: {
                 type: GraphQLString
             },

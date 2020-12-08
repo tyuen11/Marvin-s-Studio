@@ -13,11 +13,14 @@ import addToQueueButton from '../../icons/playlist.png'
 import EditPlaylistNameModal from '../modals/EditPlaylistNameModal.js';
 import PlaylistSong from './PlaylistSong'
 import { Query } from 'react-apollo';
+import ChangePrivacyModal from '../modals/ChangePrivacyModal.js';
+import CollaboratorSettingsModal from '../modals/CollaboratorSettingsModal.js';
 
 const GET_PLAYLIST = gql`
     query playlist($playlistID: String) {
         playlist(id: $playlistID) {
             _id
+            collaborators
             genre
             numPlays
             numTracks
@@ -48,7 +51,17 @@ class PlaylistScreen extends React.Component {
     state = {
         showDelete: false,
         showEditName: false,
-        showDropdown: false
+        showDropdown: false,
+        showPrivacy: false,
+        showCollab: false
+    }
+
+    handleShowCollab = () => {
+        this.setState({ showCollab: true })
+    }
+
+    handleShowPrivacy = () => {
+        this.setState({ showPrivacy: true })
     }
 
     handleShowDelete = () => {
@@ -58,6 +71,14 @@ class PlaylistScreen extends React.Component {
 
     handleShowEditName = () => {
         this.setState({ showEditName: true })
+    }
+
+    handleCloseCollab = () => {
+        this.setState({ showCollab: false })
+    }
+
+    handleClosePrivacy = () => {
+        this.setState({ showPrivacy: false})
     }
 
     handleCloseDelete = () => {
@@ -77,7 +98,7 @@ class PlaylistScreen extends React.Component {
     render() {
         let playlist;
         let user = this.props.user;
-        let disableEdit;
+        let owned;
         return (
             <Query pollInterval={500} query={GET_PLAYLIST} variables={{ playlistID: this.props.match.params.id}}>
                 {({ loading, error, data }) => {
@@ -85,7 +106,7 @@ class PlaylistScreen extends React.Component {
                     if (error) return `Error! ${error.message}`;
                     else {
                         playlist = data.playlist;
-                        disableEdit = playlist.ownerID != user._id;
+                        owned = (playlist.ownerID == user._id);
                     }
                     return(
                         <div id="playlist" className="playpage">
@@ -107,24 +128,30 @@ class PlaylistScreen extends React.Component {
                                                 <button className='btn btn-outline-primary border-0 bg-transparent'>
                                                     <img src={shuffleButton} style={{ height: 40 }}/>
                                                 </button>
-                                                <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShowDelete} disabled={disableEdit}>
-                                                    <img src={deleteButton} style={{ height: 40 }}/>
-                                                </button>
+                                                {owned ? 
+                                                    <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShowDelete}>
+                                                        <img src={deleteButton} style={{ height: 40 }}/>
+                                                    </button> : null
+                                                }
                                                 <Dropdown direction='right' toggle={this.toggleDropdown} isOpen={this.state.showDropdown}>
                                                     <DropdownToggle className='btn btn-outline-primary border-0 bg-transparent' caret={false}>
                                                         <img src={moreButton} style={{ height: 40 }}/>
                                                     </DropdownToggle>
-                                                    <DropdownMenu>
-                                                        <DropdownItem href='#'>Copy Playlist</DropdownItem>
-                                                        <DropdownItem href='#'>Add to Library</DropdownItem>
-                                                        <DropdownItem href='#'>Share</DropdownItem>
-                                                        <DropdownItem href='#' onClick={this.handleShowEditName} disabled={disableEdit}>Edit Playlist Name</DropdownItem>
-                                                        <DropdownItem href='#'>Privacy Settings</DropdownItem>
-                                                    </DropdownMenu>
+                                                    {owned ? 
+                                                        <DropdownMenu>
+                                                            <DropdownItem>Copy Playlist</DropdownItem>
+                                                            <DropdownItem onClick={this.handleShowCollab}>Collaborator Settings</DropdownItem>
+                                                            <DropdownItem onClick={this.handleShowEditName}>Edit Playlist Name</DropdownItem>
+                                                            <DropdownItem onClick={this.handleShowPrivacy}>Privacy Settings</DropdownItem>
+                                                        </DropdownMenu> :
+                                                        <DropdownMenu>
+                                                            <DropdownItem>Copy Playlist</DropdownItem>
+                                                            <DropdownItem>Follow Playlist</DropdownItem>
+                                                        </DropdownMenu>
+                                                    }
                                                 </Dropdown>
                                             </div>
                                         </div>
-
                                         <div id="imgAndVotes" className="col-3 ml-2 mt-3" >
                                                 <div className="row mt-4 mb-2 justify-content-center">
                                                     <a href="albumPic">
@@ -161,6 +188,10 @@ class PlaylistScreen extends React.Component {
                             <DeletePlaylistModal show={this.state.showDelete} handleClose={this.handleCloseDelete} handleShow={this.handleShowDelete}
                                 user={this.props.user} history={this.props.history} playlist={playlist}/>
                             <EditPlaylistNameModal show={this.state.showEditName} handleClose={this.handleCloseEditName} handleShow={this.handleShowEditName}
+                                playlist={playlist}/>
+                            <ChangePrivacyModal show={this.state.showPrivacy} handleClose={this.handleClosePrivacy} handleShow={this.handleShowPrivacy}
+                                playlist={playlist}/>
+                            <CollaboratorSettingsModal show={this.state.showCollab} handleClose={this.handleCloseCollab} handleShow={this.handleShowCollab}
                                 playlist={playlist}/>
                         </div>
                     )

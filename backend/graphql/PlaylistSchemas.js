@@ -35,6 +35,9 @@ var songType = new GraphQLObjectType({
             title: {
                 type: GraphQLString
             },
+            albumArt: {
+                type: GraphQLString
+            },
             lastUpdated: {
                 type: GraphQLDate
             }
@@ -53,6 +56,7 @@ var songInputType = new GraphQLInputObjectType({
             title: { type: GraphQLString },
             albumName: { type: GraphQLString },
             artistName: { type: GraphQLString },
+            albumArt: {type: GraphQLString}
         }
     }
 })

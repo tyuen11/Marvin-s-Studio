@@ -7,6 +7,7 @@ import PlaylistData from '../PlaylistData.json'
 import ArtistScreen from './artist_screen/ArtistScreen';
 
 import Player from './player/Player.js'
+import Queue from './queue/Queue.js'
 import ProfileScreen from './profile_screen/ProfileScreen';
 import SearchScreen from './search_screen/SearchScreen';
 import { Query } from 'react-apollo';
@@ -52,6 +53,7 @@ class MainScreen extends Component {
         shuffle: false,
         shuffled: [],
         shuffled_index: 0,
+        showQueue: false
     }
 
     componentDidMount = () => {
@@ -64,19 +66,30 @@ class MainScreen extends Component {
         console.log(this.state.user);
     }
 
+    handleShowQueue = () => {
+        this.setState({ showQueue: true });
+    }
+
+    handleCloseQueue = () => {
+        this.setState({ showQueue: false});
+    }
+
     goToPlaylist = (playlist, index) => {
         this.setState({ currPlaylist: playlist, playlistIndex: index })
     }
 
-    createShuffleSongs = () => {
-        let songs = this.state.songs;
+    createShuffleSongs = () => { // NEED TO SHUFFLE ONLY NONQUEUED SONGS!!!
+        let songs = this.state.songs, queued = this.getQueuedSongs();
         let start_song = songs[this.state.index];
-        songs.splice(start_song, 1);
+        songs.splice(start_song,  queued.length + 1);
         let shuffled = shuffle(songs.slice(0));
+        shuffled = queued.concat(shuffled);
         shuffled.unshift(start_song);
         // Fix this.state.songs since it was change from songs.splice (shallow copy manipulation)
+        songs = queued.concat(songs);
         songs.splice(this.state.index, 0, start_song);
-        this.setState({shuffle: true, shuffled: shuffled, shuffled_index: 0});
+        console.log(songs);
+        this.setState({shuffle: true, songs: songs, shuffled: shuffled, shuffled_index: 0});
     }
 
     handleToggleShuffle = () => {
@@ -128,29 +141,42 @@ class MainScreen extends Component {
         this.setState({shuffled_index: index, index: song_index_songs });
     }
 
+    // removeQueueSong(index) {
+    //     let song = this.state.shuffle?this.state.shuffled[index]:this.state.songs[index];
+    //     if (!song.queued)
+    //         return;
+    //     let queued = this.getQueuedSongs().shift;
+    //     // Put back the rest of the queued song back into place if there still is any
+    // }
+
     handleNextSong = () => {
         // WHAT IF WE REACHED THE END OF THE SONGS???
         let shuffle = this.state.shuffle;
         let index = shuffle?this.state.shuffled_index:this.state.index;
         let length = shuffle?this.state.shuffled.length:this.state.songs.length;
-        index+=1;
-        if (index == length) { 
-            if (this.state.shuffle) {
+        let song = this.state.shuffle?this.state.shuffled[index]:this.state.songs[index];
+
+        // this.removeQueueSong(index);
+        if (!song.queued)
+            index+=1;
+
+        if (song.queued) {
+            let songs = this.state.songs;
+            songs.splice(index, 1);
+        }
+        if (index == length) { // Case of reaching the end of songs to be played 
+            if (this.state.shuffle) 
                 this.nextShuffledIndex(0);
-            }
-            else{
+            else
                 this.setState({index: 0});
-            }
             return 0;
         }
-        else {    
+        else {
             // If shuffle is toggled, incr the shuffle_index and set index to curr song index in songs
-            if (this.state.shuffle) {
+            if (this.state.shuffle) 
                 this.nextShuffledIndex(index);
-            }
-            else{
-                this.setState({index: index});
-            }
+            else
+                this.setState({index: index}); 
             return 1;
         }
     }
@@ -170,13 +196,9 @@ class MainScreen extends Component {
     }
 
     getQueuedSongs() {
-        let songs = this.state.songs, queue = [];
+        let songs = this.state.songs, queue;;
         console.log("queue:", songs);
-        for (let x = 0; x < songs.length; x++){ 
-            console.log(songs[x], songs[x].queued);
-            if (songs[x].queued == true) 
-                queue.push(songs[x]);
-        }
+        queue = songs.filter(song => song.queued);
         return queue;
     }
 
@@ -227,9 +249,13 @@ class MainScreen extends Component {
                                     </Switch>
                                 </div>
                             </div>
+                            {this.state.showQueue? <Queue songs={songs} index={index} shuffled={shuffled} 
+                                shuffle={shuffle} shuffled_index={shuffled_index} handleCloseQueue={this.handleCloseQueue}/>
+                                :null }
                             <div className="row fixed-bottom">
-                                <Player songs={songs} playing={playing} index={index} shuffled={shuffle} shuffle={shuffle} shuffled_index={shuffled_index}
-                                    handleNextSong={this.handleNextSong} handlePrevSong={this.handlePrevSong} handleToggleShuffle={this.handleToggleShuffle}/>
+                                <Player songs={songs} playing={playing} index={index} shuffled={shuffled} shuffle={shuffle} shuffled_index={shuffled_index}
+                                    handleNextSong={this.handleNextSong} handlePrevSong={this.handlePrevSong} handleToggleShuffle={this.handleToggleShuffle}
+                                    handleShowQueue={this.handleShowQueue}/>
                             </div>
                         </div>
                     )

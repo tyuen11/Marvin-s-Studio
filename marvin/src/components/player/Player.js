@@ -71,14 +71,15 @@ class Player extends React.Component {
             this.player.seekTo(parseFloat(0));
             this.setState({played: 0});
         }
-        this.setState({played: 0, loaded: 0});
+        this.player.seekTo(parseFloat(0));
+        this.setState({played: 0, loaded: 0}); // Also fixes issue of song still playing even when paused in beginning
 
     }
 
     componentDidUpdate = (prevProps) => {
         // If a new song is pressed, automatically start playing the song
         if (prevProps.songs[0] != this.props.songs[0])
-            this.setState({playing: true}); 
+            this.setState({playing: true, played: 0, loaded: 0}); 
     }
 
     render () {
@@ -105,9 +106,9 @@ class Player extends React.Component {
                         onDuration={this.handleDuration}
                         onReady={() => console.log('onReady')}
                         seeking={seeking} ref={this.ref}/>
-                    <img className='mr-3' src={logo} style={{height: 60, width: 60}} alt=''></img>
+                    <img className='mr-3' src={songs[index].song.albumArt} style={{height: 60, width: 60}} alt=''></img>
                     <div className='mr-1 text-white text-truncate'style={{width: '10%'}}>{songs[index].song.title}
-                        <div className='text-white'> by {songs[index].song.artistName}</div>
+                        <div className='text-white'><small>by {songs[index].song.artistName}</small></div>
                     </div>
                     <button id="prev" className='btn btn-outline-primary border-0 mr-2'
                             style={{cursor: buttonCursor}} onClick={this.handlePrevSongP.bind(this, played)}>
@@ -136,7 +137,7 @@ class Player extends React.Component {
                     </button>
                     
                     <button id='queue' className='btn btn-outline-primary border-0 ml-3 mr-4'
-                            style={{cursor: buttonCursor}}>
+                            style={{cursor: buttonCursor}} onClick={this.props.handleShowQueue}>
                         <img src={queueButton} style={{ height: 35 }}/>
                     </button> 
                 </div> :

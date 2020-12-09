@@ -9,6 +9,7 @@ var songSchema = new mongoose.Schema({
     albumName: String,
     artistName: String,
     title: String,
+    albumArt: String,
     lastUpdated: {type: Date, default: Date.now}
 
 })

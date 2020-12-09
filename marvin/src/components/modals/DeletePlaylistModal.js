@@ -122,38 +122,38 @@ class DeletePlaylistModal extends Component {
                     <Mutation mutation={UPDATE_PLAYLIST_IDS} key={user.id}>
                         {(updatePlaylistIDs, { updateLoading, updateError }) => (
                             <div className="container">
-                            <Modal id="deletePlaylist" show={this.props.show} onHide={this.props.handleClose}>
-                                <Modal.Header closeButton={true}>
-                                    <Modal.Title className="">Delete Playlist</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body id="exportModalBody">
-                                    <form onSubmit={e => {
-                                        e.preventDefault();
-                                        let index = user.ownedPlaylistsID.indexOf(playlist._id);
-                                        if (index > -1) {
-                                            user.ownedPlaylistsID.splice(index, 1);
-                                            removePlaylist({ variables: { playlistID: playlist._id }})
-                                            updatePlaylistIDs({ variables: {
-                                                id: user._id,
-                                                ownedPlaylistsID: user.ownedPlaylistsID,
-                                                collaborativePlaylistsID: user.collaborativePlaylistsID,
-                                                followedPlaylistsID: user.followedPlaylistsID
-                                            }}).then(this.props.history.push('/app/home'))
-                                        }
-                                        else throw new Error('Playlist not owned')
-                                    }}>
-                                        <div className="form-group col-9 text-center mx-auto">
-                                            <label className="mt-2 mb-3 ">Are you sure you want to delete playlist?</label>
-                                            <label className="mt-2 mb-3">You will not be able to retrieve it once it is deleted.</label>
-                                            <div className="row mb-4">
-                                                <Button type="submit" className="col-6 btn btn-primary ml-2 text-center mx-auto" onClick={this.props.handleClose}>Delete Playlist</Button>
+                                <Modal id="deletePlaylist" show={this.props.show} onHide={this.props.handleClose}>
+                                    <Modal.Header closeButton={true}>
+                                        <Modal.Title className="">Delete Playlist</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body id="exportModalBody">
+                                        <form onSubmit={e => {
+                                            e.preventDefault();
+                                            let index = user.ownedPlaylistsID.indexOf(playlist._id);
+                                            if (index > -1) {
+                                                user.ownedPlaylistsID.splice(index, 1);
+                                                removePlaylist({ variables: { playlistID: playlist._id }})
+                                                updatePlaylistIDs({ variables: {
+                                                    id: user._id,
+                                                    ownedPlaylistsID: user.ownedPlaylistsID,
+                                                    collaborativePlaylistsID: user.collaborativePlaylistsID,
+                                                    followedPlaylistsID: user.followedPlaylistsID
+                                                }}).then(this.props.history.push('/app/home'))
+                                            }
+                                            else throw new Error('Playlist not owned')
+                                        }}>
+                                            <div className="form-group col-9 text-center mx-auto">
+                                                <label className="mt-2 mb-3 ">Are you sure you want to delete playlist?</label>
+                                                <label className="mt-2 mb-3">You will not be able to retrieve it once it is deleted.</label>
+                                                <div className="row mb-4">
+                                                    <Button type="submit" className="col-6 btn btn-danger ml-2 text-center mx-auto" onClick={this.props.handleClose}>Delete Playlist</Button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        {(remLoading || updateLoading) && <p>Loading...</p>}
-                                        {(remError || updateError) && <p>Error :O water u doing ( ͡° ͜ʖ ͡°)</p>}
-                                    </form>
-                                </Modal.Body>
-                            </Modal>
+                                            {(remLoading || updateLoading) && <p>Loading...</p>}
+                                            {(remError || updateError) && <p>Error :O water u doing ( ͡° ͜ʖ ͡°)</p>}
+                                        </form>
+                                    </Modal.Body>
+                                </Modal>
                         </div>
                         )}
                     </Mutation>

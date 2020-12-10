@@ -25,6 +25,7 @@ var UserSchema = new mongoose.Schema({
         playlistID: String,
         votes: Number
     }],
+    votedSOTD: Number,
     lastUpdated: {type: Date, default: Date.now}
     
 });

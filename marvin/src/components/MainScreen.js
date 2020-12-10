@@ -12,7 +12,7 @@ import ProfileScreen from './profile_screen/ProfileScreen';
 import SearchScreen from './search_screen/SearchScreen';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag'
-import HomeScreen from './HomeScreen';
+import HomeScreen from './home_screen/HomeScreen';
 import CommunityScreen from './CommunityScreen';
 
 var shuffle = require('knuth-shuffle').knuthShuffle;
@@ -41,6 +41,7 @@ const GET_USER = gql`
                 playlistID
                 votes
             }
+            votedSOTD
         }
     }
 `;
@@ -129,8 +130,6 @@ class MainScreen extends Component {
             playlist.push({song: songs[x], queued: false});
             if (x == 0 && queued !== undefined) 
                 playlist = playlist.concat(queued);
-            // vs
-            // this.handleSongChange(songs[x])
         }
         this.setState({songs: playlist});
     }
@@ -140,14 +139,6 @@ class MainScreen extends Component {
         let song_index_songs = this.state.songs.findIndex(s => s === song)
         this.setState({shuffled_index: index, index: song_index_songs });
     }
-
-    // removeQueueSong(index) {
-    //     let song = this.state.shuffle?this.state.shuffled[index]:this.state.songs[index];
-    //     if (!song.queued)
-    //         return;
-    //     let queued = this.getQueuedSongs().shift;
-    //     // Put back the rest of the queued song back into place if there still is any
-    // }
 
     handleNextSong = () => {
         // WHAT IF WE REACHED THE END OF THE SONGS???
@@ -208,6 +199,7 @@ class MainScreen extends Component {
             shuffled = this.state.shuffled, shuffle = this.state.shuffle,  shuffled_index = this.state.shuffled_index;
         console.log("songs is", songs);
         console.log("main screen says", this.state.playing);
+        console.log(user);
 
         return (
             <Query pollInterval={500} query={GET_USER} variables={{ userId: this.state.user}}>
@@ -220,6 +212,7 @@ class MainScreen extends Component {
                             <div className="row flex-nowrap mr-0">
                                 <Sidebar user={user} history={this.props.history} playlistCallback={this.goToPlaylist}/>
                                 <div className='col overflow-auto' style={{paddingBottom: 100}}>
+
                                     <Switch>
                                         <Route path="/app/playlist/:id" render={(props) => (<PlaylistScreen {...props} user={user}
                                             handlePlaylist={this.handlePlayPlaylist} handleSongChange={this.handleSongChange} 
@@ -231,7 +224,7 @@ class MainScreen extends Component {
                                                 handlePlaylist={this.handlePlayPlaylist} handleSongChange={this.handleSongChange} 
                                                 handleQueueSong={this.handleQueueSong} handlePlayPlaylist={this.handlePlayPlaylist} />
                                         </Route>
-                                        <Route  path="/app/artist">
+                                        <Route path="/app/artist">
                                             <ArtistScreen user={user} history={this.props.history}/>
                                         </Route>
                                         <Route path="/app/search">
@@ -241,7 +234,7 @@ class MainScreen extends Component {
                                             user != null ? <ProfileScreen {...props} user={user}/> : <div/>}>
                                         </Route>
                                         <Route path="/app/home">
-                                            <HomeScreen/>
+                                            <HomeScreen handleSongChange={this.handleSongChange} playing={playing} user={user}/>
                                         </Route>
                                         <Route path="/app/community">
                                             <CommunityScreen/>

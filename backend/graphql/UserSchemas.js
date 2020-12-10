@@ -187,6 +187,9 @@ var userType = new GraphQLObjectType({
             votedPlaylists: {
                 type: new GraphQLList(votedPlaylistsType)
             },
+            votedSOTD: {
+                type: GraphQLInt
+            },
             lastUpdated: {
                 type: GraphQLDate
             },
@@ -380,13 +383,33 @@ var mutation = new GraphQLObjectType({
                     },
                     votedPlaylists: {
                         type: new GraphQLNonNull(GraphQLList(votedPlaylistsInputType))
+                    },
+                    votedSOTD: {
+                        type: new GraphQLNonNull(GraphQLInt)
                     }
                 },
                 resolve(root, params) {
                     return UserModel.findByIdAndUpdate( params.id, { 
                     collaborativePlaylists: params.collaborativePlaylists, followedPlaylists: params.followedPlaylists,  ownedPlaylists: params.ownedPlaylists, 
                     mostPlayed: params.mostPlayed, recentlyPlayed: params.recentlyPlayed,  
-                    userPoints: params.userPoints, votedPlaylists: params.votedPlaylists }, function(err) {
+                    userPoints: params.userPoints, votedPlaylists: params.votedPlaylists, votedSOTD: params.votedSOTD }, function(err) {
+                        if (err) return next(err);
+                    });
+                }
+            },
+            updateUserSOTDVote: {
+                type: userType,
+                args: {
+                    id: {
+                        name: 'id',
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    votedSOTD: {
+                        type: new GraphQLNonNull(GraphQLInt)
+                    }
+                },
+                resolve(root, params) {
+                    return UserModel.findByIdAndUpdate( params.id, { votedSOTD: params.votedSOTD }, function(err) {
                         if (err) return next(err);
                     });
                 }

@@ -18,7 +18,6 @@ class Sidebar extends React.Component {
     constructor(props) {
         super(props);
         console.log("Sidebar")
-        console.log(props);
     }
     state = {
         show: false,

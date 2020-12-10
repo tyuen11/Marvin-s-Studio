@@ -14,19 +14,21 @@ class SearchScreen extends React.Component {
     componentDidMount = () => {
         fetch('http://localhost:5000/searchResult')
         .then(res => res.json())
-        .then(res => this.setState({ initial: false, artists: res.artists.content, albums: res.albums.content, query: res.query}))
+        .then(res => this.setState({ initial: false, artists: res.artists.content, albums: res.albums.content, query: res.query}, () => {
+            console.log(this.state);
+        }))
         .catch(err => {
             console.log(err);
         });
-
-        console.log(this.state);
         
     }
 
     componentDidUpdate = () => {
         fetch('http://localhost:5000/searchResult')
         .then(res => res.json())
-        .then(res => this.setState({ initial: false, artists: res.artists.content, albums: res.albums.content, query: res.query}))
+        .then(res => this.setState({ initial: false, artists: res.artists.content, albums: res.albums.content, query: res.query}, () => {
+            console.log(this.state);
+        }))
         .catch(err => {
             console.log(err);
         });

@@ -237,7 +237,7 @@ class MainScreen extends Component {
                                         <Route path="/app/search">
                                             <SearchScreen />
                                         </Route>
-                                        <Route path="/app/profile" render={(props) => 
+                                        <Route path="/app/profile/:id" render={(props) => 
                                             user != null ? <ProfileScreen {...props} user={user}/> : <div/>}>
                                         </Route>
                                         <Route path="/app/home">

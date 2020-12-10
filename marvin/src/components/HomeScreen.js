@@ -48,7 +48,7 @@ class HomeScreen extends React.Component {
                     else {
                         community = data.community
                         commPlaylists = data.community.communityPlaylistsID.slice(0, 4)
-                        pubPlaylists = data.community.publicPlaylistsID.slice(0,4)
+                        pubPlaylists = data.community.publicPlaylistsID.slice(0,5)
                     }
                     return(
                         <div className='container h-100'>

@@ -51,12 +51,8 @@ function CollaboratorSettingsModal(props) {
         setNextCollaborator(e.target.value)
     }
 
-    const keyPress = (e, collaborators) => {
-        if (e.key == "Enter")
-            updateCollaborators()
-    }
-
-    const deleteCollaborator = (index) => {
+    const deleteCollaborator = (e, index) => {
+        if (e.key === "Enter") return;
         let tempCollaborators = [...collaborators]
         tempCollaborators.splice(index, 1)
         setCollaborators(tempCollaborators)
@@ -153,7 +149,7 @@ function CollaboratorSettingsModal(props) {
                                                 <div key={index} className='row mb-1'>
                                                     <div className='col-9 mt-1'>{collaborator}</div>
                                                     <div className='col-2'>
-                                                        <button className='btn p-1' type='submit' onClick={() => deleteCollaborator(index)}>
+                                                        <button className='btn p-1' type='submit' onClick={(e) => deleteCollaborator(e, index)}>
                                                             <img src={xMarkButton} height={22}></img>
                                                         </button>
                                                     </div>

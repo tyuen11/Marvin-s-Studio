@@ -37,7 +37,7 @@ class Sidebar extends React.Component {
         let playlist;
         let loggedIn = this.props.user != null;
         return (
-            <div className='overflow-auto sticky-top' style={{height: 605}}>
+            <nav className='overflow-auto sticky-top' style={{height: 605}}>
                 <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200}}>
                     <Link to='/app/community'>
                         <img src={logo} height={85} alt='' />
@@ -49,7 +49,7 @@ class Sidebar extends React.Component {
                         <Link to='/app/home'>
                             <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Home</button>
                         </Link>
-                        <Link to='/app/profile'>
+                        <Link to={`/app/profile/${this.props.user._id}`}>
                             <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Your Library</button>
                         </Link>
                         <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'
@@ -106,7 +106,7 @@ class Sidebar extends React.Component {
                 : <div/>
                 }
                     
-            </div>
+            </nav>
         )
 
     }

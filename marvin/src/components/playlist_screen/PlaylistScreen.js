@@ -179,7 +179,9 @@ class PlaylistScreen extends React.Component {
                                                         <h1 className="text-light ml-4 mt-5">{playlist.title} </h1>
                                                     </div>
                                                     <div id="playlistOwner" className="row">
-                                                        <h4 className="text-light ml-4"> Playlist by {playlist.ownerName} </h4>
+                                                        <Link to={`/app/profile/${playlist.ownerID}`}>
+                                                            <h4 className="text-light ml-4"> Playlist by {playlist.ownerName} </h4>
+                                                        </Link>
                                                     </div>
 
                                                     <div id="actions" className="row overflow-visible ml-3" style={{ marginTop: 60 }}>

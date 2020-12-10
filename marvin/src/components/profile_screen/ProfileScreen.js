@@ -1,56 +1,85 @@
 import React from 'react'
 import ProfilePlaylistLinks from './ProfilePlaylistLinks';
 import profileImage from '../../icons/profile.png'
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+
+const GET_USER = gql`
+    query user($id: String!) {
+        user(id: $id) {
+            _id
+            username
+            ownedPlaylistsID
+            collaborativePlaylistsID
+            followedPlaylistsID
+        }
+    }
+`
 
 class ProfileScreen extends React.Component {
     state = {
-        playlists: this.props.user.ownedPlaylistsID,
         currView: 0
     }
 
-    viewMyPlaylists = () => {
+    viewMyPlaylists = (getPlaylists) => {
         this.setState({
-            playlists: this.props.user.ownedPlaylistsID,
+            playlists: getPlaylists,
             currView: 0
         })
     }
 
-    viewSharedPlaylists = () => {
+    viewSharedPlaylists = (getPlaylists) => {
         this.setState({
-            playlists: this.props.user.collaborativePlaylistsID,
+            playlists: getPlaylists,
             currView: 1
         })
     }
 
-    viewFollowedPlaylists = () => {
+    viewFollowedPlaylists = (getPlaylists) => {
         this.setState({
-            playlists: this.props.user.followedPlaylistsID,
+            playlists: getPlaylists,
             currView: 2
         })
     }
     
     render () {
+        let getUser;
+        let myProfile;
         let myPLStyle = (this.state.currView == 0) ? "underline #2C4871" : "underline transparent"
         let sharedStyle = (this.state.currView == 1) ? "underline #2C4871" : "underline transparent"
         let followedStyle = (this.state.currView == 2) ? "underline #2C4871" : "underline transparent"
         return (
-            <div className='d-flex h-100 p-0' style={{width: 'calc(100%-200px)'}}>
-                <div className='display-inline pl-5 pt-4 w-100'>
-                    <div className='display-4 text-white border border-white border-left-0 border-right-0 border-top-0 mb-3'>
-                        <img className='rounded-circle mr-3 mb-4' src={profileImage} height='80' width='80'></img>
-                        {this.props.user.username}
-                        <div className='row'>
-                            <div className='h4 ml-3 mr-5' style={{textDecoration: myPLStyle, cursor: "pointer"}} 
-                                onClick={this.viewMyPlaylists}>My Playlists</div>
-                            <div className='h4 mr-5' style={{textDecoration: sharedStyle, cursor: "pointer"}} 
-                                onClick={this.viewSharedPlaylists}>Shared With Me</div>
-                            <div className='h4' style={{textDecoration: followedStyle, cursor: "pointer"}} 
-                                onClick={this.viewFollowedPlaylists}>Followed Playlists</div>
+            <Query pollInterval={500} query={GET_USER} variables={{id: this.props.match.params.id}}>
+                {({ loading, error, data }) => {
+                    if (loading) return "Loading..."
+                    if (error) return `Error! ${error.message}`
+                    else {
+                        getUser = data.user
+                        if (getUser._id == this.props.user._id) myProfile = true;
+                        if (this.state.playlists == null) this.setState({ playlists: getUser.ownedPlaylistsID })
+                    }
+                    return (
+                        <div className='d-flex h-100 p-0' style={{width: 'calc(100%-200px)'}}>
+                            <div className='display-inline pl-5 pt-4 w-100'>
+                                <div className='display-4 text-white border border-white border-left-0 border-right-0 border-top-0 mb-3'>
+                                    <img className='rounded-circle mr-3 mb-4' src={profileImage} height='80' width='80'></img>
+                                    {getUser.username}
+                                    <div className='row'>
+                                        <div className='h4 ml-3 mr-5' style={{textDecoration: myPLStyle, cursor: "pointer"}} 
+                                            onClick={() => this.viewMyPlaylists(getUser.ownedPlaylistsID)}>{myProfile ? "My Playlists" : getUser.username + "'s Playlists"}</div>
+                                        <div className='h4 mr-5' style={{textDecoration: sharedStyle, cursor: "pointer"}} 
+                                            onClick={() => this.viewSharedPlaylists(getUser.collaborativePlaylistsID)}>Shared With {myProfile ? "Me" : getUser.username}</div>
+                                        <div className='h4' style={{textDecoration: followedStyle, cursor: "pointer"}} 
+                                            onClick={() => this.viewFollowedPlaylists(getUser.followedPlaylistsID)}>Followed Playlists</div>
+                                    </div>
+                                </div>
+                                {this.state.playlists ? <ProfilePlaylistLinks playlists={this.state.playlists} myProfile={myProfile}/> : <div/>}
+                            </div>
                         </div>
-                    </div>
-                    <ProfilePlaylistLinks playlists={this.state.playlists}/>
-                </div>
-            </div>
+                    )
+                }}
+            </Query>
+            
         )
     }
 }

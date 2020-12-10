@@ -10,8 +10,8 @@ class ProfilePlaylistLinks extends React.Component {
     render() {
         return (
             <div className='row text-wrap w-100' style={{paddingRight:'20%', paddingLeft: 20}}>
-                {this.props.playlists.map((playlistID, index) =>(
-                    <ProfilePlaylistLink playlistID={playlistID} key={index}/>
+                {this.props.playlists.map((playlistID) =>(
+                    <ProfilePlaylistLink playlistID={playlistID} myProfile={this.props.myProfile}/>
                 ))}
             </div>
         )

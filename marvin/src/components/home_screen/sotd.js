@@ -39,7 +39,14 @@ const UPDATE_USER_SOTD = gql`
 class sotd extends Component {
     handleSOTDVote = (sotds, index, user, updateSOTD, updateUserSOTD) => {
         console.log("voted!");
-        sotds[index].sotdVotes+=1;
+        if (user.votedSOTD-1 === index ) {
+            sotds[index].sotdVotes-=1;
+            index = 0
+        }
+        if (user.votedSOTD === 0) {
+            sotds[index].sotdVotes+=1;
+            index += 1;
+        }
         sotds.forEach(sotd => {
             delete sotd['__typename'];
             delete sotd.song['__typename'];
@@ -53,7 +60,7 @@ class sotd extends Component {
         })
         updateUserSOTD({ variables: {
                 id: user._id,
-                votedSOTD: index + 1
+                votedSOTD: index
             }
     
         })
@@ -79,8 +86,8 @@ class sotd extends Component {
                                     </div> */}
                                 </div>
                                 {   user !== null? user.votedSOTD !== 0? user.votedSOTD != index+1 && user.votedSOTD !=0? <Icon.HandThumbsUp size={30} color="white"/>: 
-                                <Icon.HandThumbsUp size={30} color="blue"/>:
-                                    <Icon.HandThumbsUp size={30} color="white" onClick={this.handleSOTDVote.bind(this, sotds, index, user, updateSOTD, updateUserSOTD)}/> : null
+                                <Icon.HandThumbsUp size={30} color="blue" onClick={this.handleSOTDVote.bind(this, sotds, index, user, updateSOTD, updateUserSOTD)}  style={{ cursor: "pointer"}}/>:
+                                    <Icon.HandThumbsUp size={30} color="white" onClick={this.handleSOTDVote.bind(this, sotds, index, user, updateSOTD, updateUserSOTD)}  style={{ cursor: "pointer"}}/> : null
                                 }
                                 {/* <Icon.HandThumbsUp size={30} color="white" onClick={this.handleSOTDVote.bind(this, sotds, index, user, updateSOTD, updateUserSOTD)}/> */}
                             </div>

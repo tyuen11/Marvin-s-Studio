@@ -45,7 +45,7 @@ class Player extends React.Component {
     }
 
     handleProgress = state => {
-        console.log('onProgress', state)
+        //console.log('onProgress', state)
         // We only want to update time slider if we are not currently seeking
         if (!this.state.seeking) {
           this.setState(state)

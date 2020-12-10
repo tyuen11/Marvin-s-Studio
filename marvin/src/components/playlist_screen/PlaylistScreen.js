@@ -158,7 +158,7 @@ class PlaylistScreen extends React.Component {
                 {(updatePlaylistSongs, { loading, error }) => (
 
                     <Query pollInterval={500} query={GET_PLAYLIST} variables={{ playlistID: this.props.match.params.id }} 
-                        onCompleted={data => this.state.songs == null ? this.setState({songs: data.playlist.songs}): ""}>
+                        onCompleted={data => this.state.songs == null || this.state.songs !== data.playlist.songs ? this.setState({songs: data.playlist.songs}): ""}>
                         {({ loading, error, data }) => {
                             if (loading) return 'Loading...';
                             if (error) return `Error! ${error.message}`;

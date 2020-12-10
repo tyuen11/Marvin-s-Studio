@@ -89,7 +89,6 @@ class Player extends React.Component {
         const playing = this.state.playing, seeking = this.state.seeking, played = this.state.played, duration = this.state.duration;
         let shuffle = this.props.shuffle;
         let songs = shuffle?this.props.shuffled:this.props.songs, song, index = shuffle?this.props.shuffled_index:this.props.index;
-        console.log(songs);
         if (songs[0] != undefined)
             song = "https://www.youtube.com/watch?v=" + songs[index].song.videoId;
         if (played >= 1)

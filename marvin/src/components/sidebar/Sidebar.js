@@ -36,6 +36,7 @@ class Sidebar extends React.Component {
 
     render() {
         let playlist;
+        let loggedIn = this.props.user != null;
         return (
             <div className='overflow-auto sticky-top' style={{height: 605}}>
                 <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200}}>
@@ -88,9 +89,16 @@ class Sidebar extends React.Component {
                             </Query>
                         )) : <div></div> }
 
+                        {loggedIn ?    
                         <form action='/logout' method="post">
-                        <button action="submit" className='btn btn-primary'>Logout</button>
+                            <button action="submit" className='btn btn-primary'>Logout</button>
                         </form>
+                        : 
+                        <form action='/auth/google'>
+                            <button action="submit" className='btn btn-primary'>Login</button>
+                        </form>
+                        }
+
                 </div>
                
                { (this.props.user != null) ? 

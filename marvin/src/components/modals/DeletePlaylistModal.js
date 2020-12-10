@@ -145,7 +145,7 @@ function DeletePlaylistModal (props) {
                         <label className="mt-2 mb-3 ">Are you sure you want to delete playlist?</label>
                         <label className="mt-2 mb-3">You will not be able to retrieve it once it is deleted.</label>
                         <div className="row mb-4">
-                            <Button type="submit" className="col-6 btn btn-primary ml-2 text-center mx-auto" onClick={props.handleClose}>Delete Playlist</Button>
+                            <Button type="submit" className="col-6 btn btn-danger ml-2 text-center mx-auto" onClick={props.handleClose}>Delete Playlist</Button>
                         </div>
                     </div>
                 </form>

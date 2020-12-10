@@ -12,7 +12,8 @@ const GET_COMMUNITY = gql`
             communityPlaylistsID
             publicPlaylistsID
             gotwPlaylist {
-                _id
+                _id,
+                genre
             }
             song1 {
                 song{
@@ -67,7 +68,7 @@ class HomeScreen extends React.Component {
     render () {
         let community;
         let commPlaylists, pubPlaylists;
-        let sotd1, sotd2, sotd3;
+        let sotd1, sotd2, sotd3, genre;
         console.log(this.props.user);
         return (
             <Query pollInterval={500} query={GET_COMMUNITY} variables={{ id: "5fc69c8b61fdeb5194781f2f"}}>
@@ -83,6 +84,7 @@ class HomeScreen extends React.Component {
                         sotd1 = data.community.song1;
                         sotd2 = data.community.song2;
                         sotd3 = data.community.song3;
+                        genre = data.community.gotwPlaylist.genre
 
                     }
                     return(
@@ -92,7 +94,7 @@ class HomeScreen extends React.Component {
                                     <img className='w-100 img-responsive' style={{height: 200, objectFit: 'cover'}} 
                                         src="https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png"/>
                                     <span className='h4 position-absolute text-black' style={{top: 5, left: 20}}>Genre of the week</span>
-                                    <span className='display-2 w-100 font-weight-bold text-black text-center position-absolute' style={{top: 30, left:10}}>Rock</span>
+                                    <span className='display-3 w-100 font-weight-bold text-black text-center position-absolute' style={{top: 50, left:10}}>{genre}</span>
                                 </div>
                             </div>
                             <div className='row mt-4 px-5 mx-2'>

@@ -8,6 +8,7 @@ const GET_PLAYLIST = gql`
         playlist(id: $id) {
             _id
             title
+            privacyType
         }
     }
 `
@@ -22,7 +23,7 @@ class ProfilePlaylistLink extends React.Component {
                     if (error) return `Error! ${error.message}`;
                     else playlist = data.playlist;
                     return (
-                        playlist == null ? <div/> : 
+                        playlist == null || (playlist.privacyType == 1 && !this.props.myProfile) ? <div/> : 
                             <Link className='col-3 mb-5 text-white p-0' to={`/app/playlist/${playlist._id}`}>
                                 <div style={{cursor: 'pointer', width: 150, height: 150}}>
                                     <img className='border rounded border-white w-100 h-100' src="https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png"></img>

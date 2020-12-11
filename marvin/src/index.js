@@ -34,8 +34,6 @@ ReactDOM.render(
             <Route path="/register" component={RegisterScreen} />
             <Route path="/reqreset" component={RequestReset} />
             <Route path="/reset" component={ResetPassword} />
-            {/* <Route  path="/artist" component={() => <ArtistScreen {...PlaylistData}/> }/>
-            <Route  path="/profile" component={() => <ProfileScreen {...PlaylistData}/>}/> */}
             <Route path='/app' component={MainScreen} />
           </div>
       </Router>

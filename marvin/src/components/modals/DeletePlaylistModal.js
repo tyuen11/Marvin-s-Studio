@@ -1,213 +1,157 @@
 import React, { Component } from 'react'
 import {Modal, Button} from 'react-bootstrap'
 import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo'
+import { Mutation, useMutation, useQuery } from 'react-apollo'
 
-const UPDATE_USER = gql`
-    mutation updateUser (
-        $id: String!
-        $collaborativePlaylists: [PlaylistInput]!
-        $followedPlaylists: [PlaylistInput]!
-        $ownedPlaylists: [PlaylistInput]!
-        $recentlyPlayed: [PlayedInput]!
-        $mostPlayed: [PlayedInput]!
-        $userPoints: Int!
-        $votedPlaylists: [VotedPlaylistInput]!
-    ) {
-        updateUser (
-            id: $id
-            collaborativePlaylists: $collaborativePlaylists
-            followedPlaylists: $followedPlaylists
-            ownedPlaylists: $ownedPlaylists
-            recentlyPlayed: $recentlyPlayed
-            mostPlayed: $mostPlayed
-            userPoints: $userPoints
-            votedPlaylists: $votedPlaylists
-        ) {
-            collaborativePlaylists {
-                genre
-                numPlays
-                numTracks
-                ownerName
-                playlistPoints
-                privacyType
-                songs {
-                    albumID
-                    artistID
-                    genre
-                    title
-                }
-                title
-            }
-            followedPlaylists {
-                genre
-                numPlays
-                numTracks
-                ownerName
-                playlistPoints
-                privacyType
-                songs {
-                    albumID
-                    artistID
-                    genre
-                    title
-                }
-                title
-            }
-            ownedPlaylists {
-                _id
-                genre
-                numPlays
-                numTracks
-                ownerName
-                playlistPoints
-                privacyType
-                songs {
-                    albumID
-                    artistID
-                    genre
-                    title
-                }
-                title
-            }
-            recentlyPlayed {
-                playlistId
-                type
-            }
-            mostPlayed {
-                playlistId
-                type
-            }
-            votedPlaylists {
-                playlistID
-                votes
-            }
+/*
+    QUERY AND MUTATION TO REMOVE PL FROM COLLABORATORS
+*/
+const GET_USERS = gql`
+    query users {
+        users {
+            email
+            collaborativePlaylistsID
         }
     }
-`;
+`
 
-const REMOVE_PLAYLIST = gql `
-    mutation removePlaylist($playlistID: String!) {
-        removePlaylist(id: $playlistID) {
-            _id
-        }
-    }
-`;
-
-const UPDATE_PLAYLIST_IDS = gql`
-    mutation updatePlaylistIDs (
-        $id: String!
-        $ownedPlaylistsID: [String]!
+const UPDATE_COLLABORATIVE_PLAYLISTS = gql`
+    mutation updateCollaborativePlaylists(
+        $email: String!
         $collaborativePlaylistsID: [String]!
-        $followedPlaylistsID: [String]!
     ) {
-        updatePlaylistIDs (
-            id: $id
-            ownedPlaylistsID: $ownedPlaylistsID
+        updateCollaborativePlaylists(
+            email: $email
             collaborativePlaylistsID: $collaborativePlaylistsID
-            followedPlaylistsID: $followedPlaylistsID
+        ) {
+            email
+        }
+    }
+`
+
+/*
+    QUERY AND MUTATION TO UPDATE PUBLIC PLAYLISTS
+*/
+
+const UPDATE_PUBLIC_PLAYLISTS = gql`
+    mutation updatePublicPlaylists(
+        $id: String!
+        $publicPlaylistsID: [String]!
+    ) {
+        updatePublicPlaylists (
+            id: $id
+            publicPlaylistsID: $publicPlaylistsID
         ) {
             _id
         }
     }
 `
 
-class DeletePlaylistModal extends Component {
-    render() {
-        let user = this.props.user;
-        let playlist = this.props.playlist;
-        return (
-            <Mutation mutation={REMOVE_PLAYLIST} key={playlist.id}>
-                {(removePlaylist, { remLoading, remError }) => (
-                    <Mutation mutation={UPDATE_PLAYLIST_IDS} key={user.id}>
-                        {(updatePlaylistIDs, { updateLoading, updateError }) => (
-                            <div className="container">
-                            <Modal id="deletePlaylist" show={this.props.show} onHide={this.props.handleClose}>
-                                <Modal.Header closeButton={true}>
-                                    <Modal.Title className="">Delete Playlist</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body id="exportModalBody">
-                                    <form onSubmit={e => {
-                                        e.preventDefault();
-                                        let index = user.ownedPlaylistsID.indexOf(playlist._id);
-                                        if (index > -1) {
-                                            user.ownedPlaylistsID.splice(index, 1);
-                                            removePlaylist({ variables: { playlistID: playlist._id }})
-                                            updatePlaylistIDs({ variables: {
-                                                id: user._id,
-                                                ownedPlaylistsID: user.ownedPlaylistsID,
-                                                collaborativePlaylistsID: user.collaborativePlaylistsID,
-                                                followedPlaylistsID: user.followedPlaylistsID
-                                            }}).then(this.props.history.push('/app/home'))
-                                        }
-                                        else throw new Error('Playlist not owned')
-                                    }}>
-                                        <div className="form-group col-9 text-center mx-auto">
-                                            <label className="mt-2 mb-3 ">Are you sure you want to delete playlist?</label>
-                                            <label className="mt-2 mb-3">You will not be able to retrieve it once it is deleted.</label>
-                                            <div className="row mb-4">
-                                                <Button type="submit" className="col-6 btn btn-primary ml-2 text-center mx-auto" onClick={this.props.handleClose}>Delete Playlist</Button>
-                                            </div>
-                                        </div>
-                                        {(remLoading || updateLoading) && <p>Loading...</p>}
-                                        {(remError || updateError) && <p>Error :O water u doing ( ͡° ͜ʖ ͡°)</p>}
-                                    </form>
-                                </Modal.Body>
-                            </Modal>
-                        </div>
-                        )}
-                    </Mutation>
-                )}
-            </Mutation>
-        )
+const GET_COMMUNITY = gql`
+    query community($id: String!) {
+        community(id: $id) {
+            publicPlaylistsID
+        }
     }
+`
+
+/*
+    MUTATIONS TO REMOVE PLAYLIST FROM PLAYLISTS AND USER
+*/
+const REMOVE_PLAYLIST = gql `
+mutation removePlaylist($playlistID: String!) {
+    removePlaylist(id: $playlistID) {
+        _id
+    }
+}
+`;
+
+const UPDATE_PLAYLIST_IDS = gql`
+mutation updatePlaylistIDs (
+    $id: String!
+    $ownedPlaylistsID: [String]!
+    $collaborativePlaylistsID: [String]!
+    $followedPlaylistsID: [String]!
+) {
+    updatePlaylistIDs (
+        id: $id
+        ownedPlaylistsID: $ownedPlaylistsID
+        collaborativePlaylistsID: $collaborativePlaylistsID
+        followedPlaylistsID: $followedPlaylistsID
+    ) {
+        _id
+    }
+}
+`
+
+function DeletePlaylistModal (props) {
+    const {data: usersData} = useQuery(GET_USERS)
+    const {data: communityData} = useQuery(GET_COMMUNITY, {variables: {id: "5fc69c8b61fdeb5194781f2f"}})
+    
+    const [removePlaylist] = useMutation(REMOVE_PLAYLIST)
+    const [updatePlaylistIDs] = useMutation(UPDATE_PLAYLIST_IDS)
+    const [updatePublicPlaylists] = useMutation(UPDATE_PUBLIC_PLAYLISTS)
+    const [updateCollaborativePlaylists] = useMutation(UPDATE_COLLABORATIVE_PLAYLISTS)
+    
+    let user = props.user;
+    let playlist = props.playlist;
+    return (
+        <Modal id="deletePlaylist" show={props.show} onHide={props.handleClose}>
+            <Modal.Header closeButton={true}>
+                <Modal.Title className="">Delete Playlist</Modal.Title>
+            </Modal.Header>
+            <Modal.Body id="exportModalBody">
+                <form onSubmit={e => {
+                    e.preventDefault();
+                    // remove playlists from collaborators' set
+                    playlist.collaborators.forEach(currCollaborator => {
+                        let delCollaborator = usersData.users.find(currUser => currUser.email == currCollaborator)
+                        let newCollabPL = [...delCollaborator.collaborativePlaylistsID]
+                        let collabIndex = newCollabPL.findIndex(playlistID => playlistID == props.playlist._id)
+                        if (collabIndex != -1) {
+                            newCollabPL.splice(collabIndex, 1)
+                            updateCollaborativePlaylists({ variables: {
+                                email: delCollaborator.email,
+                                collaborativePlaylistsID: newCollabPL
+                            }})
+                        }
+                    })
+
+                    // remove playlist from public playlists
+                    let pubPLIndex = communityData.community.publicPlaylistsID.findIndex(playlistID => playlistID == props.playlist._id)
+                    if (pubPLIndex != -1) {
+                        communityData.community.publicPlaylistsID.splice(pubPLIndex, 1)
+                        updatePublicPlaylists({ variables: {
+                            id: "5fc69c8b61fdeb5194781f2f",
+                            publicPlaylistsID: communityData.community.publicPlaylistsID
+                        }})
+                    }
+
+                    // remove playlist from playlists and user's set
+                    let index = user.ownedPlaylistsID.indexOf(playlist._id);
+                    if (index > -1) {
+                        user.ownedPlaylistsID.splice(index, 1);
+                        removePlaylist({ variables: { playlistID: playlist._id }})
+                        updatePlaylistIDs({ variables: {
+                            id: user._id,
+                            ownedPlaylistsID: user.ownedPlaylistsID,
+                            collaborativePlaylistsID: user.collaborativePlaylistsID,
+                            followedPlaylistsID: user.followedPlaylistsID
+                        }}).then(props.history.push('/app/home'))
+                    }
+                    else throw new Error('Playlist not owned')
+                }}>
+                    <div className="form-group col-9 text-center mx-auto">
+                        <label className="mt-2 mb-3 ">Are you sure you want to delete playlist?</label>
+                        <label className="mt-2 mb-3">You will not be able to retrieve it once it is deleted.</label>
+                        <div className="row mb-4">
+                            <Button type="submit" className="col-6 btn btn-danger ml-2 text-center mx-auto" onClick={props.handleClose}>Delete Playlist</Button>
+                        </div>
+                    </div>
+                </form>
+            </Modal.Body>
+        </Modal>
+    )
 }
 
 export default DeletePlaylistModal;
-{/*
-<Mutation mutation={UPDATE_USER} key={this.props.id} onCompleted={() => this.props.history.push('/app/home')}>
-                {(updateUser, { loading, error }) => (
-                    <div className="container">
-                        <Modal id="deletePlaylist" show={this.props.show} onHide={this.props.handleClose}>
-                            <Modal.Header closeButton={true}>
-                                <Modal.Title className="">Delete Playlist</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body id="exportModalBody">
-                                <form onSubmit={e => {
-                                    e.preventDefault();
-                                    let newOP = this.props.user.ownedPlaylists;
-                                    newOP.forEach(pl => {
-                                        delete pl['__typename']
-                                        pl.songs.forEach(song => {
-                                            delete song['__typename']
-                                        })
-                                    });
-                                    newOP.splice(this.props.index, 1);
-                                    console.log(newOP);
-                                    updateUser({ variables: {
-                                        id: this.props.user._id,
-                                        collaborativePlaylists: this.props.user.collaborativePlaylists,
-                                        followedPlaylists: this.props.user.followedPlaylists,
-                                        ownedPlaylists: newOP,
-                                        recentlyPlayed: this.props.user.recentlyPlayed,
-                                        mostPlayed: this.props.user.mostPlayed,
-                                        userPoints: this.props.user.userPoints,
-                                        votedPlaylists: this.props.user.votedPlaylists
-                                    }})
-                                }}>
-                                    <div className="form-group col-9 text-center mx-auto">
-                                        <label className="mt-2 mb-3 ">Are you sure you want to delete playlist?</label>
-                                        <label className="mt-2 mb-3">You will not be able to retrieve it once it is deleted.</label>
-                                        <div className="row mb-4">
-                                            <Button type="submit" className="col-6 btn btn-primary ml-2 text-center mx-auto" onClick={this.props.handleClose}>Delete Playlist</Button>
-                                        </div>
-                                    </div>
-                                    {loading && <p>Loading...</p>}
-                                    {error && <p>Error :O water u doing ( ͡° ͜ʖ ͡°)</p>}
-                                </form>
-                            </Modal.Body>
-                        </Modal>
-                    </div>
-                )}
-            </Mutation>
-                            */}

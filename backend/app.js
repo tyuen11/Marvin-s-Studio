@@ -110,7 +110,8 @@ passport.use(new GoogleStrategy({
                         ownedPlaylisits: [],
                         recentlyPlayed:[],
                         mostPlayed: [],
-                        votedPlaylists: []
+                        votedPlaylists: [],
+                        votedSOTD: 0
                     }).save().then((newUser) => {
                         uid = {user: newUser._id}
                         return done(null, newUser)
@@ -173,7 +174,8 @@ passport.use('local-register', new LocalStrategy({
                             ownedPlaylisits: [],
                             recentlyPlayed:[],
                             mostPlayed: [],
-                            votedPlaylists: []
+                            votedPlaylists: [],
+                            votedSOTD: 0
                         }).save().then((newUser) => {
                             uid = {user: newUser._id}
                             return done(null, newUser);

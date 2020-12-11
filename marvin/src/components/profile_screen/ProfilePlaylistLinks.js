@@ -11,7 +11,7 @@ class ProfilePlaylistLinks extends React.Component {
         return (
             <div className='row text-wrap w-100' style={{paddingRight:'20%', paddingLeft: 20}}>
                 {this.props.playlists.map((playlistID) =>(
-                    <ProfilePlaylistLink playlistID={playlistID}/>
+                    <ProfilePlaylistLink playlistID={playlistID} myProfile={this.props.myProfile}/>
                 ))}
             </div>
         )

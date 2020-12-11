@@ -18,7 +18,6 @@ class Sidebar extends React.Component {
     constructor(props) {
         super(props);
         console.log("Sidebar")
-        console.log(props);
     }
     state = {
         show: false,
@@ -36,8 +35,9 @@ class Sidebar extends React.Component {
 
     render() {
         let playlist;
+        let loggedIn = this.props.user != null;
         return (
-            <div className='overflow-auto sticky-top' style={{height: 605}}>
+            <nav className='overflow-auto sticky-top' style={{height: 605}}>
                 <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200}}>
                     <Link to='/app/community'>
                         <img src={logo} height={85} alt='' />
@@ -49,7 +49,7 @@ class Sidebar extends React.Component {
                         <Link to='/app/home'>
                             <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Home</button>
                         </Link>
-                        <Link to='/app/profile'>
+                        <Link to={`/app/profile/${this.props.user._id}`}>
                             <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Your Library</button>
                         </Link>
                         <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'
@@ -88,9 +88,16 @@ class Sidebar extends React.Component {
                             </Query>
                         )) : <div></div> }
 
+                        {loggedIn ?    
                         <form action='/logout' method="post">
-                        <button action="submit" className='btn btn-primary'>Logout</button>
+                            <button action="submit" className='btn btn-primary'>Logout</button>
                         </form>
+                        : 
+                        <form action='/auth/google'>
+                            <button action="submit" className='btn btn-primary'>Login</button>
+                        </form>
+                        }
+
                 </div>
                
                { (this.props.user != null) ? 
@@ -99,7 +106,7 @@ class Sidebar extends React.Component {
                 : <div/>
                 }
                     
-            </div>
+            </nav>
         )
 
     }

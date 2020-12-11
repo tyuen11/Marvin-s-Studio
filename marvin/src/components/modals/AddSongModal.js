@@ -29,6 +29,7 @@ const GET_PLAYLIST = gql `
                 artistName
                 albumName
                 genre
+                albumArt
             }
         }
     }
@@ -51,6 +52,7 @@ class AddSongModal extends Component {
                 albumID: this.props.albumId, // Prop the album id when going to that page from search screen
                 artistName: this.props.album.artist[0].name,
                 albumName: this.props.album.title,
+                albumArt: this.props.album.thumbnails[0].url,
                 genre: null
             }
             songs.push(songToAdd);
@@ -65,6 +67,7 @@ class AddSongModal extends Component {
                     albumID: this.props.albumId,
                     artistName: this.props.album.artist[0].name,
                     albumName: this.props.album.title,
+                    albumArt: this.props.album.thumbnails[0].url,
                     genre: null
                 }
                 songs.push(songToAdd);

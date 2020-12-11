@@ -1,7 +1,8 @@
 import React from 'react'
 import logo from '../../icons/marvins.png';
 import ReactPlayer from 'react-player';
-//import FormattedDuration from 'react-intl-formatted-duration';
+import * as Icon from 'react-bootstrap-icons'
+
 import Duration from './Duration'
 import prevButton from '../../icons/prev.png'
 import playButton from '../../icons/play.png'
@@ -24,7 +25,10 @@ class Player extends React.Component {
     }
 
     handlePlayPause = () => {
-        this.setState({ playing: !this.state.playing })
+        if (this.state.loaded < 0.01 && this.state.playing) // Fixes issue of song still playing even when paused in beginning
+            return;
+        else
+            this.setState({ playing: !this.state.playing });
     }
 
     handleSeekMouseDown = e => {
@@ -42,7 +46,7 @@ class Player extends React.Component {
     }
 
     handleProgress = state => {
-        console.log('onProgress', state)
+        //console.log('onProgress', state)
         // We only want to update time slider if we are not currently seeking
         if (!this.state.seeking) {
           this.setState(state)
@@ -66,23 +70,26 @@ class Player extends React.Component {
         if (x == 0) {
             this.setState({playing: false});
             this.player.seekTo(parseFloat(0));
+            this.setState({played: 0});
         }
-        this.setState({played: 0});
+        this.player.seekTo(parseFloat(0));
+        this.setState({played: 0, loaded: 0}); // Also fixes issue of song still playing even when paused in beginning
 
     }
 
     componentDidUpdate = (prevProps) => {
         // If a new song is pressed, automatically start playing the song
         if (prevProps.songs[0] != this.props.songs[0])
-            this.setState({playing: true}); 
+            this.setState({playing: true, played: 0, loaded: 0}); 
     }
 
     render () {
         let playerDisabled = this.state.currSong == null;
+        console.log("playing is ", this.state.playing);
         
         const playing = this.state.playing, seeking = this.state.seeking, played = this.state.played, duration = this.state.duration;
-        let shuffle = this.props.shufffle;
-        let songs = shuffle?this.props.shufled:this.props.songs, song, index = shuffle?this.props.shuffled_index:this.props.index;
+        let shuffle = this.props.shuffle;
+        let songs = shuffle?this.props.shuffled:this.props.songs, song, index = shuffle?this.props.shuffled_index:this.props.index;
         if (songs[0] != undefined)
             song = "https://www.youtube.com/watch?v=" + songs[index].song.videoId;
         if (played >= 1)
@@ -99,9 +106,9 @@ class Player extends React.Component {
                         onDuration={this.handleDuration}
                         onReady={() => console.log('onReady')}
                         seeking={seeking} ref={this.ref}/>
-                    <img className='mr-3' src={logo} style={{height: 60, width: 60}} alt=''></img>
+                    <img className='mr-3' src={songs[index].song.albumArt} style={{height: 60, width: 60}} alt=''></img>
                     <div className='mr-1 text-white text-truncate'style={{width: '10%'}}>{songs[index].song.title}
-                        <div className='text-white'> by {songs[index].song.artistName}</div>
+                        <div className='text-white'><small>by {songs[index].song.artistName}</small></div>
                     </div>
                     <button id="prev" className='btn btn-outline-primary border-0 mr-2'
                             style={{cursor: buttonCursor}} onClick={this.handlePrevSongP.bind(this, played)}>
@@ -126,11 +133,11 @@ class Player extends React.Component {
                     />
                     <button id='shuffle' className='btn btn-outline-primary border-0 ml-auto'
                             style={{cursor: buttonCursor}} onClick={this.props.handleToggleShuffle}>
-                        <img src={shuffleButton} style={{ height: 25 }}/>
+                        <Icon.Shuffle color={shuffle?"blue":"white"}size={30} />
                     </button>
                     
-                    <button id='queue' className='btn btn-outline-primary border-0 ml-3 mr-4'
-                            style={{cursor: buttonCursor}}>
+                    <button id='queue' className='btn btn-outline-primary border-0 ml-3 mr-4 mt-1'
+                            style={{cursor: buttonCursor}} onClick={this.props.handleShowQueue}>
                         <img src={queueButton} style={{ height: 35 }}/>
                     </button> 
                 </div> :

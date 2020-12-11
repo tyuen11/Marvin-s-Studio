@@ -255,11 +255,6 @@ class PlaylistScreen extends React.Component {
 
     }
 
-    componentDidMount = () => {
-        this.toggleDisable()
-    }
-
-
 
     handleSortBy = (dbSongs, e) => {
         let sortBy = e.target.id;
@@ -295,7 +290,7 @@ class PlaylistScreen extends React.Component {
                 {(updateVotedPlaylists, { loading, error }) => (
                     <Mutation mutation={UPDATE_USER_POINTS} >
                         {(updateUserPoints, { loading, error }) => (
-                            <Mutation mutation={UPDATE_PLAYLIST_POINTS} key={this.props.user._id} >
+                            <Mutation mutation={UPDATE_PLAYLIST_POINTS} key={this.props.user !== null ? this.props.user._id : null} >
                                 {(updatePlaylistPoints, { loading, error }) => (
 
                                     <Mutation mutation={UPDATE_PLAYLIST_SONGS} key={this.props.user !== null ? this.props.user._id : null} >
@@ -366,15 +361,17 @@ class PlaylistScreen extends React.Component {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="row justify-content-center">
-                                                                                <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
+                                                                                {this.props.user?<button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
                                                                                     onClick={this.handlePlaylistVote.bind(this, 1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints)}>
                                                                                     <img src={likeButton} style={{ height: 25 }} />
-                                                                                </button>
+                                                                                </button>:<h3 className="text-light">Playlist votes</h3>}
                                                                                 <div id="playlistPoints" className="col-3 mx-0 mt-auto h4 text-light text-center">{playlist.playlistPoints}</div>
+                                                                                {this.props.user?
                                                                                 <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
                                                                                     onClick={this.handlePlaylistVote.bind(this, -1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints)}>
                                                                                     <img src={dislikeButton} style={{ height: 25 }} />
                                                                                 </button>
+                                                                                :null }
                                                                             </div>
                                                                         </div>
                                                                     </div>

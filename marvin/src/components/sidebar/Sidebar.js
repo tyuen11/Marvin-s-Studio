@@ -49,9 +49,9 @@ class Sidebar extends React.Component {
                         <Link to='/app/home'>
                             <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Home</button>
                         </Link>
-                        <Link to={`/app/profile/${this.props.user._id}`}>
+                        {this.props.user?<Link to={`/app/profile/${this.props.user._id}`}>
                             <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Your Library</button>
-                        </Link>
+                        </Link>: null }
                         <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'
                             onClick={this.handleShow}>Create Playlist</button>
                     </div>

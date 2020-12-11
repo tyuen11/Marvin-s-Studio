@@ -1,7 +1,8 @@
 import React from 'react'
 import logo from '../../icons/marvins.png';
 import ReactPlayer from 'react-player';
-//import FormattedDuration from 'react-intl-formatted-duration';
+import * as Icon from 'react-bootstrap-icons'
+
 import Duration from './Duration'
 import prevButton from '../../icons/prev.png'
 import playButton from '../../icons/play.png'
@@ -132,10 +133,10 @@ class Player extends React.Component {
                     />
                     <button id='shuffle' className='btn btn-outline-primary border-0 ml-auto'
                             style={{cursor: buttonCursor}} onClick={this.props.handleToggleShuffle}>
-                        <img src={shuffleButton} style={{ height: 25 }}/>
+                        <Icon.Shuffle color={shuffle?"blue":"white"}size={30} />
                     </button>
                     
-                    <button id='queue' className='btn btn-outline-primary border-0 ml-3 mr-4'
+                    <button id='queue' className='btn btn-outline-primary border-0 ml-3 mr-4 mt-1'
                             style={{cursor: buttonCursor}} onClick={this.props.handleShowQueue}>
                         <img src={queueButton} style={{ height: 35 }}/>
                     </button> 

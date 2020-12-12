@@ -16,22 +16,21 @@ class Queue extends Component {
         let nextSongs = songs.filter(song => !song.queued);
         nextSongs.splice(0, index+1);
         console.log("queued", queuedSongs);
-        console.log(songs);
+        console.log(songs);     
 
         return (
-            <div className="container" style={{backgroundColor:"#2a2ade", position: "fixed", width: "20%", height:"50%", bottom: "100px", right: "100px", zIndex:"2"}}>
-                <div id="header" className="text-light row">
-                    <h2 className="col-10">Queue</h2>
-                    <button className="col-2" onClick={this.props.handleCloseQueue}>close</button>
+            <div className="container" style={{backgroundColor:"#ced8e3", position: "fixed", width: "20%", height:"50%", bottom: "100px", right: "100px", borderRadius:10, zIndex:"2", overflowY:'auto'}}>
+                <div id="header" className="text-dark row">
+                    <button className="col-2" style={{width:50, padding:0, borderRadius:5, position: 'fixed', zIndex:100, right: 100}} onClick={this.props.handleCloseQueue}>close</button>
                 </div>
-                <div id="queue" className="">
-                    <div id="queueNowPlaying" className="text-light">
-                        <h4>Now Playing</h4>
+                <div id="queue" className="" style={{overflowX:'hidden'}}>
+                    <div id="queueNowPlaying" className="text-dark" style ={{border: "solid", borderColor: "#a1a1a1",  borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px" ,  borderLeftWidth:"0px", }}>
+                        <h4 style={{fontSize:20, paddingTop: 10}}>Now Playing</h4>
                         <QueueSong song={songs[index]} />
                     </div>
                     {queuedSongs.length !== 0?
-                    <div id="queueQueued" className="text-light overflow-auto">
-                        <h4 >Queued songs</h4>
+                    <div id="queueQueued" className="text-dark" style={{overflow:''}}>
+                        <h4  style={{fontSize:20}}>Queued songs</h4>
                         {queuedSongs.map((song, index) => (
                             <div>
                                 <QueueSong song={song} key={index} />

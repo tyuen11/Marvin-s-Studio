@@ -309,8 +309,8 @@ class PlaylistScreen extends React.Component {
                                                         dbSongs = playlist.songs;
                                                     }
                                                     return (
-                                                        <div id="playlist" className="playpage">
-                                                            <div className="row border-light" style={{ border: "solid", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px" }}>
+                                                        <div id="playlist" className="playpage" style={{position:'relative' ,left: 20, overflow:'hidden'}} >
+                                                            <div className="row border-light" style={{ border: "solid", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px", borderLeftWidth: "0px" }}>
                                                                 <div id="top" className="col ml-3">
                                                                     <div className="row">
                                                                         <div id="playlistInfoAndActions" className="col-8">
@@ -323,7 +323,7 @@ class PlaylistScreen extends React.Component {
                                                                                 </Link>
                                                                             </div>
 
-                                                                            <div id="actions" className="row overflow-visible ml-3" style={{ marginTop: 60 }}>
+                                                                            <div id="actions" className="row overflow-visible ml-3" style={{ marginTop: 60 ,  overflow:'hidden'}}>
                                                                                 <button className='btn btn-outline-primary border-0 bg-transparent'>
                                                                                     <img src={playButton} style={{ height: 40 }} onClick={this.props.handlePlayPlaylist.bind(this, playlist.songs)} />
                                                                                 </button>
@@ -361,17 +361,17 @@ class PlaylistScreen extends React.Component {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="row justify-content-center">
-                                                                                {this.props.user?<button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
+                                                                                {this.props.user ? <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
                                                                                     onClick={this.handlePlaylistVote.bind(this, 1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints)}>
                                                                                     <img src={likeButton} style={{ height: 25 }} />
-                                                                                </button>:<h3 className="text-light">Playlist votes</h3>}
+                                                                                </button> : <h3 className="text-light">Playlist votes</h3>}
                                                                                 <div id="playlistPoints" className="col-3 mx-0 mt-auto h4 text-light text-center">{playlist.playlistPoints}</div>
-                                                                                {this.props.user?
-                                                                                <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
-                                                                                    onClick={this.handlePlaylistVote.bind(this, -1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints)}>
-                                                                                    <img src={dislikeButton} style={{ height: 25 }} />
-                                                                                </button>
-                                                                                :null }
+                                                                                {this.props.user ?
+                                                                                    <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
+                                                                                        onClick={this.handlePlaylistVote.bind(this, -1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints)}>
+                                                                                        <img src={dislikeButton} style={{ height: 25 }} />
+                                                                                    </button>
+                                                                                    : null}
                                                                             </div>
                                                                         </div>
                                                                     </div>

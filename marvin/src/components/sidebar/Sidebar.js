@@ -37,8 +37,8 @@ class Sidebar extends React.Component {
         let playlist;
         let loggedIn = this.props.user != null;
         return (
-            <nav className='overflow-visible sticky-top ' style={{height: 605, left:0}}>
-                <div className=" p-0 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200, height:1100}}>
+            <nav className='overflow-visible sticky-top ' style={{height: 605, left:0, height:1020, backgroundColor: '#1a1a1a'}}>
+                <div className=" p-0 text-center " style={{width: 200, }}>
                     <Link to='/app/community'>
                         <img src={logo} height={85} alt='' />
                     </Link>

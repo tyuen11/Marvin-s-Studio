@@ -19,6 +19,7 @@ var playlistType = require('./PlaylistSchemas').getType('Playlist')
 // COMMUNITY MODEL AND TYPES
 var CommunityModel = require('../models/Community');
 const PlaylistSchemas = require('./PlaylistSchemas');
+const { GraphQLBoolean } = require('graphql');
 var sotdType = require('./CommunitySchemas').getType('SOTD')
 var communityType = require('./CommunitySchemas').getType('Community')
 
@@ -27,8 +28,8 @@ var communityType = require('./CommunitySchemas').getType('Community')
 */
 var songInputType = new GraphQLInputObjectType({
     name: 'SongInput',
-    fields: function() {
-        return { 
+    fields: function () {
+        return {
             albumID: { type: GraphQLString },
             artistID: { type: GraphQLString },
             videoId: { type: GraphQLString },
@@ -44,8 +45,8 @@ var songInputType = new GraphQLInputObjectType({
 
 var playlistInputType = new GraphQLInputObjectType({
     name: 'PlaylistInput',
-    fields: function() {
-        return{
+    fields: function () {
+        return {
             _id: {
                 type: GraphQLString
             },
@@ -86,7 +87,7 @@ var playlistInputType = new GraphQLInputObjectType({
 
 var playedType = new GraphQLObjectType({
     name: 'Played',
-    fields: function() {
+    fields: function () {
         return {
             playlistId: {
                 type: GraphQLString
@@ -100,7 +101,7 @@ var playedType = new GraphQLObjectType({
 
 var playedTypeInput = new GraphQLInputObjectType({
     name: 'PlayedInput',
-    fields: function() {
+    fields: function () {
         return {
             playlistId: {
                 type: GraphQLString
@@ -115,7 +116,7 @@ var playedTypeInput = new GraphQLInputObjectType({
 
 var votedPlaylistsType = new GraphQLObjectType({
     name: 'VotedPlaylist',
-    fields: function() {
+    fields: function () {
         return {
             playlistID: {
                 type: GraphQLString
@@ -129,7 +130,7 @@ var votedPlaylistsType = new GraphQLObjectType({
 
 var votedPlaylistsInputType = new GraphQLInputObjectType({
     name: 'VotedPlaylistInput',
-    fields: function() {
+    fields: function () {
         return {
             playlistID: {
                 type: GraphQLString
@@ -203,7 +204,7 @@ var userType = new GraphQLObjectType({
 
 var sotdInputType = new GraphQLInputObjectType({
     name: 'sotdInput',
-    fields: function() {
+    fields: function () {
         return {
             song: {
                 type: songInputType
@@ -217,14 +218,14 @@ var sotdInputType = new GraphQLInputObjectType({
 
 var queryType = new GraphQLObjectType({
     name: 'Query',
-    fields: function() {
+    fields: function () {
         return {
             // USER QUERIES
             users: {
                 type: new GraphQLList(userType),
-                resolve: function() {
+                resolve: function () {
                     const users = UserModel.find().exec();
-                    if(!users) throw new Error("Error")
+                    if (!users) throw new Error("Error")
                     return users
                 }
             },
@@ -251,18 +252,18 @@ var queryType = new GraphQLObjectType({
                         type: GraphQLString
                     }
                 },
-                resolve: function(root, params) {
-                    const userDetails = UserModel.findOne({email: params.email}).exec()
-                    if(!userDetails) throw new Error('Error')
+                resolve: function (root, params) {
+                    const userDetails = UserModel.findOne({ email: params.email }).exec()
+                    if (!userDetails) throw new Error('Error')
                     return userDetails
                 }
             },
             // COMMUNITY QUERIES
             communities: {
                 type: GraphQLList(communityType),
-                resolve: function() {
+                resolve: function () {
                     const community = CommunityModel.find().exec()
-                    if(!community) throw new Error('Error')
+                    if (!community) throw new Error('Error')
                     return community
                 }
             },
@@ -274,7 +275,7 @@ var queryType = new GraphQLObjectType({
                         type: GraphQLString
                     }
                 },
-                resolve: function(root, params) {
+                resolve: function (root, params) {
                     const communityPlaylists = CommunityModel.findById(params.id).exec()
                     if (!communityPlaylists) throw new Error('Error')
                     return communityPlaylists
@@ -283,9 +284,9 @@ var queryType = new GraphQLObjectType({
             // PLAYLIST QUERIES
             playlists: {
                 type: GraphQLList(playlistType),
-                resolve: function() {
+                resolve: function () {
                     const playlists = PlaylistModel.find().exec();
-                    if(!playlists) throw new Error("Error");
+                    if (!playlists) throw new Error("Error");
                     return playlists
                 }
             },
@@ -297,7 +298,7 @@ var queryType = new GraphQLObjectType({
                         type: GraphQLString
                     }
                 },
-                resolve: function(root, params) {
+                resolve: function (root, params) {
                     const playlist = PlaylistModel.findById(params.id).exec()
                     if (!playlist) {
                         throw new Error('Error')
@@ -313,7 +314,7 @@ var queryType = new GraphQLObjectType({
                         type: GraphQLString
                     }
                 },
-                resolve: function(root, params) {
+                resolve: function (root, params) {
                     const user = UserModel.findById(params.id).exec();
                     if (!user) throw new Error('user undef err');
                     if (user.ownedPlaylistsID == null) throw new Error('owned pl id undef err');
@@ -331,7 +332,7 @@ var queryType = new GraphQLObjectType({
 
 var mutation = new GraphQLObjectType({
     name: 'Mutation',
-    fields: function() {
+    fields: function () {
         return {
             // USER MUTATIONS
             addUser: {
@@ -372,7 +373,7 @@ var mutation = new GraphQLObjectType({
                     ownedPlaylists: {
                         type: new GraphQLNonNull(GraphQLList(playlistInputType))
                     },
-                    recentlyPlayed: {
+                    recentlyPlayed: {   
                         type: new GraphQLNonNull(GraphQLList(playedTypeInput))
                     },
                     mostPlayed: {
@@ -432,131 +433,200 @@ var mutation = new GraphQLObjectType({
                     }
                 },
                 resolve(root, params) {
-                    return UserModel.findByIdAndUpdate( params.id, { email: params.email, 
-                        password: params.password, username: params.username }, function(err) {
+                    return UserModel.findByIdAndUpdate(params.id, {
+                        email: params.email,
+                        password: params.password, username: params.username
+                    }, function (err) {
                         if (err) return next(err);
                     });
                 }
             },
-            updatePlaylistIDs: {
-                type: userType,
-                args: {
-                    id: {
-                        name: 'id',
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    ownedPlaylistsID: {
-                        type: new GraphQLNonNull(GraphQLList(GraphQLString))
-                    },
-                    collaborativePlaylistsID: {
-                        type: new GraphQLNonNull(GraphQLList(GraphQLString))
-                    },
-                    followedPlaylistsID: {
-                        type: new GraphQLNonNull(GraphQLList(GraphQLString))
-                    }
-                },
-                resolve: function(root, params) {
-                    return UserModel.findByIdAndUpdate(params.id, {
-                        ownedPlaylistsID: params.ownedPlaylistsID,
-                        collaborativePlaylistsID: params.collaborativePlaylistsID,
-                        followedPlaylistsID: params.followedPlaylistsID
-                    }, function(err) {
-                        if (err) {
-                            console.log(err)
-                            return next(err)
+                updateUserPoints: {
+                    type: userType,
+                    args: {
+                        id: {
+                            name: 'id',
+                            type: new GraphQLNonNull(GraphQLString)
+                        },
+                        userPoints: {
+                            type: GraphQLInt
                         }
-                    })
-                }
-            },
-            updateCollaborativePlaylists: {
-                type: userType,
-                args: {
-                    email: {
-                        type: new GraphQLNonNull(GraphQLString)
+
                     },
-                    collaborativePlaylistsID: {
-                        type: new GraphQLNonNull(GraphQLList(GraphQLString))
+                    resolve(root, params) {
+                        return UserModel.findByIdAndUpdate(params.id, {
+                            userPoints: params.userPoints
+                        }, function (err) {
+                            if (err) return next(err);
+                        });
                     }
                 },
-                resolve: function(root, params) {
-                    return UserModel.findOneAndUpdate(
-                        { email: params.email },
-                        { collaborativePlaylistsID: params.collaborativePlaylistsID },
-                        function(err) {
-                            if (err) return next(err)
+                updatePlaylistIDs: {
+                    type: userType,
+                    args: {
+                        id: {
+                            name: 'id',
+                            type: new GraphQLNonNull(GraphQLString)
+                        },
+                        ownedPlaylistsID: {
+                            type: new GraphQLNonNull(GraphQLList(GraphQLString))
+                        },
+                        collaborativePlaylistsID: {
+                            type: new GraphQLNonNull(GraphQLList(GraphQLString))
+                        },
+                        followedPlaylistsID: {
+                            type: new GraphQLNonNull(GraphQLList(GraphQLString))
                         }
-                    )
-                }
-            },
-            removeUser: {
-                type: userType,
-                args: {
-                    id: {
-                        name: 'id',
-                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    resolve: function (root, params) {
+                        return UserModel.findByIdAndUpdate(params.id, {
+                            ownedPlaylistsID: params.ownedPlaylistsID,
+                            collaborativePlaylistsID: params.collaborativePlaylistsID,
+                            followedPlaylistsID: params.followedPlaylistsID
+                        }, function (err) {
+                            if (err) {
+                                console.log(err)
+                                return next(err)
+                            }
+                        })
                     }
                 },
-                resolve(root, params) {
-                    const remUser = UserModel.findByIdAndRemove(params.id).exec();
-                    if (!remUser) {
-                        throw new Error('Error')
-                    }
-                    return remUser;
-                }
-            },
-            // PLAYLIST MUTATIONS
-            addPlaylist: {
-                type: playlistType,
-                args: {
-                    id: {
-                        name: 'id',
-                        type: new GraphQLNonNull(GraphQLString)
+                updateVotedPlaylists: {
+                    type: userType,
+                    args: {
+                        id: {
+                            name: 'id',
+                            type: new GraphQLNonNull(GraphQLString)
+                        },
+                        votedPlaylists: {
+
+                            type: new GraphQLNonNull(GraphQLList(votedPlaylistsInputType))
+                        }
+                        
                     },
-                    username: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    title: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    }
-                },
-                resolve: function(root, params) {
-                    const playlistModel = new PlaylistModel({
-                        genre: "",
-                        numPlays: 0,
-                        numTracks: 0,
-                        ownerID: params.id,
-                        ownerName: params.username,
-                        playlistPoints: 0,
-                        privacyType: 1,
-                        songs: [],
-                        title: params.title
-                    })
                     
-                    const newPlaylist = playlistModel.save();
-                    if (!newPlaylist) throw new Error("Error");
-                    return newPlaylist;
-                }
-            },
-            updatePlaylistName: {
+                    resolve: function (root, params) {
+                        return UserModel.findOneAndUpdate(
+                            params.id, {
+                                votedPlaylists: params.votedPlaylists,
+                            },
+                            function (err) {
+                                if (err) return next(err)
+                            }
+                        )
+                    }
+                },
+                updateCollaborativePlaylists: {
+                    type: userType,
+                    args: {
+                        email: {
+                            type: new GraphQLNonNull(GraphQLString)
+                        },
+                        collaborativePlaylistsID: {
+                            type: new GraphQLNonNull(GraphQLList(GraphQLString))
+                        }
+                    },
+                    resolve: function (root, params) {
+                        return UserModel.findOneAndUpdate(
+                            { email: params.email },
+                            { collaborativePlaylistsID: params.collaborativePlaylistsID },
+                            function (err) {
+                                if (err) return next(err)
+                            }
+                        )
+                    }
+                },
+                removeUser: {
+                    type: userType,
+                    args: {
+                        id: {
+                            name: 'id',
+                            type: new GraphQLNonNull(GraphQLString)
+                        }
+                    },
+                    resolve(root, params) {
+                        const remUser = UserModel.findByIdAndRemove(params.id).exec();
+                        if (!remUser) {
+                            throw new Error('Error')
+                        }
+                        return remUser;
+                    }
+                },
+                // PLAYLIST MUTATIONS
+                addPlaylist: {
+                    type: playlistType,
+                    args: {
+                        id: {
+                            name: 'id',
+                            type: new GraphQLNonNull(GraphQLString)
+                        },
+                        username: {
+                            type: new GraphQLNonNull(GraphQLString)
+                        },
+                        title: {
+                            type: new GraphQLNonNull(GraphQLString)
+                        }
+                    },
+                    resolve: function (root, params) {
+                        const playlistModel = new PlaylistModel({
+                            genre: "",
+                            numPlays: 0,
+                            numTracks: 0,
+                            ownerID: params.id,
+                            ownerName: params.username,
+                            playlistPoints: 0,
+                            privacyType: 1,
+                            songs: [],
+                            title: params.title
+                        })
+
+                        const newPlaylist = playlistModel.save();
+                        if (!newPlaylist) throw new Error("Error");
+                        return newPlaylist;
+                    }
+                },
+                updatePlaylistName: {
+                    type: playlistType,
+                    args: {
+                        id: {
+                            name: 'id',
+                            type: new GraphQLNonNull(GraphQLString)
+                        },
+                        title: {
+                            type: new GraphQLNonNull(GraphQLString)
+                        }
+                    },
+                    resolve: function (root, params) {
+                        return PlaylistModel.findByIdAndUpdate(params.id,
+                            { title: params.title },
+                            function (err) {
+                                if (err) return next(err);
+                            }
+                        )
+                    }
+                },
+
+            updatePlaylistPoints: {
                 type: playlistType,
                 args: {
                     id: {
                         name: 'id',
                         type: new GraphQLNonNull(GraphQLString)
                     },
-                    title: {
-                        type: new GraphQLNonNull(GraphQLString)
+                    playlistPoints: {
+                        type: new GraphQLNonNull(GraphQLInt)
                     }
                 },
-                resolve: function(root, params) {
-                    return PlaylistModel.findByIdAndUpdate( params.id,
-                        { title: params.title },
-                        function(err) {
-                            if(err) return next(err);
+                resolve: function (root, params) {
+                    return PlaylistModel.findByIdAndUpdate(params.id,
+                        { playlistPoints: params.playlistPoints },
+                        function (err) {
+                            if (err) return next(err);
                         }
                     )
                 }
             },
+
             updatePlaylistSongs: {
                 type: playlistType,
                 args: {
@@ -568,11 +638,11 @@ var mutation = new GraphQLObjectType({
                         type: new GraphQLNonNull(GraphQLList(songInputType))
                     }
                 },
-                resolve: function(root, params) {
-                    return PlaylistModel.findByIdAndUpdate(params.id, 
+                resolve: function (root, params) {
+                    return PlaylistModel.findByIdAndUpdate(params.id,
                         { songs: params.songs },
-                        function(err) {
-                            if(err) return next(err);
+                        function (err) {
+                            if (err) return next(err);
                         }
                     )
                 }
@@ -588,12 +658,12 @@ var mutation = new GraphQLObjectType({
                         type: new GraphQLNonNull(GraphQLInt)
                     }
                 },
-                resolve: function(root, params) {
-                    return PlaylistModel.findByIdAndUpdate( params.id,
+                resolve: function (root, params) {
+                    return PlaylistModel.findByIdAndUpdate(params.id,
                         { privacyType: params.privacyType },
-                        function(err) {
-                            if(err) return next(err);
-                        }    
+                        function (err) {
+                            if (err) return next(err);
+                        }
                     )
                 }
             },
@@ -608,11 +678,11 @@ var mutation = new GraphQLObjectType({
                         type: new GraphQLNonNull(GraphQLList(GraphQLString))
                     }
                 },
-                resolve: function(root, params) {
-                    return PlaylistModel.findByIdAndUpdate( params.id, 
+                resolve: function (root, params) {
+                    return PlaylistModel.findByIdAndUpdate(params.id,
                         { collaborators: params.collaborators },
-                        function(err) {
-                            if(err) return next(err)
+                        function (err) {
+                            if (err) return next(err)
                         }
                     )
                 }
@@ -646,8 +716,8 @@ var mutation = new GraphQLObjectType({
                         type: new GraphQLNonNull(GraphQLString)
                     }
                 },
-                resolve: function(root, params) {
-                    return PlaylistModel.findByIdAndUpdate( params.id, {
+                resolve: function (root, params) {
+                    return PlaylistModel.findByIdAndUpdate(params.id, {
                         genre: params.genre,
                         numPlays: params.numPlays,
                         numTracks: params.numTracks,
@@ -655,7 +725,7 @@ var mutation = new GraphQLObjectType({
                         privacyType: params.privacyType,
                         songs: params.songs,
                         title: params.title
-                    }, function(err) {
+                    }, function (err) {
                         if (err) {
                             console.log(err)
                             return next(err)
@@ -671,18 +741,18 @@ var mutation = new GraphQLObjectType({
                         type: new GraphQLNonNull(GraphQLString)
                     }
                 },
-                resolve: function(root, params) {
+                resolve: function (root, params) {
                     const remPlaylist = PlaylistModel.findByIdAndRemove(params.id).exec();
-                    if(!remPlaylist) throw new Error('Error')
+                    if (!remPlaylist) throw new Error('Error')
                     return remPlaylist
                 }
             },
             // COMMUNITY MUTATIONS
             addCommunity: {
                 type: communityType,
-                resolve: function() {
+                resolve: function () {
                     const communityModel = new CommunityModel({
-                        communityPlaylistsID:[],
+                        communityPlaylistsID: [],
                         gotwPlaylist: null,
                         publicPlaylistsID: [],
                         song1: null,
@@ -690,7 +760,7 @@ var mutation = new GraphQLObjectType({
                         song3: null
                     })
                     const newCommunity = communityModel.save();
-                    if(!newCommunity) throw new Error('Error');
+                    if (!newCommunity) throw new Error('Error');
                     return newCommunity;
                 }
             },
@@ -705,11 +775,11 @@ var mutation = new GraphQLObjectType({
                         type: new GraphQLNonNull(GraphQLList(GraphQLString))
                     }
                 },
-                resolve: function(root, params) {
-                    return CommunityModel.findByIdAndUpdate( params.id, 
+                resolve: function (root, params) {
+                    return CommunityModel.findByIdAndUpdate(params.id,
                         { publicPlaylistsID: params.publicPlaylistsID },
-                        function(err) {
-                            if(err) return next(err)
+                        function (err) {
+                            if (err) return next(err)
                         }
                     )
                 }
@@ -725,12 +795,12 @@ var mutation = new GraphQLObjectType({
                         type: new GraphQLNonNull(GraphQLList(GraphQLString))
                     }
                 },
-                resolve: function(root, params) {
+                resolve: function (root, params) {
                     return CommunityModel.findByIdAndUpdate(params.id,
                         { communityPlaylistsID: params.communityPlaylistsID },
-                        function(err) {
-                            if(err) return next(err)
-                        }    
+                        function (err) {
+                            if (err) return next(err)
+                        }
                     )
                 }
             },
@@ -751,10 +821,10 @@ var mutation = new GraphQLObjectType({
                         type: new GraphQLNonNull(sotdInputType)
                     }
                 },
-                resolve: function(root, params) {
+                resolve: function (root, params) {
                     return CommunityModel.findByIdAndUpdate(params.id,
-                        { song1: params.song1, song2: params.song2, song3: params.song3},
-                        function(err) {
+                        { song1: params.song1, song2: params.song2, song3: params.song3 },
+                        function (err) {
                             if (err) return next(err)
                         }
                     )
@@ -768,7 +838,7 @@ var mutation = new GraphQLObjectType({
                         type: new GraphQLNonNull(GraphQLString)
                     }
                 },
-                resolve: function(root, params) {
+                resolve: function (root, params) {
                     const remCommunity = CommunityModel.findByIdAndRemove(params.id)
                     if (!remCommunity) throw new Error('Error')
                     return remCommunity

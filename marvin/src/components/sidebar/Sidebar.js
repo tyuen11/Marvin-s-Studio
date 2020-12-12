@@ -37,21 +37,21 @@ class Sidebar extends React.Component {
         let playlist;
         let loggedIn = this.props.user != null;
         return (
-            <nav className='overflow-auto sticky-top' style={{height: 605}}>
-                <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200}}>
+            <nav className='overflow-visible sticky-top ' style={{height: 605, left:0}}>
+                <div className=" p-0 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200, height:1100}}>
                     <Link to='/app/community'>
                         <img src={logo} height={85} alt='' />
                     </Link>
-                    <form action='/sidebar' method='post'>
+                    <form action='/sidebar' method='post'>=
                         <input name='searchText' className='border border-primary px-1 py-1 my-1 rounded w-75' type='text' placeholder='Search' />
                     </form>
                     <div className='my-1 pt-1 text-center w-100 display-block' style={{background:'#3d8af7', height: 115}}>
                         <Link to='/app/home'>
-                            <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Home</button>
+                            <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0 '>Home</button>
                         </Link>
-                        <Link to={`/app/profile/${this.props.user._id}`}>
+                        {this.props.user?<Link to={`/app/profile/${this.props.user._id}`}>
                             <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'>Your Library</button>
-                        </Link>
+                        </Link>: null }
                         <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent text-white border-0'
                             onClick={this.handleShow}>Create Playlist</button>
                     </div>
@@ -90,7 +90,7 @@ class Sidebar extends React.Component {
 
                         {loggedIn ?    
                         <form action='/logout' method="post">
-                            <button action="submit" className='btn btn-primary'>Logout</button>
+                            <button  action="submit" className='btn btn-primary' style={{position:''}}>Logout</button>
                         </form>
                         : 
                         <form action='/auth/google'>

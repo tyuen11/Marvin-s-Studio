@@ -18,3 +18,15 @@
     text-transform: uppercase;
     text-align: center;
 }
+
+.text-link {
+    padding-left: .5rem;
+    color: #a3b1c2;
+    font-size: 1rem;
+    
+}
+
+.text-link:hover {
+    color: white;
+    text-decoration: none;
+}

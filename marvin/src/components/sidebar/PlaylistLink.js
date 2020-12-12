@@ -1,7 +1,5 @@
 import React from 'react'
-import  {Route} from 'react-router'
 import { Link } from 'react-router-dom';
-import PlaylistScreen from '../playlist_screen/PlaylistScreen';
 
 class PlaylistLink extends React.Component {
     constructor(props) {

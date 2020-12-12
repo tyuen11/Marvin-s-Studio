@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from '../../icons/marvins.png'
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import CreatePlaylistModal from '../modals/CreatePlaylistModal';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
@@ -38,7 +38,7 @@ class Sidebar extends React.Component {
         let loggedIn = this.props.user != null;
         return (
             <nav className='overflow-auto sticky-top' style={{height: 605}}>
-                <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200}}>
+                <div className="p-0 h-100 text-center border border-white border-left-0 border-top-0 border-bottom-0 " style={{width: 200, height: 1100}}>
                     <Link to='/app/community'>
                         <img src={logo} height={85} alt='' />
                     </Link>
@@ -66,7 +66,7 @@ class Sidebar extends React.Component {
                                     return(
                                         <div key={index} className='text-left pl-3 mb-1'
                                                 style={{cursor: 'pointer'}}>
-                                            <Link className='text-white pl-2 mb-1' to={`/app/playlist/${playlist._id}`}>{playlist.title}</Link>
+                                            <Link className='text-link' to={`/app/playlist/${playlist._id}`}>{playlist.title}</Link>
                                         </div>
                                     )
                                 }}
@@ -79,9 +79,9 @@ class Sidebar extends React.Component {
                                     if (error) return `Error! ${error.message}`;
                                     else playlist = (data.playlist) ? data.playlist : [];
                                     return(
-                                        <div key={index} className='text-white text-left pl-3 mb-1'
+                                        <div key={index} className='text-left pl-3 mb-1'
                                                 style={{cursor: 'pointer'}}>
-                                            <Link className='text-white pl-2' to={`/app/playlist/${playlist._id}`}>{playlist.title}</Link>
+                                            <Link className='text-link' to={`/app/playlist/${playlist._id}`}>{playlist.title}</Link>
                                         </div>
                                     )
                                 }}

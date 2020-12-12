@@ -379,7 +379,7 @@ class PlaylistScreen extends React.Component {
                                                             </div>
                                                             <div className="row mt-3 ml-2" >
                                                                 <div className="col-3" onClick={this.handleSortBy.bind(this, dbSongs)}>
-                                                                    <h3 id="title" style={{ color: "white" }}>Title
+                                                                    <h3 id="title" style={{ color: "white", cursor: "pointer" }}>Title
                                                     {sort != 0 && attrSorting === "title" ?
                                                                             sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
                                                                             : null
@@ -388,7 +388,7 @@ class PlaylistScreen extends React.Component {
 
                                                                 </div>
                                                                 <div className="col-2" onClick={this.handleSortBy.bind(this, dbSongs)}>
-                                                                    <h3 id="artistName" style={{ color: "white" }}>Artist
+                                                                    <h3 id="artistName" style={{ color: "white", cursor: "pointer" }}>Artist
                                                     {sort != 0 && attrSorting === "artistName" ?
                                                                             sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
                                                                             : null
@@ -396,7 +396,7 @@ class PlaylistScreen extends React.Component {
                                                                     </h3>
                                                                 </div>
                                                                 <div className="col-2" onClick={this.handleSortBy.bind(this, dbSongs)}>
-                                                                    <h3 id="albumName" style={{ color: "white" }}>Album
+                                                                    <h3 id="albumName" style={{ color: "white", cursor: "pointer" }}>Album
                                                     {sort != 0 && attrSorting === "albumName" ?
                                                                             sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
                                                                             : null
@@ -404,7 +404,7 @@ class PlaylistScreen extends React.Component {
                                                                     </h3>
                                                                 </div>
                                                                 <div className="col-3" onClick={this.handleSortBy.bind(this, dbSongs)}>
-                                                                    <h3 id="lastUpdated" style={{ color: "white" }}>Date Added
+                                                                    <h3 id="lastUpdated" style={{ color: "white", cursor: "pointer" }}>Date Added
                                                 {sort != 0 && attrSorting === "lastUpdated" ?
                                                                             sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
                                                                             : null

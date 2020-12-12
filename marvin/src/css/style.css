@@ -19,14 +19,57 @@
     text-align: center;
 }
 
+.btn-sidebar {
+    color: lightgray;
+}
+
+.btn-sidebar:hover {
+    color: white;
+}
+
+.sidebar-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: .2s ease-in-out;
+}
+
+.sidebar-scroll:hover {
+    scrollbar-width: thin;
+    scrollbar-color: #474747 transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar{
+    width: 7px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+    background: #474747;
+    border-radius: 10px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
 .text-link {
     padding-left: .5rem;
     color: #a3b1c2;
     font-size: 1rem;
-    
+    transition: color .15s ease-in-out;
 }
 
 .text-link:hover {
     color: white;
     text-decoration: none;
+}
+
+.text-playlist {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: .3s;
+}
+
+.text-playlist:hover {
+    text-decoration-color: white;
 }

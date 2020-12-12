@@ -58,7 +58,7 @@ class PlaylistSong extends Component {
                         : null }
                     </div>
                 </div>
-                <div className="divider song-divider" />
+                <div className="divider song-divider"  style={{borderColor:'#545454'}}/>
             </div>
 
         )

@@ -37,13 +37,13 @@ class Sidebar extends React.Component {
         let playlist;
         let loggedIn = this.props.user != null;
         return (
-            <nav className='overflow-visible sticky-top ' style={{height: 605, left:0}}>
-                <div className=" p-0 text-center border border-white border-left-0 border-top-0 border-bottom-0" style={{width: 200, height:1100}}>
+            <nav className='overflow-visible sticky-top ' style={{height: 605, left:0, height:1020, backgroundColor: '#1a1a1a'}}>
+                <div className=" p-0 text-center " style={{width: 200, }}>
                     <Link to='/app/community'>
                         <img src={logo} height={85} alt='' />
                     </Link>
-                    <form action='/sidebar' method='post'>=
-                        <input name='searchText' className='border border-primary px-1 py-1 my-1 rounded w-75' type='text' placeholder='Search' />
+                    <form action='/sidebar'  method='post'>=
+                        <input name='searchText' className='border border-primary px-1 py-1 my-1  ' type='text'  style={{borderRadius:50, width: 175, marginRight:10, lineHeight:1}} placeholder='Search' />
                     </form>
                     <div className='my-1 pt-1 text-center w-100 display-block' style={{background:'#3d8af7', height: 115}}>
                         <Link to='/app/home'>

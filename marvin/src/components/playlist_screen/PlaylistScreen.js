@@ -309,9 +309,9 @@ class PlaylistScreen extends React.Component {
                                                         dbSongs = playlist.songs;
                                                     }
                                                     return (
-                                                        <div id="playlist" className="playpage" style={{position:'relative' ,left: 20, overflow:'hidden'}} >
-                                                            <div className="row border-light" style={{ border: "solid", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px", borderLeftWidth: "0px" }}>
-                                                                <div id="top" className="col ml-3">
+                                                        <div id="playlist" className="playpage" style={{position:'sticky' ,left: 15}} >
+                                                            <div className="row" style={{ border: "solid", borderColor: '#545454', borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px", borderLeftWidth: "0px" }}>
+                                                                <div id="top" className="col ml-3 ">
                                                                     <div className="row">
                                                                         <div id="playlistInfoAndActions" className="col-8">
                                                                             <div id="playlistName" className="row">
@@ -323,7 +323,7 @@ class PlaylistScreen extends React.Component {
                                                                                 </Link>
                                                                             </div>
 
-                                                                            <div id="actions" className="row overflow-visible ml-3" style={{ marginTop: 60 ,  overflow:'hidden'}}>
+                                                                            <div id="actions" className="row overflow-visible ml-3" style={{ marginTop: 60 }}>
                                                                                 <button className='btn btn-outline-primary border-0 bg-transparent'>
                                                                                     <img src={playButton} style={{ height: 40 }} onClick={this.props.handlePlayPlaylist.bind(this, playlist.songs)} />
                                                                                 </button>
@@ -377,7 +377,7 @@ class PlaylistScreen extends React.Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="row mt-3 ml-2" >
+                                                            <div className="row mt-3 ml-2" style={{}} >
                                                                 <div className="col-3" onClick={this.handleSortBy.bind(this, dbSongs)}>
                                                                     <h3 id="title" style={{ color: "white" }}>Title
                                                     {sort != 0 && attrSorting === "title" ?
@@ -412,7 +412,7 @@ class PlaylistScreen extends React.Component {
                                                                     </h3>
                                                                 </div>
                                                             </div>
-                                                            <div className="divider song-divider" />
+                                                            <div className="divider song-divider" style={{borderColor:"#545454"}}/>
 
                                                             {songs.map((song, index) => (
                                                                 <PlaylistSong key={index} loggedIn={loggedIn} collaborators={collaborators} user={user} index={index} style={{ cursor: 'pointer' }}

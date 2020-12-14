@@ -22,7 +22,7 @@ class PlaylistSong extends Component {
                 <div className="row text-light ml-2">
                     <a id="songName" className="col-3 text-light text-truncate overflow-hidden overflow-ellipsis"
                         onClick={this.props.handleSongChange.bind(this, this.props.song)}>{song.title}</a>
-                    <label id="artistName" className="col-2">
+                    <label id="artistName" className="col-2 text-nowrap text-truncate overflow-hidden overflow-ellipses">
                         <Link className='text-white' to={`/app/artist/${song.artistID}`}>
                             {song.artistName}
                         </Link>

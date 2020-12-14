@@ -114,11 +114,11 @@ class HomeScreen extends React.Component {
                         </div>
                         <div className='divider'></div>
                         <ProfilePlaylistLinks playlists={commPlaylists}/>
-                        <div className='row h4 ml-3 text-white'>Public</div>
+                        <div className='row h4 ml-3 text-white pt-3'>Public</div>
                         <div className='divider'></div>
                         <ProfilePlaylistLinks playlists={pubPlaylists}/>
-                        <div className='row h4 ml-3 text-white'>Most Played</div>
-                        <div className='divider'></div>
+                        <div className='row h4 ml-3 text-white pt-3'>Most Played</div>
+                        <div className='divider' ></div>
                     </div>
                     )
                 }}

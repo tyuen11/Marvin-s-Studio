@@ -53,7 +53,7 @@ class AlbumScreen extends React.Component {
 
 		return (
 			<div id="album" className="album">
-				<div className="row border-light" style={{ border: "solid", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px" }}>
+				<div className="row border-light" >
 					<div id="top" className="col ml-3">
 						<div className="row">
 							<div id="AlbumInfoAndActions" className="col-8 pb-4">
@@ -99,7 +99,6 @@ class AlbumScreen extends React.Component {
 					<div className="col-4"></div>
 				</div>
 				<div>
-					<div className="divider song-divider" />
 					{songs.map((song, index) => (
 						<AlbumSong key={index} style={{cursor: 'pointer'}} 
 							handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong}

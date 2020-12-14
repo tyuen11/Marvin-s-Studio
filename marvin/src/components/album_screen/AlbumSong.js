@@ -12,6 +12,7 @@ class AlbumSong extends Component {
             runtime_sec = "0" + runtime_sec;
         return (
             <div>
+                <div className="divider"/>
                 <div className="row text-light ml-5">
                     <a id="songName"
                         onClick={this.props.handleSongChange.bind(this, this.props.song)}
@@ -34,6 +35,7 @@ class AlbumSong extends Component {
                         <img src={addToQueueButton} style={{ height: 25 }} />
                     </button>       
                 </div>
+                
             </div>
         )
     }

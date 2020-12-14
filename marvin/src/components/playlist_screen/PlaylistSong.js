@@ -6,6 +6,7 @@ import deleteButton from '../../icons/delete.png'
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
+import * as Icon from 'react-bootstrap-icons'
 
 class PlaylistSong extends Component {
     constructor(props) {
@@ -19,7 +20,7 @@ class PlaylistSong extends Component {
         console.log(canDelete);
         return (
             <div>
-                <div className="row text-light ml-2">
+                <div className="row text-light ml-2" style={{height:32, fontWeight: 450, lineHeight:1}}>
                     <a id="songName" className="col-3 text-light text-truncate overflow-hidden overflow-ellipsis"
                         onClick={this.props.handleSongChange.bind(this, this.props.song)}>{song.title}</a>
                     <label id="artistName" className="col-2 text-nowrap text-truncate overflow-hidden overflow-ellipses">
@@ -34,12 +35,10 @@ class PlaylistSong extends Component {
                     </label>
                     <label id="date" className="col-2">{song.lastUpdated.slice(0,10)}</label>
                     <div id="controls" className='col-2 ml-3'>
-                        <button className="btn btn-outline-primary bg-transparent border-0 p-1" onClick={this.props.handleQueueSong.bind(this, song)}>
-                            <img src={addToQueueButton} style={{ height: 25 }} />
-                        </button>
-
+                        <Icon.List className="btn btn-outline-primary bg-transparent border-0 p-1 " style={{marginTop:-9, fontSize: 35}}  onClick={this.props.handleQueueSong.bind(this, song)}/>
+                       
                         {loggedIn && canDelete ? 
-                            <button className='btn btn-outline-primary bg-transparent border-0 p-1 ml-4' onClick={e => {
+                            <Icon.TrashFill className='btn btn-outline-primary bg-transparent border-0 p-1 ml-4 ' style={{marginTop:-11, fontSize:30}} onClick={e => {
                                 e.preventDefault();
                                 let newSongs = playlist.songs;
                                 newSongs.splice(this.props.index, 1);
@@ -52,9 +51,9 @@ class PlaylistSong extends Component {
                                         songs: newSongs
                                     }
                                 })
-                            }}>
-                                <img src={deleteButton} style={{ height: 25 }} />
-                            </button> 
+                            }}/>
+
+                              
                         : null }
                     </div>
                 </div>

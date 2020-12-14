@@ -24,10 +24,13 @@ class Queue extends Component {
                     <button className="col-2" style={{width:50, padding:0, borderRadius:5, position: 'fixed', zIndex:100, right: 100}} onClick={this.props.handleCloseQueue}>close</button>
                 </div>
                 <div id="queue" className="" style={{overflowX:'hidden'}}>
+                   {songs.length !== 0?
                     <div id="queueNowPlaying" className="text-dark" style ={{border: "solid", borderColor: "#a1a1a1",  borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px" ,  borderLeftWidth:"0px", }}>
                         <h4 style={{fontSize:20, paddingTop: 10}}>Now Playing</h4>
                         <QueueSong song={songs[index]} />
                     </div>
+                    : null
+                    }
                     {queuedSongs.length !== 0?
                     <div id="queueQueued" className="text-dark" style={{overflow:''}}>
                         <h4  style={{fontSize:20}}>Queued songs</h4>

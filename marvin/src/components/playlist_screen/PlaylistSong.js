@@ -20,7 +20,7 @@ class PlaylistSong extends Component {
         console.log(canDelete);
         return (
             <div className>
-                <div className="songrow row text-light ml-2" style={{height:"4.5vh", fontWeight: 450, lineHeight:3}}>
+                <div className="songrow row text-light ml-2" style={{ fontWeight: 450, lineHeight:3}}>
                     <a id="songName" className="col-3 text-playlist text-truncate overflow-hidden overflow-ellipsis"
                         onClick={this.props.handleSongChange.bind(this, this.props.song)}>{song.title}</a>
                     <label id="artistName" className="col-2 text-nowrap text-truncate overflow-hidden overflow-ellipses">
@@ -34,13 +34,14 @@ class PlaylistSong extends Component {
                         </Link>
                     </label>
                     <label id="date" className="col-2">{song.lastUpdated.slice(0,10)}</label>
-                    <div id="controls" className='col-2 ml-25'>
+                    <div id="controls" className='col-2 '>
                         <Icon.List className="qsong btn btn-outline-primary bg-transparent border-0 p-1 " style={{ fontSize: 35, marginLeft:-27,marginTop:7 }}  onClick={this.props.handleQueueSong.bind(this, song)}/>
                        
                         {loggedIn && canDelete ? 
                             <Icon.TrashFill id="deleteSong" className='removesong btn btn-outline-primary bg-transparent border-0 p-1 ml-4 ' style={{marginTop:-34, marginBottom:20, fontSize:30}} onClick={e => {
                                 e.preventDefault();
                                 let newSongs = playlist.songs;
+                                console.log(newSongs);
                                 newSongs.splice(this.props.index, 1);
                                 newSongs.forEach(song => {
                                     delete song['__typename']

@@ -85,7 +85,7 @@ class Player extends React.Component {
 
     render () {
         let playerDisabled = this.state.currSong == null;
-        console.log("playing is ", this.state.playing);
+        //console.log("playing is ", this.state.playing);
         
         const playing = this.state.playing, seeking = this.state.seeking, played = this.state.played, duration = this.state.duration;
         let shuffle = this.props.shuffle;
@@ -94,6 +94,7 @@ class Player extends React.Component {
             song = "https://www.youtube.com/watch?v=" + songs[index].song.videoId;
         if (played >= 1)
             this.handleNextSongP();
+        console.log(songs);
 
         let buttonCursor = playing ? "pointer" : "disabled"
         return (
@@ -133,7 +134,7 @@ class Player extends React.Component {
                     />
                     <button id='shuffle' className='btn btn-outline-primary border-0 ml-auto'
                             style={{cursor: buttonCursor}} onClick={this.props.handleToggleShuffle}>
-                        <Icon.Shuffle color={shuffle?"blue":"white"}size={30} />
+                        <Icon.Shuffle color={shuffle?"#3d8af7":"white"}size={30} />
                     </button>
                     
                     <button id='queue' className='btn btn-outline-primary border-0 ml-3 mr-4 mt-1'

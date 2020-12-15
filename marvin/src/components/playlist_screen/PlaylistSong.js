@@ -19,8 +19,8 @@ class PlaylistSong extends Component {
         let loggedIn = this.props.loggedIn, canDelete = loggedIn?this.props.collaborators.includes(this.props.user) || this.props.playlist.ownerID == this.props.user._id : loggedIn;
         console.log(canDelete);
         return (
-            <div>
-                <div className="row text-light ml-2" style={{height:32, fontWeight: 450, lineHeight:1}}>
+            <div className>
+                <div className="songrow row text-light ml-2" style={{height:"4.5vh", fontWeight: 450, lineHeight:3}}>
                     <a id="songName" className="col-3 text-playlist text-truncate overflow-hidden overflow-ellipsis"
                         onClick={this.props.handleSongChange.bind(this, this.props.song)}>{song.title}</a>
                     <label id="artistName" className="col-2 text-nowrap text-truncate overflow-hidden overflow-ellipses">
@@ -34,11 +34,11 @@ class PlaylistSong extends Component {
                         </Link>
                     </label>
                     <label id="date" className="col-2">{song.lastUpdated.slice(0,10)}</label>
-                    <div id="controls" className='col-2 ml-3'>
-                        <Icon.List className="btn btn-outline-primary bg-transparent border-0 p-1 " style={{marginTop:-9, fontSize: 35}}  onClick={this.props.handleQueueSong.bind(this, song)}/>
+                    <div id="controls" className='col-2 ml-25'>
+                        <Icon.List className="qsong btn btn-outline-primary bg-transparent border-0 p-1 " style={{ fontSize: 35, marginLeft:-27,marginTop:7 }}  onClick={this.props.handleQueueSong.bind(this, song)}/>
                        
                         {loggedIn && canDelete ? 
-                            <Icon.TrashFill className='btn btn-outline-primary bg-transparent border-0 p-1 ml-4 ' style={{marginTop:-11, fontSize:30}} onClick={e => {
+                            <Icon.TrashFill id="deleteSong" className='removesong btn btn-outline-primary bg-transparent border-0 p-1 ml-4 ' style={{marginTop:-34, marginBottom:20, fontSize:30}} onClick={e => {
                                 e.preventDefault();
                                 let newSongs = playlist.songs;
                                 newSongs.splice(this.props.index, 1);

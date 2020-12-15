@@ -1,5 +1,5 @@
 .divider {
-    border-top: 1px solid #d9dadc;
+    border-top: 1px solid #545454;
     display: block;
     line-height: 1px;
     margin: 15px 0;
@@ -9,6 +9,8 @@
 
 .song-divider {
     opacity: 0.5;
+    margin: 0px 0;
+
 }
 .divider .divider-title {
     background: #232323;
@@ -162,4 +164,49 @@ input[type=range]::-moz-range-track {
 
 */
 
+.removesong {
+  display: none; /* Hide button */
+  line-height: 1;
+ 
+}
+.qsong {
+    display: none;
+  }
 
+  
+.songrow:hover .removesong{
+   display: block; /* On :hover of div show button */
+
+}
+
+.songrow:hover .qsong {
+    display: block; /* On :hover of div show button */
+ }
+ 
+ .songrow:hover{
+     background-color: #282828;
+ }
+
+ .addsong {
+    display: none; /* Hide button */
+    line-height: 1;
+   
+  }
+  .quesong {
+      display: none;
+    }
+  
+
+ .albumrow:hover{
+    background-color: #282828;
+ }
+   
+.albumrow:hover .addsong{
+    display: block; /* On :hover of div show button */
+ 
+ }
+ 
+ .albumrow:hover .quesong {
+     display: block; /* On :hover of div show button */
+  }
+  

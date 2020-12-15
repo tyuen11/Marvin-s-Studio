@@ -9,12 +9,15 @@ class QueueSong extends Component {
                 <div className="col-3 pb-1">
                     <img src={song.song.albumArt} style={{ height: "8vh" }} />
                 </div>
-                <div className="col-9 ">
-                    <div><small  style={{fontWeight:500}}>{song.song.title}</small></div>
-                    <div><small style={{fontWeight:500}}>{song.song.artistName}</small></div>
+                <div className="col-6 ">
+                    <div><small style={{ fontWeight: 500 }}>{song.song.title}</small></div>
+                    <div><small style={{ fontWeight: 500 }}>{song.song.artistName}</small></div>
                 </div>
-               
+                {song.queued?<div className="col" style={{marginTop:15}}>
+                   <Icon.TrashFill onClick={console.log("test is working")}/>
+                </div>:null}
             </div>
+
         )
     }
 }

@@ -82,7 +82,7 @@ class sotd extends Component {
                         {(updateSOTD, { loading, error }) => (
                             <div>
                                 <div className='pt-2 text-center d-block'>
-                                    <a className='h5 text-white' onClick={this.props.handleSongChange.bind(this, song)}>{song.title}</a>
+                                    <a className='h5 text-playlist' onClick={this.props.handleSongChange.bind(this, song)}>{song.title}</a>
                                     <div className='position-relative mb-3  '>
                                         <img className='rounded' src={song.albumArt} style={{ height: 150, width: 150 }} />
                                         {/* <div className='h1 position-absolute' style={{top: '30%', left: '45%'}}>

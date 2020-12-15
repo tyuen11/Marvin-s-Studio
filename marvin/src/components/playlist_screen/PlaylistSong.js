@@ -21,15 +21,15 @@ class PlaylistSong extends Component {
         return (
             <div>
                 <div className="row text-light ml-2" style={{height:32, fontWeight: 450, lineHeight:1}}>
-                    <a id="songName" className="col-3 text-light text-truncate overflow-hidden overflow-ellipsis"
+                    <a id="songName" className="col-3 text-playlist text-truncate overflow-hidden overflow-ellipsis"
                         onClick={this.props.handleSongChange.bind(this, this.props.song)}>{song.title}</a>
                     <label id="artistName" className="col-2 text-nowrap text-truncate overflow-hidden overflow-ellipses">
-                        <Link className='text-white' to={`/app/artist/${song.artistID}`}>
+                        <Link className='text-playlist' to={`/app/artist/${song.artistID}`}>
                             {song.artistName}
                         </Link>
                     </label>
                     <label id="albumName" className="col-2 text-nowrap overflow-hidden overflow-ellipses" style={{ textOverflow: 'ellipsis' }}>
-                        <Link className='text-white' to='/app/album/'>
+                        <Link className='text-playlist' to='/app/album/'>
                             {song.albumName}
                         </Link>
                     </label>

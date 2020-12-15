@@ -10,8 +10,6 @@ import playButton from '../../icons/play-button.png'
 import shuffleButton from '../../icons/shuffle.png'
 import deleteButton from '../../icons/delete.png'
 import moreButton from '../../icons/more.png'
-import likeButton from '../../icons/like.png'
-import dislikeButton from '../../icons/dislike.png'
 import EditPlaylistNameModal from '../modals/EditPlaylistNameModal.js';
 import CopyPlaylistModal from '../modals/CopyPlaylistModal.js';
 import PlaylistSong from './PlaylistSong'
@@ -47,6 +45,12 @@ const GET_PLAYLIST = gql`
         }
     }
 `;
+
+
+
+
+
+
 const UPDATE_PLAYLIST_POINTS = gql`
     mutation updatePlaylistPoints(
         $id: String!
@@ -102,6 +106,34 @@ const UPDATE_PLAYLIST_SONGS = gql`
         }
     }
 `
+const GET_USER = gql`
+    query user($userId: String) {
+        user(id: $userId) {
+            _id
+            email
+            password
+            username
+            userPoints
+            collaborativePlaylistsID
+            followedPlaylistsID
+            ownedPlaylistsID
+            recentlyPlayed {
+                playlistId
+                type
+            }
+            mostPlayed {
+                playlistId
+                type
+            }
+            votedPlaylists {
+                playlistID
+                votes
+            }
+            votedSOTD
+        }
+    }
+`;
+
 class PlaylistScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -119,7 +151,10 @@ class PlaylistScreen extends React.Component {
         vote: 0,
         songs: null,
         sort: 0,
-        attrSorting: ""
+        attrSorting: "",
+        hovered: false,
+        hoveredDown: false,
+        owner: null
     }
 
     handleShowCollab = () => {
@@ -194,27 +229,28 @@ class PlaylistScreen extends React.Component {
         }
     }
 
-    handlePlaylistVote = (vote, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints) => {
+    handlePlaylistVote = (vote, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints, owner) => {
 
         console.log("liking song")
         let votesList = this.props.user.votedPlaylists;
         let idx = votesList.findIndex(votesList => votesList.playlistID === playlist._id);
         let points = playlist.playlistPoints
 
-        //fix this
-        let userPoints = this.props.user.userPoints;//GET THE APPROPRIATE USER get the owner's points
-        //fix this
+        //let userPoints = this.state.owner.userPoints;
+        let userPoints = owner.userPoints;
 
         if (idx == -1) { //if hasn't voted already
             votesList.push({ playlistID: playlist._id, votes: vote })
             points += vote
             userPoints += vote
+
         }
         else {
             if (votesList[idx].votes == vote) { //if clicks on same button again
                 points -= vote
                 userPoints -= vote
                 votesList.splice(idx, 1)
+                vote = 0
 
             }
 
@@ -222,7 +258,6 @@ class PlaylistScreen extends React.Component {
                 points += vote * 2
                 userPoints += vote * 2
                 votesList[idx].votes = vote;
-                //  votesList.push(votedPlaylist)
             }
         }
 
@@ -285,7 +320,9 @@ class PlaylistScreen extends React.Component {
         let songs, dbSongs;
         let sort = this.state.sort, attrSorting = this.state.attrSorting;
         console.log(this.state.songs);
+        let owner = null;
         return (
+
             <Mutation mutation={UPDATE_VOTED_PLAYLISTS} >
                 {(updateVotedPlaylists, { loading, error }) => (
                     <Mutation mutation={UPDATE_USER_POINTS} >
@@ -309,133 +346,146 @@ class PlaylistScreen extends React.Component {
                                                         dbSongs = playlist.songs;
                                                     }
                                                     return (
-                                                        <div id="playlist" className="playpage" style={{position:'relative' ,left: 20, overflow:'hidden'}} >
-                                                            <div className="row border-light" style={{ border: "solid", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px", borderLeftWidth: "0px" }}>
-                                                                <div id="top" className="col ml-3">
-                                                                    <div className="row">
-                                                                        <div id="playlistInfoAndActions" className="col-8">
-                                                                            <div id="playlistName" className="row">
-                                                                                <h1 className="text-light ml-4 mt-5">{playlist.title} </h1>
-                                                                            </div>
-                                                                            <div id="playlistOwner" className="row">
-                                                                                <Link to={`/app/profile/${playlist.ownerID}`}>
-                                                                                    <h4 className="text-light ml-4"> Playlist by {playlist.ownerName} </h4>
-                                                                                </Link>
-                                                                            </div>
+                                                        <Query pollInterval={500} query={GET_USER} variables={{ userId: playlist.ownerID }}>
+                                                            {({ loading, error, data }) => {
+                                                                if (loading) return 'Loading...';
+                                                                if (error) return `Error! ${error.message}`;
+                                                                else owner = data.user;
+                                                                return (
+                                                                    <div id="playlist" className="playpage" style={{ position: 'sticky', left: 15 }} >
+                                                                        <div className="row" >
+                                                                            <div id="top" className="col ml-3 ">
+                                                                                <div className="row">
+                                                                                    <div id="playlistInfoAndActions" className="col-8">
+                                                                                        <div id="playlistName" className="row">
+                                                                                            <h1 className="text-light ml-4 mt-5">{playlist.title} </h1>
+                                                                                        </div>
+                                                                                        <div id="playlistOwner" className="row">
+                                                                                            <Link to={`/app/profile/${playlist.ownerID}`}>
+                                                                                                <h4 className="text-light ml-4"> Playlist by {playlist.ownerName} </h4>
+                                                                                            </Link>
+                                                                                        </div>
+                                                                                        <div id="actions" className="row overflow-visible ml-3" style={{ marginTop: 60 }}>
+                                                                                            <button className='btn btn-outline-primary border-0 bg-transparent'  onClick={this.props.handlePlayPlaylist.bind(this, playlist.songs)}>
 
-                                                                            <div id="actions" className="row overflow-visible ml-3" style={{ marginTop: 60 ,  overflow:'hidden'}}>
-                                                                                <button className='btn btn-outline-primary border-0 bg-transparent'>
-                                                                                    <img src={playButton} style={{ height: 40 }} onClick={this.props.handlePlayPlaylist.bind(this, playlist.songs)} />
-                                                                                </button>
-                                                                                {owned ?
-                                                                                    <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShowDelete}>
-                                                                                        <img src={deleteButton} style={{ height: 40 }} />
-                                                                                    </button>
-                                                                                    : <div />}
-                                                                                <Dropdown direction='right' toggle={this.toggleDropdown} isOpen={this.state.showDropdown}>
-                                                                                    <DropdownToggle className='btn btn-outline-primary border-0 bg-transparent' caret={false}>
-                                                                                        <img src={moreButton} style={{ height: 40 }} />
-                                                                                    </DropdownToggle>
-                                                                                    {owned ?
-                                                                                        <DropdownMenu>
-                                                                                            <DropdownItem onClick={this.handleShowCopyPlaylist}>Copy Playlist</DropdownItem>
-                                                                                            <DropdownItem onClick={this.handleShowCollab}>Collaborator Settings</DropdownItem>
-                                                                                            <DropdownItem onClick={this.handleShowEditName}>Edit Playlist Name</DropdownItem>
-                                                                                            <DropdownItem onClick={this.handleShowPrivacy}>Privacy Settings</DropdownItem>
-                                                                                        </DropdownMenu> :
-                                                                                        <DropdownMenu>
-                                                                                            <DropdownItem onClick={this.handleShowCopyPlaylist}>Copy Playlist</DropdownItem>
-                                                                                            <DropdownItem>Follow Playlist</DropdownItem>
-                                                                                        </DropdownMenu>
-                                                                                    }
-                                                                                </Dropdown>
+                                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="41" height="41" fill="currentColor" className="bi bi-play-circle-fill" viewBox="0 0 16 16">
+                                                                                                    <path fillRule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z" />
+                                                                                                </svg>
+                                                                                            </button>
+                                                                                            {owned ?
+                                                                                                <button className='btn btn-outline-primary border-0 bg-transparent' onClick={this.handleShowDelete}>
+                                                                                                    <Icon.TrashFill style={{ fontSize: 43 }} />
+                                                                                                </button>
+                                                                                                : <div />}
+                                                                                            <Dropdown direction='right' toggle={this.toggleDropdown} isOpen={this.state.showDropdown}>
+                                                                                                <DropdownToggle className='btn btn-outline-primary border-0 bg-transparent' caret={false}>
+                                                                                                   <Icon.ThreeDots style={{fontSize:54, marginLeft:-5}}/>
+                                                                                                </DropdownToggle>
+                                                                                                {owned ?
+                                                                                                    <DropdownMenu>
+                                                                                                        <DropdownItem onClick={this.handleShowCopyPlaylist}>Copy Playlist</DropdownItem>
+                                                                                                        <DropdownItem onClick={this.handleShowCollab}>Collaborator Settings</DropdownItem>
+                                                                                                        <DropdownItem onClick={this.handleShowEditName}>Edit Playlist Name</DropdownItem>
+                                                                                                        <DropdownItem onClick={this.handleShowPrivacy}>Privacy Settings</DropdownItem>
+                                                                                                    </DropdownMenu> :
+                                                                                                    <DropdownMenu>
+                                                                                                        <DropdownItem onClick={this.handleShowCopyPlaylist}>Copy Playlist</DropdownItem>
+                                                                                                        <DropdownItem>Follow Playlist</DropdownItem>
+                                                                                                    </DropdownMenu>
+                                                                                                }
+                                                                                            </Dropdown>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div id="imgAndVotes" className="col-3 ml-2 mt-3" >
+                                                                                        <div className="row mt-4 mb-2 justify-content-center">
+                                                                                            <a href="albumPic">
+                                                                                                <input type="image" style={{ height: 170 }}
+                                                                                                    src="https://dalelyles.com/musicmp3s/no_cover.jpg">
+                                                                                                </input>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                        <div className="row justify-content-center">
+                                                                                            {this.props.user ? <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
+                                                                                                onClick={this.handlePlaylistVote.bind(this, 1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints, owner)} onMouseOut={() => this.setState({ hovered: true })}
+                                                                                                onMouseOver={() => this.setState({ hovered: false })}>
+                                                                                                {this.state.vote == 1 ? <Icon.HandThumbsUp style={{ fontSize: 30, marginBottom: 5, color: '#3d8af7' }} /> : <Icon.HandThumbsUp style={{ fontSize: 30, marginBottom: 5, color: 'white', transform: `${this.state.hovered ? 'scale(1,1)' : 'scale(1.2,1.2)'}` }} />}
+                                                                                            </button> : <h3 className="text-light">Playlist votes</h3>}
+                                                                                            <div id="playlistPoints" className="col-3 mx-0 mt-auto h4 text-light text-center" style={{ marginBottom: 12, fontSize: 25 }}>{playlist.playlistPoints}</div>
+                                                                                            {this.props.user ?
+                                                                                                <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
+                                                                                                    onClick={this.handlePlaylistVote.bind(this, -1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints, owner)} onMouseOut={() => this.setState({ hoveredDown: true })}
+                                                                                                    onMouseOver={() => this.setState({ hoveredDown: false })}>
+                                                                                                    {this.state.vote == -1 ? <Icon.HandThumbsDown style={{ fontSize: 30, marginBottom: 5, color: '#3d8af7' }} /> : <Icon.HandThumbsDown style={{ fontSize: 30, marginBottom: 5, color: 'white', transform: `${this.state.hoveredDown ? 'scale(1,1)' : 'scale(1.2,1.2)'}` }} />}
+                                                                                                </button>
+                                                                                                : null}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-
-                                                                        <div id="imgAndVotes" className="col-3 ml-2 mt-3" >
-                                                                            <div className="row mt-4 mb-2 justify-content-center">
-                                                                                <a href="albumPic">
-                                                                                    <input type="image" style={{ height: 170 }}
-                                                                                        src="https://dalelyles.com/musicmp3s/no_cover.jpg">
-                                                                                    </input>
-                                                                                </a>
-                                                                            </div>
-                                                                            <div className="row justify-content-center">
-                                                                                {this.props.user ? <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
-                                                                                    onClick={this.handlePlaylistVote.bind(this, 1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints)}>
-                                                                                    <img src={likeButton} style={{ height: 25 }} />
-                                                                                </button> : <h3 className="text-light">Playlist votes</h3>}
-                                                                                <div id="playlistPoints" className="col-3 mx-0 mt-auto h4 text-light text-center">{playlist.playlistPoints}</div>
-                                                                                {this.props.user ?
-                                                                                    <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
-                                                                                        onClick={this.handlePlaylistVote.bind(this, -1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints)}>
-                                                                                        <img src={dislikeButton} style={{ height: 25 }} />
-                                                                                    </button>
-                                                                                    : null}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="row mt-3 ml-2" >
-                                                                <div className="col-3" onClick={this.handleSortBy.bind(this, dbSongs)}>
-                                                                    <h3 id="title" style={{ color: "white", cursor: "pointer" }}>Title
+                                                                        <div className="row mt-1 ml-2" >
+                                                                            <div className="col-3" onClick={this.handleSortBy.bind(this, dbSongs)}>
+                                                                                <h3 id="title" className='text-header'>Title
                                                     {sort != 0 && attrSorting === "title" ?
-                                                                            sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
-                                                                            : null
-                                                                        }
-                                                                    </h3>
+                                                                                        sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
+                                                                                        : null
+                                                                                    }
+                                                                                </h3>
 
-                                                                </div>
-                                                                <div className="col-2" onClick={this.handleSortBy.bind(this, dbSongs)}>
-                                                                    <h3 id="artistName" style={{ color: "white", cursor: "pointer" }}>Artist
+                                                                            </div>
+                                                                            <div className="col-2" onClick={this.handleSortBy.bind(this, dbSongs)}>
+                                                                                <h3 id="artistName" className='text-header'>Artist
                                                     {sort != 0 && attrSorting === "artistName" ?
-                                                                            sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
-                                                                            : null
-                                                                        }
-                                                                    </h3>
-                                                                </div>
-                                                                <div className="col-2" onClick={this.handleSortBy.bind(this, dbSongs)}>
-                                                                    <h3 id="albumName" style={{ color: "white", cursor: "pointer" }}>Album
+                                                                                        sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
+                                                                                        : null
+                                                                                    }
+                                                                                </h3>
+                                                                            </div>
+                                                                            <div className="col-2" onClick={this.handleSortBy.bind(this, dbSongs)}>
+                                                                                <h3 id="albumName" className='text-header'>Album
                                                     {sort != 0 && attrSorting === "albumName" ?
-                                                                            sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
-                                                                            : null
-                                                                        }
-                                                                    </h3>
-                                                                </div>
-                                                                <div className="col-3" onClick={this.handleSortBy.bind(this, dbSongs)}>
-                                                                    <h3 id="lastUpdated" style={{ color: "white", cursor: "pointer" }}>Date Added
+                                                                                        sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
+                                                                                        : null
+                                                                                    }
+                                                                                </h3>
+                                                                            </div>
+                                                                            <div className="col-3" onClick={this.handleSortBy.bind(this, dbSongs)}>
+                                                                                <h3 id="lastUpdated" className='text-header'>Date Added
                                                 {sort != 0 && attrSorting === "lastUpdated" ?
-                                                                            sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
-                                                                            : null
-                                                                        }
-                                                                    </h3>
-                                                                </div>
-                                                            </div>
-                                                            <div className="divider song-divider" />
+                                                                                        sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
+                                                                                        : null
+                                                                                    }
+                                                                                </h3>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="divider song-divider" style={{ borderColor: "#545454" }} />
 
-                                                            {songs.map((song, index) => (
-                                                                <PlaylistSong key={index} loggedIn={loggedIn} collaborators={collaborators} user={user} index={index} style={{ cursor: 'pointer' }}
-                                                                    handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong}
-                                                                    song={song} updatePlaylistSongs={updatePlaylistSongs} playlist={playlist} />
-                                                            ))}
+                                                                        {songs.map((song, index) => (
+                                                                            <PlaylistSong key={index} loggedIn={loggedIn} collaborators={collaborators} user={user} index={index} style={{ cursor: 'pointer' }}
+                                                                                handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong}
+                                                                                song={song} updatePlaylistSongs={updatePlaylistSongs} playlist={playlist} />
+                                                                        ))}
 
-                                                            {loggedIn ?
-                                                                <div>
-                                                                    <DeletePlaylistModal show={this.state.showDelete} handleClose={this.handleCloseDelete} handleShow={this.handleShowDelete}
-                                                                        user={this.props.user} history={this.props.history} playlist={playlist} />
-                                                                    <EditPlaylistNameModal show={this.state.showEditName} handleClose={this.handleCloseEditName} handleShow={this.handleShowEditName}
-                                                                        user={this.props.user} playlist={playlist} />
-                                                                    <CopyPlaylistModal show={this.state.showCopyPlaylist} handleClose={this.handleCloseCopyPlaylist} handleShow={this.handleShowCopyPlaylist}
-                                                                        user={this.props.user} history={this.props.history} playlist={playlist} />
+                                                                        {loggedIn ?
+                                                                            <div>
+                                                                                <DeletePlaylistModal show={this.state.showDelete} handleClose={this.handleCloseDelete} handleShow={this.handleShowDelete}
+                                                                                    user={this.props.user} history={this.props.history} playlist={playlist} />
+                                                                                <EditPlaylistNameModal show={this.state.showEditName} handleClose={this.handleCloseEditName} handleShow={this.handleShowEditName}
+                                                                                    user={this.props.user} playlist={playlist} />
+                                                                                <CopyPlaylistModal show={this.state.showCopyPlaylist} handleClose={this.handleCloseCopyPlaylist} handleShow={this.handleShowCopyPlaylist}
+                                                                                    user={this.props.user} history={this.props.history} playlist={playlist} />
 
-                                                                    <ChangePrivacyModal show={this.state.showPrivacy} handleClose={this.handleClosePrivacy} handleShow={this.handleShowPrivacy}
-                                                                        playlist={playlist} />
-                                                                    <CollaboratorSettingsModal show={this.state.showCollab} handleClose={this.handleCloseCollab} handleShow={this.handleShowCollab}
-                                                                        playlist={playlist} />
-                                                                </div>
-                                                                : null}
-                                                        </div>
+                                                                                <ChangePrivacyModal show={this.state.showPrivacy} handleClose={this.handleClosePrivacy} handleShow={this.handleShowPrivacy}
+                                                                                    playlist={playlist} />
+                                                                                <CollaboratorSettingsModal show={this.state.showCollab} handleClose={this.handleCloseCollab} handleShow={this.handleShowCollab}
+                                                                                    playlist={playlist} />
+                                                                            </div>
+                                                                            : null}
+                                                                    </div>
+                                                                )
+                                                            }}
+                                                        </Query>
                                                     )
                                                 }}
                                             </Query>

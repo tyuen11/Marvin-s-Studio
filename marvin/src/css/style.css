@@ -20,7 +20,7 @@
 }
 
 .btn-sidebar {
-    color: lightgray;
+    color: #d9c7c7;
 }
 
 .btn-sidebar:hover {
@@ -68,8 +68,98 @@
     text-decoration: underline;
     text-decoration-color: transparent;
     transition: .3s;
+    color: white;
 }
 
 .text-playlist:hover {
+    color: white;
     text-decoration-color: white;
 }
+
+.text-header {
+    color: #a3b1c2;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.text-header:hover {
+    color: white;
+}
+
+input[type=range] {
+    background:transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    -moz-appearance: none;
+    background-color: transparent;
+    border-color: transparent;
+    transition: .2s;
+}
+
+.player:hover input[type="range"]::-moz-range-thumb {
+    background: lightgray;
+    border: 1px solid gray;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+}
+
+input[type=range]::-moz-range-progress {
+    background-color: lightgray;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    height: 10px;
+}
+
+.player:hover input[type=range]::-moz-range-progress {
+    background-color: #3d8af7;
+    
+}
+
+input[type=range]::-moz-range-track {
+    background-color:#575757;
+    border-radius: 10px;
+    height: 10px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: transparent;
+    border-color: transparent;
+    transition: .2s;
+}
+
+.player:hover input[type="range"]::-webkit-slider-thumb {
+    background: lightgray;
+    border: 1px solid gray;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background-color: lightgray;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    height: 10px;
+}
+
+.player:hover input[type=range]::-webkit-slider-runnable-track {
+    background-color: #3d8af7;
+    
+}
+/*
+input[type=range]::-moz-range-track {
+    background-color:#575757;
+    border-radius: 10px;
+    height: 10px;
+}
+
+*/
+
+

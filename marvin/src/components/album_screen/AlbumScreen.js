@@ -5,6 +5,7 @@ import playButton from '../../icons/play-button.png'
 import shuffleButton from '../../icons/shuffle.png'
 import addToQueueButton from '../../icons/playlist.png'
 import addToPlaylistButton from '../../icons/addBlue.png'
+import * as Icon from 'react-bootstrap-icons'
 
 class AlbumScreen extends React.Component {
 	state = {
@@ -29,7 +30,7 @@ class AlbumScreen extends React.Component {
 				console.log(err);
 			});
 	}
-	
+
 	handleShow = (song, flag) => {
 		console.log(song);
 		this.setState({
@@ -65,20 +66,17 @@ class AlbumScreen extends React.Component {
 								</div>
 								<div id="actions" className=" ml-3 mt-5">
 									<button className='btn btn-outline-primary border-0 bg-transparent'>
-                                        <img src={playButton} style={{ height: 40 }} onClick={this.props.handlePlayPlaylist.bind(this, songs)}/>
-                                    </button>
+										<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-play-circle-fill" onClick={this.props.handlePlayPlaylist.bind(this, songs)} viewBox="0 0 16 16">
+											<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+											<path fill-rule="evenodd" d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z" />
+										</svg>
+									</button>
 
-									<button className='btn btn-outline-primary border-0 bg-transparent'>
-                                        <img src={shuffleButton} style={{ height: 40 }}/>
-                                    </button>
-			
-									<button className='btn btn-outline-primary border-0 bg-transparent'>
-                                        <img src={addToQueueButton} style={{ height: 40 }}/>
-                                    </button>
-									
-									<button className='btn btn-outline-primary border-0 bg-transparent' onClick={() => this.handleShow(null, 1)}>
-                                        <img src={addToPlaylistButton} style={{ height: 40 }}/>
-                                    </button>
+									<Icon.List className='btn btn-outline-primary border-0 bg-transparent' style={{ fontSize: 80 }} />
+
+
+									<Icon.PlusCircle className='btn btn-outline-primary border-0 bg-transparent' style={{ fontSize: 65 }} onClick={() => this.handleShow(null, 1)} />
+
 								</div>
 							</div>
 							<div id="img" className="col-4 mt-4" >
@@ -98,18 +96,20 @@ class AlbumScreen extends React.Component {
 					<div className="col-4"> <h3 style={{ color: "white" }}>Runtime</h3> </div>
 					<div className="col-4"></div>
 				</div>
-				<div>
+				<div className="divider song-divider" />
+
+				<div >
 					{songs.map((song, index) => (
-						<AlbumSong key={index} style={{cursor: 'pointer'}} 
+						<AlbumSong key={index} style={{ cursor: 'pointer' }}
 							handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong}
-							song={song} handleShow={() => this.handleShow(song, 0)}/>
+							song={song} handleShow={() => this.handleShow(song, 0)} />
 					))}
 
 				</div>
 
 				{user !== null ? <AddSongModal user={this.props.user} albumId={albumId} show={this.state.show} song={this.state.song} album={album}
-					handleClose={this.handleClose} handleShow={this.handleShow} history={this.props.history} 
-					flag={this.state.flag} /> : <div/>}
+					handleClose={this.handleClose} handleShow={this.handleShow} history={this.props.history}
+					flag={this.state.flag} /> : <div />}
 			</div>
 		)
 	}

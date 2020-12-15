@@ -66,7 +66,7 @@ class Sidebar extends React.Component {
                                     else playlist = (data.playlist) ? data.playlist : [];
                                     return (
                                         <div key={index} className='text-left pl-3 mb-1'
-                                            style={{ cursor: 'pointer' }}>
+                                            style={{ cursor: 'pointer'}}>
                                             <Link className='text-link' to={`/app/playlist/${playlist._id}`}>{playlist.title}</Link>
                                         </div>
                                     )

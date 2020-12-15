@@ -98,7 +98,7 @@ class Player extends React.Component {
         let buttonCursor = playing ? "pointer" : "disabled"
         return (
             songs[index] ?
-                <div className="row w-100 pl-5 pt-2 display-inherit"
+                <div className="row w-100 pl-5 pt-2 display-inherit player"
                         style={{height: 80, bottom: 0, left: 0, zIndex: 99, background: '#323232', border:'solid', borderTopWidth:1, borderBottomWidth:0, borderLeftWidth: 0, borderRightWidth: 0,  borderColor: '#525252'}}>
                     <ReactPlayer width='0%' height='0%' url={song} ref={this.ref}
                         playing={playing}

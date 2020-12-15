@@ -6,8 +6,8 @@ class QueueSong extends Component {
         let song = this.props.song;
         return (
             <div className="row mt-3">
-                <div className="col-2 pb-1">
-                    <img src={song.song.albumArt} style={{ height: "90%" }} />
+                <div className="col-3 pb-1">
+                    <img src={song.song.albumArt} style={{ height: "8vh" }} />
                 </div>
                 <div className="col-9 ">
                     <div><small  style={{fontWeight:500}}>{song.song.title}</small></div>

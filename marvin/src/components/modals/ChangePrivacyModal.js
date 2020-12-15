@@ -82,16 +82,16 @@ class ChangePrivacyModal extends React.Component {
                                                         let inPublic = false;
                                                         let index = 0;
                                                         publicPlaylists.forEach((id, i) => {
-                                                            if (id == this.props.playlist._id) {
+                                                            if (id === this.props.playlist._id) {
                                                                 inPublic = true;
                                                                 index = i;
                                                             }
                                                         })
                                                         // if playlist is public and not in publicPlaylists, add
-                                                        if (this.state.privacy == 0 && !inPublic)
+                                                        if (this.state.privacy === 0 && !inPublic)
                                                             publicPlaylists.push(this.props.playlist._id)
                                                         // if playlist is private and in publicPlaylists, remove
-                                                        if(this.state.privacy != 0 && inPublic)
+                                                        if(this.state.privacy !== 0 && inPublic)
                                                             publicPlaylists.splice(index, 1)
                                                         // update public playlists
                                                         updatePublicPlaylists({ variables: {
@@ -102,13 +102,13 @@ class ChangePrivacyModal extends React.Component {
                                                         <div className='form-group col-8 text-center mx-auto'>
                                                             <div className='radio' onClick={this.privacyPublic}>
                                                                 <label>
-                                                                    <input type='radio' name='optradio' className='mr-2' checked={this.state.privacy == 0}></input>
+                                                                    <input type='radio' name='optradio' className='mr-2' checked={this.state.privacy === 0}></input>
                                                                     Public
                                                                 </label>
                                                             </div>
                                                             <div className='radio' onClick={this.privacyPrivate}>
                                                                 <label>
-                                                                    <input type='radio' name='optradio' className='mr-2' checked={this.state.privacy == 1}></input>
+                                                                    <input type='radio' name='optradio' className='mr-2' checked={this.state.privacy === 1}></input>
                                                                     Private
                                                                 </label>
                                                             </div>

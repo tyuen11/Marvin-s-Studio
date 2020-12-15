@@ -229,7 +229,7 @@ class PlaylistScreen extends React.Component {
         }
     }
 
-    handlePlaylistVote = (vote, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints) => {
+    handlePlaylistVote = (vote, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints, owner) => {
 
         console.log("liking song")
         let votesList = this.props.user.votedPlaylists;
@@ -237,7 +237,7 @@ class PlaylistScreen extends React.Component {
         let points = playlist.playlistPoints
 
         //let userPoints = this.state.owner.userPoints;
-        let userPoints = this.props.user.userPoints;
+        let userPoints = owner.userPoints;
 
         if (idx == -1) { //if hasn't voted already
             votesList.push({ playlistID: playlist._id, votes: vote })
@@ -407,14 +407,14 @@ class PlaylistScreen extends React.Component {
                                                                                         </div>
                                                                                         <div className="row justify-content-center">
                                                                                             {this.props.user ? <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
-                                                                                                onClick={this.handlePlaylistVote.bind(this, 1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints)} onMouseOut={() => this.setState({ hovered: true })}
+                                                                                                onClick={this.handlePlaylistVote.bind(this, 1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints, owner)} onMouseOut={() => this.setState({ hovered: true })}
                                                                                                 onMouseOver={() => this.setState({ hovered: false })}>
                                                                                                 {this.state.vote == 1 ? <Icon.HandThumbsUp style={{ fontSize: 30, marginBottom: 5, color: '#3d8af7' }} /> : <Icon.HandThumbsUp style={{ fontSize: 30, marginBottom: 5, color: 'white', transform: `${this.state.hovered ? 'scale(1,1)' : 'scale(1.2,1.2)'}` }} />}
                                                                                             </button> : <h3 className="text-light">Playlist votes</h3>}
                                                                                             <div id="playlistPoints" className="col-3 mx-0 mt-auto h4 text-light text-center" style={{ marginBottom: 12, fontSize: 25 }}>{playlist.playlistPoints}</div>
                                                                                             {this.props.user ?
                                                                                                 <button className='col-2 mx-0 btn btn-outline-primary bg-transparent border-0'
-                                                                                                    onClick={this.handlePlaylistVote.bind(this, -1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints)} onMouseOut={() => this.setState({ hoveredDown: true })}
+                                                                                                    onClick={this.handlePlaylistVote.bind(this, -1, playlist, updateVotedPlaylists, updatePlaylistPoints, updateUserPoints, owner)} onMouseOut={() => this.setState({ hoveredDown: true })}
                                                                                                     onMouseOver={() => this.setState({ hoveredDown: false })}>
                                                                                                     {this.state.vote == -1 ? <Icon.HandThumbsDown style={{ fontSize: 30, marginBottom: 5, color: '#3d8af7' }} /> : <Icon.HandThumbsDown style={{ fontSize: 30, marginBottom: 5, color: 'white', transform: `${this.state.hoveredDown ? 'scale(1,1)' : 'scale(1.2,1.2)'}` }} />}
                                                                                                 </button>
@@ -424,9 +424,9 @@ class PlaylistScreen extends React.Component {
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div className="row mt-1 ml-2" style={{}} >
+                                                                        <div className="row mt-1 ml-2" >
                                                                             <div className="col-3" onClick={this.handleSortBy.bind(this, dbSongs)}>
-                                                                                <h3 id="title" style={{ color: "white" }}>Title
+                                                                                <h3 id="title" className='text-header'>Title
                                                     {sort != 0 && attrSorting === "title" ?
                                                                                         sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
                                                                                         : null
@@ -435,7 +435,7 @@ class PlaylistScreen extends React.Component {
 
                                                                             </div>
                                                                             <div className="col-2" onClick={this.handleSortBy.bind(this, dbSongs)}>
-                                                                                <h3 id="artistName" style={{ color: "white" }}>Artist
+                                                                                <h3 id="artistName" className='text-header'>Artist
                                                     {sort != 0 && attrSorting === "artistName" ?
                                                                                         sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
                                                                                         : null
@@ -443,7 +443,7 @@ class PlaylistScreen extends React.Component {
                                                                                 </h3>
                                                                             </div>
                                                                             <div className="col-2" onClick={this.handleSortBy.bind(this, dbSongs)}>
-                                                                                <h3 id="albumName" style={{ color: "white" }}>Album
+                                                                                <h3 id="albumName" className='text-header'>Album
                                                     {sort != 0 && attrSorting === "albumName" ?
                                                                                         sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
                                                                                         : null
@@ -451,7 +451,7 @@ class PlaylistScreen extends React.Component {
                                                                                 </h3>
                                                                             </div>
                                                                             <div className="col-3" onClick={this.handleSortBy.bind(this, dbSongs)}>
-                                                                                <h3 id="lastUpdated" style={{ color: "white" }}>Date Added
+                                                                                <h3 id="lastUpdated" className='text-header'>Date Added
                                                 {sort != 0 && attrSorting === "lastUpdated" ?
                                                                                         sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
                                                                                         : null

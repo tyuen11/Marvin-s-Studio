@@ -20,7 +20,7 @@ class Queue extends Component {
         console.log(songs);
 
         return (
-            <div className="container" style={{ backgroundColor: "#171717", position: "fixed", width: "20%", height: "50%", bottom: "100px", right: "95px", borderRadius: 10, zIndex: "2", overflowY: 'auto', border: 'solid', borderColor: '#393939', borderWidth: .01 }}>
+            <div className="container" style={{ backgroundColor: "#171717", position: "fixed", width: "45vh", height: "60vh", bottom: "100px", right: "95px", borderRadius: 10, zIndex: "2", overflowY: 'auto', border: 'solid', borderColor: '#393939', borderWidth: .01 }}>
                 <div id="header" className="text-dark row">
                     <Icon.X className="col-2" style={{ width: 50, padding: 0, borderRadius: 5, position: 'fixed', zIndex: 100, right: 90, cursor: "pointer", fontSize: 35 }} onClick={this.props.handleCloseQueue} />
                 </div>

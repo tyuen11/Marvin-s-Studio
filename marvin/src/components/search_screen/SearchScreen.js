@@ -56,7 +56,7 @@ class SearchScreen extends React.Component {
         }
 
         return (
-            <div id="playlist" className="mt-4">
+            <div id="playlist" className="mt-4 ml-4">
                 <div className="w-25">
                     <form action='/sidebar' method='post'>
                         <input name='searchText' className='border border-primary px-1 py-1 my-1 rounded w-75' type='text' placeholder='Search' />
@@ -71,12 +71,12 @@ class SearchScreen extends React.Component {
                     </div>
                     <div className="row mb-4" >
                         {art.map((artist, index) => (
-                            <div key={index} className='text-white text-center pl-3 mb-1 ml-15' style={{ cursor: 'pointer' }}>
+                            <div key={index} className='text-playlist text-center pl-3 mb-1 ml-15' style={{ cursor: 'pointer' }}>
                                 <form action='/artreq' method='post'>
                                     <button className="border-0" style={{ backgroundColor: "#232323" }}
                                         href={`/album/${artist.browseId}`} type="submit" name="artist" value={artist.browseId + " " + artist.thumbnails[1].url} >
                                         <img className="rounded-circle" src={artist.thumbnails[1].url} onError="this.onerror=null; this.src='https://dalelyles.com/musicmp3s/no_cover.jpg';" />
-                                        <h5 className="text-light text-center mt-2 " style={{ fontSize: 16 }}> {artist.name}  </h5>
+                                        <h5 className="text-playlist text-center mt-2 " style={{ fontSize: 16 }}> {artist.name}  </h5>
                                     </button>
                                 </form>
                             </div>
@@ -87,14 +87,16 @@ class SearchScreen extends React.Component {
                     <div className="row">
                         <h3 className='text-white text-center my-3'>Albums</h3>
                     </div>
-                    <div className="row mb-4" >
+                    <div className="row text-wrap w-100" >
                         {alb.map((album, index) => (
-                            <div key={index} className='text-white text-center mb-1  mx-3' style={{ cursor: 'pointer' }}>
+                            <div key={index} className='text-playlist mb-5 col-3' style={{ cursor: 'pointer' }}>
                                 <form action='/albreq' method='post'>
-                                    <button className="border-0" style={{ backgroundColor: "#232323" }}
-                                        href={`/album/${album.browseId}`} type="submit" name="album" value={album.browseId} >
-                                        <img className="rounded" src={album.thumbnails[1].url} onError="this.onerror=null; this.src='https://dalelyles.com/musicmp3s/no_cover.jpg';" />
-                                        <h5 className="text-light text-center mt-2" style={{ fontSize: 16 }}> {album.name}  </h5>
+                                    <button className="border-0" style={{ backgroundColor: "#232323", height: "30vh", width: "33vh" }}
+                                        href={`/album/${album.browseId}`} type="submit" name="album" value={album.browseId}
+                                        data-togge='tooltip' title={album.name}
+                                    >
+                                        <img className="rounded w-100 h-100" src={album.thumbnails[2].url} onError="this.onerror=null; this.src='https://dalelyles.com/musicmp3s/no_cover.jpg';" />
+                                        <h5 className="text-playlist text-center mt-2 text-truncate" style={{ fontSize: 16 }}> {album.name}  </h5>
                                     </button>
                                 </form>
                             </div>

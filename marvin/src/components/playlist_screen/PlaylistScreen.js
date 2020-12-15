@@ -313,6 +313,12 @@ class PlaylistScreen extends React.Component {
         this.setState({ songs: sorted, sort: sort, attrSorting: sortBy });
     }
 
+    handleDeleteFromState = (index) => {
+        let newSongs = this.state.songs
+        newSongs.splice(index, 1)
+        this.setState({ songs: newSongs})
+    }
+
     render() {
         let playlist;
         let user = this.props.user, collaborators;
@@ -342,6 +348,7 @@ class PlaylistScreen extends React.Component {
                                                         playlist = data.playlist;
                                                         owned = loggedIn ? user._id == playlist.ownerID : false;
                                                         collaborators = playlist.collaborators;
+                                                        if (this.state.songs == null) this.setState({ songs: playlist.songs })
                                                         songs = this.state.songs !== null ? this.state.songs : playlist.songs;
                                                         dbSongs = playlist.songs;
                                                     }
@@ -464,7 +471,7 @@ class PlaylistScreen extends React.Component {
                                                                         {songs.map((song, index) => (
                                                                             <PlaylistSong key={index} loggedIn={loggedIn} collaborators={collaborators} user={user} index={index} style={{ cursor: 'pointer' }}
                                                                                 handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong}
-                                                                                song={song} updatePlaylistSongs={updatePlaylistSongs} playlist={playlist} />
+                                                                                song={song} updatePlaylistSongs={updatePlaylistSongs} playlist={playlist} handleDeleteFromState={this.handleDeleteFromState} stateSongs={this.state.songs} />
                                                                         ))}
 
                                                                         {loggedIn ?

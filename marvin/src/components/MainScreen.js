@@ -29,13 +29,10 @@ const GET_USER = gql`
             collaborativePlaylistsID
             followedPlaylistsID
             ownedPlaylistsID
-            recentlyPlayed {
-                playlistId
-                type
-            }
+            recentlyPlayed 
             mostPlayed {
                 playlistId
-                type
+                count
             }
             votedPlaylists {
                 playlistID
@@ -262,7 +259,7 @@ class MainScreen extends Component {
                             <div className="row fixed-bottom">
                                 <Player songs={songs} playing={playing} index={index} shuffled={shuffled} shuffle={shuffle} shuffled_index={shuffled_index}
                                     handleNextSong={this.handleNextSong} handlePrevSong={this.handlePrevSong} handleToggleShuffle={this.handleToggleShuffle}
-                                    handleShowQueue={this.handleShowQueue} showQueue={this.state.showQueue}/>
+                                    handleShowQueue={this.handleShowQueue} showQueue={this.state.showQueue} handleCloseQueue={this.handleCloseQueue}/>
                             </div>
                         </div>
                     )

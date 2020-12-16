@@ -13,7 +13,6 @@ const GET_USERS = gql`
     }
 `
 
-
 class SearchScreen extends React.Component {
 
     state = {
@@ -130,10 +129,10 @@ class SearchScreen extends React.Component {
                                 {users !== null || users.length ? <div className="row text-wrap w-100" >
                                     {users.map((user, index) => (
                                         <div key={index} className='mb-5 col-2 ml-2 justify-content-center' style={{ cursor: 'pointer' }}>
-                                            <button className="text-playlist border-0" style={{ backgroundColor: "#232323" }} href={`/app/profile/${user._id}`} >
-                                                <Icon.PersonCircle size={100} color="white"/>
-                                                <h5 className="text-center "> {user.username}  </h5>
-                                            </button>
+                                            <Link className="text-playlist border-0" style={{ backgroundColor: "#232323" }} to={`/app/profile/${user._id}`} >
+                                                <Icon.PersonCircle size={100} color="white" />
+                                                <h5 > {user.username}  </h5>
+                                            </Link>
                                         </div>
                                     ))}
                                 </div> : <h2 className="text-light">No users found.</h2>

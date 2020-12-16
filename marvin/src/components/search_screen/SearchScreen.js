@@ -1,8 +1,17 @@
 import React from 'react'
+import { Query } from 'react-apollo';
+import * as Icon from 'react-bootstrap-icons'
 import { Link, useLocation } from 'react-router-dom';
+import gql from 'graphql-tag'
 
-
-
+const GET_USERS = gql`
+    query users{
+        users {
+            _id
+            username
+        }
+    }
+`
 
 class SearchScreen extends React.Component {
 
@@ -53,6 +62,7 @@ class SearchScreen extends React.Component {
         let art = this.state.artists.slice(0, 5);
         let alb = this.state.album !== undefined ? this.state.albums.slice(0, 5) : null;
         let renderContainer = false //By default don't render anything
+        let users
         if (this.state.render) { //If this.state.render == true, which is set to true by the timer.
             renderContainer = <div>Look at me! I'm content!</div> //Add dom elements
         }
@@ -104,6 +114,33 @@ class SearchScreen extends React.Component {
                     </div> : <h2 className="text-light">No albums found.</h2>
                     }
                 </div>
+                <Query query={GET_USERS}>
+                    {({ loading, error, data }) => {
+                        if (loading) return 'Loading'
+                        if (error) return `Error! ${error.message}`
+                        else {
+                            users = data.users.filter(user => user.username.toLowerCase().includes(this.state.query.toLowerCase()))
+                        }
+                        return (
+                            <div className="col ml-3">
+                                <div className="row">
+                                    <h3 className='text-white text-center my-3'>Users</h3>
+                                </div>
+                                {users !== null || users.length ? <div className="row text-wrap w-100" >
+                                    {users.map((user, index) => (
+                                        <div key={index} className='mb-5 col-2 ml-2 justify-content-center' style={{ cursor: 'pointer' }}>
+                                            <Link className="text-playlist border-0" style={{ backgroundColor: "#232323" }} to={`/app/profile/${user._id}`} >
+                                                <Icon.PersonCircle size={100} color="white" />
+                                                <h5 > {user.username}  </h5>
+                                            </Link>
+                                        </div>
+                                    ))}
+                                </div> : <h2 className="text-light">No users found.</h2>
+                                }
+                            </div>
+                        )
+                    }}
+                </Query>
             </div>
         )
     }

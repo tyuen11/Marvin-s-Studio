@@ -81,16 +81,21 @@ class MainScreen extends Component {
 
     createShuffleSongs = () => { // NEED TO SHUFFLE ONLY NONQUEUED SONGS!!!
         let songs = this.state.songs, queued = this.getQueuedSongs();
-        let start_song = songs[this.state.index];
-        songs.splice(start_song,  queued.length + 1);
-        let shuffled = shuffle(songs.slice(0));
-        shuffled = queued.concat(shuffled);
-        shuffled.unshift(start_song);
-        // Fix this.state.songs since it was change from songs.splice (shallow copy manipulation)
-        songs = queued.concat(songs);
-        songs.splice(this.state.index, 0, start_song);
-        console.log(songs);
-        this.setState({shuffle: true, songs: songs, shuffled: shuffled, shuffled_index: 0});
+        if (songs.length === queued.length) {
+            this.setState({shuffle: true, songs: songs, shuffled: songs, shuffled_index: 0});
+        }
+        else {
+            let start_song = songs[this.state.index];
+            songs.splice(start_song,  queued.length + 1);
+            let shuffled = shuffle(songs.slice(0));
+            shuffled = queued.concat(shuffled);
+            shuffled.unshift(start_song);
+            // Fix this.state.songs since it was change from songs.splice (shallow copy manipulation)
+            songs = queued.concat(songs);
+            songs.splice(this.state.index, 0, start_song);
+            console.log(songs);
+            this.setState({shuffle: true, songs: songs, shuffled: shuffled, shuffled_index: 0});
+        }
     }
 
     handleToggleShuffle = () => {
@@ -136,7 +141,7 @@ class MainScreen extends Component {
 
     nextShuffledIndex(index) {
         let song = this.state.shuffled[index];
-        let song_index_songs = this.state.songs.findIndex(s => s === song)
+        let song_index_songs = this.state.songs.findIndex(s => JSON.stringify(s.song) === JSON.stringify(song.song) && s.queued === song.queued);
         this.setState({shuffled_index: index, index: song_index_songs });
     }
 
@@ -145,18 +150,26 @@ class MainScreen extends Component {
         let shuffle = this.state.shuffle;
         let index = shuffle?this.state.shuffled_index:this.state.index;
         let length = shuffle?this.state.shuffled.length:this.state.songs.length;
+        let songs = shuffle?this.state.shuffled:this.state.songs;
         let song = this.state.shuffle?this.state.shuffled[index]:this.state.songs[index];
 
         // this.removeQueueSong(index);
-        if (!song.queued)
+        if (!song.queued) // We the song that just played is not a queued song, just incr the index of that song to go to the next song
             index+=1;
 
-        if (song.queued) {
-            let songs = this.state.songs;
+        if (song.queued) { // If the song just played is a queued song, remove it from our songs list
+            if (shuffle) { // If the player is playing the shuffled array, we remove the queued song from the shuffled songs list but need to remove it from the nonshuffled songs list
+                let song_index_songs = this.state.songs.findIndex(s => JSON.stringify(s.song) === JSON.stringify(song.song) && s.queued === song.queued);
+                this.state.songs.splice(song_index_songs, 1);
+            }
             songs.splice(index, 1);
+            length = songs.length; // Update the length of the songs array since a queued song was removed
         }
-        if (index == length) { // Case of reaching the end of songs to be played 
+        if (index == length) { // If we have reached the end of our songs list, go back to the beginning of the lsit
             if (this.state.shuffle) 
+                // If we are going back to the first song of the shuffled songs list, we must
+                // update what index that song is in the regular songs list so that when 
+                // a user clicks unshuffle the order of songs being played continues from an inorder fashion 
                 this.nextShuffledIndex(0);
             else
                 this.setState({index: 0});
@@ -170,6 +183,7 @@ class MainScreen extends Component {
                 this.setState({index: index}); 
             return 1;
         }
+        console.log(this.state.shuffled, this.state.songs);
     }
 
     handlePrevSong = (played) => {
@@ -197,9 +211,9 @@ class MainScreen extends Component {
     render() {
         let user, playing = this.state.playing, songs = this.state.songs, index = this.state.index, 
             shuffled = this.state.shuffled, shuffle = this.state.shuffle,  shuffled_index = this.state.shuffled_index;
-        console.log("songs is", songs);
-        console.log("main screen says", this.state.playing);
-        console.log(user);
+        // console.log("songs is", songs);
+        // console.log("main screen says", this.state.playing);
+        // console.log(user);
 
         return (
             <Query pollInterval={500} query={GET_USER} variables={{ userId: this.state.user}}>
@@ -248,7 +262,7 @@ class MainScreen extends Component {
                             <div className="row fixed-bottom">
                                 <Player songs={songs} playing={playing} index={index} shuffled={shuffled} shuffle={shuffle} shuffled_index={shuffled_index}
                                     handleNextSong={this.handleNextSong} handlePrevSong={this.handlePrevSong} handleToggleShuffle={this.handleToggleShuffle}
-                                    handleShowQueue={this.handleShowQueue}/>
+                                    handleShowQueue={this.handleShowQueue} showQueue={this.state.showQueue}/>
                             </div>
                         </div>
                     )

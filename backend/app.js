@@ -7,6 +7,8 @@ const fetch = require("node-fetch");
 const bodyParser = require("body-parser");
 
 const UserModel = require('./models/User');
+const CommunityModel = require('./models/Community')
+const PlaylistModel = require('./models/Playlist')
 
 const passport = require("passport");
 const cookieSession = require("cookie-session");
@@ -232,6 +234,118 @@ app.post('/logout', (req, res) => {
 })
 
 
+// POST methods for getting new SOTDs and changing the gotw
+app.post('/newsotds', (req, res) => {
+    var genre;
+    let playlists = [];
+    let sotds = [];
+    CommunityModel.findById("5fc69c8b61fdeb5194781f2f", function(err, community) {
+        let gotwPlaylist = community.gotwPlaylist;
+        let mostVoted;
+        genre = gotwPlaylist.genre;
+        console.log(genre);
+        sotds = [gotwPlaylist.song1, gotwPlaylist.song2, gotwPlaylist.song3];
+        mostVoted = sotds[0];
+        for (let x = 1; x < sotds.length; x++) { // Get song with most votes
+            if (mostVoted.sotdVotes < sotds[x].sotdVotes)
+                mostVoted = sotds[x];
+        }
+        let songs = gotwPlaylist.songs;
+        songs.push(mostVoted);
+        // Put song with most votes into gotwPlaylist
+        const playlistModel = new PlaylistModel({
+            _id: "5fd1f2b4bbb0c538661afe93",
+            genre: gotwPlaylist.genre,
+            numPlays: 0,
+            numTracks: songs.length,
+            ownerID: '5fd9c0005d6810d64be137f9',
+            ownerName: "Marvin's Studio",
+            playlistPoints: 0,
+            privacyType: 0,
+            songs: songs,
+            title: gotwPlaylist.genre
+        });
+        CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f", {gotwPlaylist: playlistModel}, 
+            function (err) {
+                if (err) return next(err);
+                else {
+                    api.initialize()
+                        .then(info => {
+                            api.search(album.title, "playlist").then(result => {
+
+                            })
+                        })
+                    }
+        });
+
+
+    });
+    api.initialize()
+        .then(info => {
+            api.search(album.title, "playlist").then(result => {
+                // get 3 random songs of the genre
+            })
+        })
+
+    
+    res.send("done");
+    res.end();
+});
+
+
+app.post('/newgotw', (req, res) => {
+    var genre = req.body.newGenre;
+    console.log(genre);
+    CommunityModel.findById("5fc69c8b61fdeb5194781f2f", function(err, community) {
+        let playlist = community.gotwPlaylist;
+        let communityIDs = community.communityPlaylistsID;
+        const playlistModel = new PlaylistModel({
+            genre: playlist.genre,
+            numPlays: 0,
+            numTracks: playlist.songs.length,
+            ownerID: '5fd9c0005d6810d64be137f9',
+            ownerName: "Marvin's Studio",
+            playlistPoints: 0,
+            privacyType: 0,
+            songs: playlist.songs,
+            title: playlist.genre
+        });
+        playlistModel.save().then((playlist) => {
+            console.log(playlist._id);
+            communityIDs.push(playlist._id);
+            console.log(communityIDs);
+            CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f",{ communityPlaylistsID: communityIDs },
+            function (err) {
+                if (err) return next(err);
+                else {
+                    const newGOTW = new PlaylistModel({
+                        _id: "5fd1f2b4bbb0c538661afe93",
+                        genre: genre,
+                        numPlays: 0,
+                        numTracks: 0,
+                        ownerID: '5fd9c0005d6810d64be137f9',
+                        ownerName: "Marvin's Studio",
+                        playlistPoints: 0,
+                        privacyType: 0,
+                        songs: [],
+                        title: genre
+                    });
+                    CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f",{ gotwPlaylist: newGOTW },
+                        function (err) {
+                            if (err) return next(err);
+                        });
+                }
+            });
+        });
+        // const gotwPlaylist = new PlaylistModel(playlist)
+    });
+    res.send("done");
+    res.end();
+});
+
+
+
+
 var search = {}
 var artist = {}, album = {};
 app.post('/sidebar', (req, res) => {
@@ -242,7 +356,6 @@ app.post('/sidebar', (req, res) => {
         .then(info => {
             api.search(req.body.searchText, 'artist').then(result => {
                 search["artists"] = result;
-                // console.log(result);
             })
         });
     api.initalize()
@@ -253,8 +366,7 @@ app.post('/sidebar', (req, res) => {
     
             })
         });
-
-        res.redirect('/app/search');
+        res.redirect('app/search');
 });
 
 app.post('/artreq', (req, res) => {

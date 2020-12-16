@@ -1,11 +1,12 @@
 import React from 'react'
+import * as Icon from 'react-bootstrap-icons'
+
 import AlbumSong from './AlbumSong'
 import AddSongModal from '../modals/AddSongModal'
 import playButton from '../../icons/play-button.png'
 import shuffleButton from '../../icons/shuffle.png'
 import addToQueueButton from '../../icons/playlist.png'
 import addToPlaylistButton from '../../icons/addBlue.png'
-import * as Icon from 'react-bootstrap-icons'
 
 class AlbumScreen extends React.Component {
 	state = {
@@ -45,6 +46,27 @@ class AlbumScreen extends React.Component {
 		this.setState({ show: false });
 	}
 
+	handleQueueAlbum = (songs) => {
+		let ss = songs;
+		let song;
+		for (let x = 0; x < ss.length; x++ ) {
+			song = this.songAddArt(ss[x]);
+			this.props.handleQueueSong(song);
+		}
+	}
+
+	songAddArt(preSong) {
+        let song = JSON.parse(JSON.stringify(preSong));
+		song["albumArt"] = song.thumbnails[0].url;
+		song["title"] = song.name;
+		song["artistName"] = song.artistNames;
+    	return song;
+	}
+	
+	componentWillUnmount = () => {
+		console.log("ALBUMSCREEN TO UNMOUNT");
+	}
+
 	render() {
 		let user = this.props.user;
 		if (this.state.album == undefined)
@@ -72,7 +94,7 @@ class AlbumScreen extends React.Component {
 										</svg>
 									</button>
 
-									<Icon.List className='btn btn-outline-primary border-0 bg-transparent' style={{ fontSize: 80 }} />
+									<Icon.List className='btn btn-outline-primary border-0 bg-transparent' style={{ fontSize: 80 }} onClick={this.handleQueueAlbum.bind(this, songs)}/>
 
 
 									<Icon.PlusCircle className='btn btn-outline-primary border-0 bg-transparent' style={{ fontSize: 65 }} onClick={() => this.handleShow(null, 1)} />
@@ -102,7 +124,7 @@ class AlbumScreen extends React.Component {
 					{songs.map((song, index) => (
 						<AlbumSong key={index} style={{ cursor: 'pointer' }}
 							handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong}
-							song={song} handleShow={() => this.handleShow(song, 0)} />
+							song={song} handleShow={() => this.handleShow(song, 0)} songAddArt={this.songAddArt}/>
 					))}
 
 				</div>

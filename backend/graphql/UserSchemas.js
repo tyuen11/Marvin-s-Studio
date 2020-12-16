@@ -536,6 +536,23 @@ var mutation = new GraphQLObjectType({
                         )
                     }
                 },
+                updateFollowedPlaylists: {
+                    type: userType,
+                    args: {
+                        id: {
+                            name: "id",
+                            type: new GraphQLNonNull(GraphQLString)
+                        },
+                        followedPlaylistsID: {
+                            type: new GraphQLNonNull(GraphQLList(GraphQLString))
+                        }
+                    },
+                    resolve: function(root, params) {
+                        return UserModel.findByIdAndUpdate( params.id, {
+                            followedPlaylistsID: params.followedPlaylistsID
+                        }, function(err) { if(err) return next(err) })
+                    }
+                },
                 removeUser: {
                     type: userType,
                     args: {

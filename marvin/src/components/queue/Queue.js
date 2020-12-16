@@ -16,8 +16,9 @@ class Queue extends Component {
         //let queuedSongs = songs.filter(song => song.queued);
         let nextSongs = songs.filter(song => !song.queued);
         nextSongs.splice(0, index + 1);
-        console.log("queued", queuedSongs)
-        console.log(songs);
+        if (songs.length === 0) {
+            this.props.handleCloseQueue();
+        }
 
         return (
             <div className="container" style={{ backgroundColor: "#1a1a1a", position: "fixed", width: "37vh", height: "60vh", bottom: "100px", right: "95px", borderRadius: 10, zIndex: "2", overflowY: 'auto', border: 'solid', borderColor: '#393939', borderWidth: .01 }}>
@@ -28,13 +29,13 @@ class Queue extends Component {
                 {songs.length !== 0 ?
                     <div id="queueNowPlaying" className="text-light pb-2" style={{ border: "solid", borderColor: "#202020", borderWidth: "1px", borderTopWidth: "0px", borderRightWidth: "0px", borderLeftWidth: "0px", }}>
                         <h4 style={{ fontSize: 20, paddingTop: 10 }}>Now Playing</h4>
-                        <QueueSong song={songs[index]} />
+                        <QueueSong song={songs[index]} index={index}/>
                     </div>
                     : null
                 }
                 {queuedSongs.length !== 0 ?
                     <div id="queueQueued" className="text-light mt-2" style={{ overflow: '' }}>
-                        <h4 style={{ fontSize: 20 }}>Next Up</h4>
+                        <h4 style={{ fontSize: 20 }}>Queued Songs</h4>
                         {queuedSongs.map((song, index) => (
                             <div>
                                 <QueueSong song={song} key={index} />

@@ -67,13 +67,19 @@ class Player extends React.Component {
 
     handleNextSongP = () => {
         let x = this.props.handleNextSong();
-        if (x == 0) {
-            this.setState({playing: false});
-            this.player.seekTo(parseFloat(0));
-            this.setState({played: 0});
-        }
+        // if (x == 0) {
+        //     this.setState({playing: false});
+        //     console.log(this.state.playing);
+        //     this.player.seekTo(parseFloat(0));
+        //     this.setState({played: 0});
+        // }
         this.player.seekTo(parseFloat(0));
-        this.setState({played: 0, loaded: 0}); // Also fixes issue of song still playing even when paused in beginning
+        this.setState({played: 0, loaded: 0} ,() => {
+            if (x == 0) {
+                this.setState({playing: false});
+                console.log("setting playing to false");
+            }
+        }); // Also fixes issue of song still playing even when paused in beginning
 
     }
 
@@ -85,7 +91,7 @@ class Player extends React.Component {
 
     render () {
         let playerDisabled = this.state.currSong == null;
-        console.log("playing is ", this.state.playing);
+        //console.log("playing is ", this.state.playing);
         
         const playing = this.state.playing, seeking = this.state.seeking, played = this.state.played, duration = this.state.duration;
         let shuffle = this.props.shuffle;
@@ -94,7 +100,6 @@ class Player extends React.Component {
             song = "https://www.youtube.com/watch?v=" + songs[index].song.videoId;
         if (played >= 1)
             this.handleNextSongP();
-
         let buttonCursor = playing ? "pointer" : "disabled"
         return (
             songs[index] ?
@@ -133,7 +138,7 @@ class Player extends React.Component {
                     />
                     <button id='shuffle' className='btn btn-outline-primary border-0 ml-auto'
                             style={{cursor: buttonCursor}} onClick={this.props.handleToggleShuffle}>
-                        <Icon.Shuffle color={shuffle?"blue":"white"}size={30} />
+                        <Icon.Shuffle color={shuffle?"#3d8af7":"white"}size={30} />
                     </button>
                     
                     <button id='queue' className='btn btn-outline-primary border-0 ml-3 mr-4 mt-1'

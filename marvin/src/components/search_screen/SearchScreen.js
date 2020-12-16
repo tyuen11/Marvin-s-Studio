@@ -51,7 +51,7 @@ class SearchScreen extends React.Component {
                 </div>
             )
         let art = this.state.artists.slice(0, 5);
-        let alb = this.state.album !== undefined?this.state.albums.slice(0, 5):null;
+        let alb = this.state.album !== undefined ? this.state.albums.slice(0, 5) : null;
         let renderContainer = false //By default don't render anything
         if (this.state.render) { //If this.state.render == true, which is set to true by the timer.
             renderContainer = <div>Look at me! I'm content!</div> //Add dom elements
@@ -89,19 +89,19 @@ class SearchScreen extends React.Component {
                     <div className="row">
                         <h3 className='text-white text-center my-3'>Albums</h3>
                     </div>
-                    {alb!== null?<div className="row text-wrap w-100" >
+                    {alb !== null ? <div className="row text-wrap w-100" >
                         {alb.map((album, index) => (
                             <div key={index} className='text-playlist mb-5 col-3' style={{ cursor: 'pointer' }}>
                                 <form action='/albreq' method='post'>
                                     <button className="border-0" style={{ backgroundColor: "#232323" }}
                                         href={`/album/${album.browseId}`} type="submit" name="album" value={album.browseId} >
-                                        <img className="rounded" src={album.thumbnails[1].url}/>
+                                        <img className="rounded" src={album.thumbnails[1].url} />
                                         <h5 className="text-light text-center "> {album.name}  </h5>
                                     </button>
                                 </form>
                             </div>
                         ))}
-                    </div>: <h2 className="text-light">No albums found.</h2>
+                    </div> : <h2 className="text-light">No albums found.</h2>
                     }
                 </div>
             </div>

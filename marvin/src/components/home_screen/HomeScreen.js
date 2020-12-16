@@ -71,7 +71,7 @@ class HomeScreen extends React.Component {
         let community;
         let commPlaylists, pubPlaylists;
         let sotd1, sotd2, sotd3, genre;
-        console.log(this.props.user);
+        let recentlyPlayed;
         return (
             <Query pollInterval={500} query={GET_COMMUNITY} variables={{ id: "5fc69c8b61fdeb5194781f2f"}}>
                 {({ loading, error, data }) => {
@@ -80,14 +80,13 @@ class HomeScreen extends React.Component {
                     else {
                         console.log(data.community);
                         community = data.community
-
                         commPlaylists = data.community.communityPlaylistsID.slice(0, 4)
                         pubPlaylists = data.community.publicPlaylistsID.slice(0,4)
                         sotd1 = data.community.song1;
                         sotd2 = data.community.song2;
                         sotd3 = data.community.song3;
                         genre = data.community.gotwPlaylist.genre
-
+                        recentlyPlayed=this.props.user.recentlyPlayed.slice(-4)                        
                     }
                     return(
                         <div className='container h-100'>
@@ -117,11 +116,13 @@ class HomeScreen extends React.Component {
                         </div>
                         <div className='divider'></div>
                         <ProfilePlaylistLinks playlists={commPlaylists}/>
-                        <div className='row h4 ml-3 text-white pt-3'>Public</div>
+                        <div className='row h4 ml-3 text-white mt-3'>Public</div>
                         <div className='divider'></div>
                         <ProfilePlaylistLinks playlists={pubPlaylists}/>
-                        <div className='row h4 ml-3 text-white pt-3'>Most Played</div>
+                        <div className='row h4 ml-3 text-white mt-4'>Recently Played</div>
                         <div className='divider' ></div>
+                        <ProfilePlaylistLinks playlists={recentlyPlayed} myProfile={true}/>
+
                     </div>
                     )
                 }}

@@ -13,13 +13,10 @@ var UserSchema = new mongoose.Schema({
     followedPlaylistsID: [String],
     ownedPlaylists: [Playlist],
     ownedPlaylistsID: [String],
-    recentlyPlayed: [{
-        id: String,
-        type: String
-    }],
+    recentlyPlayed: [String],
     mostPlayed: [{
         id: String,
-        type: String
+        count: Number
     }],
     votedPlaylists: [{
         playlistID: String,

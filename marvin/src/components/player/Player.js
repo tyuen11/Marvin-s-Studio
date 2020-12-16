@@ -83,6 +83,13 @@ class Player extends React.Component {
 
     }
 
+    handleShowHideQueue = () => {
+        if (this.props.showQueue)
+            this.props.handleCloseQueue();
+        else
+            this.props.handleShowQueue();
+    }
+
     componentDidUpdate = (prevProps) => {
         // If a new song is pressed, automatically start playing the song
         if (prevProps.songs[0] != this.props.songs[0])
@@ -142,7 +149,7 @@ class Player extends React.Component {
                     </button>
                     
                     <button id='queue' className='btn btn-outline-primary border-0 ml-3 mr-4 mt-1'
-                            style={{cursor: buttonCursor}} onClick={this.props.handleShowQueue}>
+                            style={{cursor: buttonCursor}} onClick={this.handleShowHideQueue}>
                         <img src={queueButton} style={{ height: 35 }}/>
                     </button> 
                 </div> :

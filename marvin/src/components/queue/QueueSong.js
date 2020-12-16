@@ -14,9 +14,9 @@ class QueueSong extends Component {
                     <div><small style={{ fontWeight: 500 }}>{song.song.title}</small></div>
                     <div><small style={{ fontWeight: 500 }}>{song.song.artistName}</small></div>
                 </div>
-                {song.queued && index !== 0?<div className="col" style={{marginTop:15}}>
+                {/* {song.queued && index !== 0?<div className="col" style={{marginTop:15}}>
                    <Icon.TrashFill onClick={console.log("test is working")}/>
-                </div>:null}
+                </div>:null} */}
             </div>
 
         )

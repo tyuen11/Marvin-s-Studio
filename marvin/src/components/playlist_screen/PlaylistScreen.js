@@ -317,7 +317,6 @@ class PlaylistScreen extends React.Component {
         let songs, dbSongs;
         let sort = this.state.sort, attrSorting = this.state.attrSorting;
         let privacyType;
-        console.log(this.state.songs);
         let owner = null;
         return (
 
@@ -366,9 +365,13 @@ class PlaylistScreen extends React.Component {
                                                                                             </h1>
                                                                                         </div>
                                                                                         <div id="playlistOwner" className="row">
+                                                                                            {playlist.ownerID !== "5fd9c0005d6810d64be137f9"?
                                                                                             <Link to={`/app/profile/${playlist.ownerID}`}>
                                                                                                 <h4 className="text-light ml-4"> Playlist by {playlist.ownerName} </h4>
                                                                                             </Link>
+                                                                                            :<h4 className="text-light ml-4"> Playlist by {playlist.ownerName} </h4>
+                                                                                        }
+                                                                                            
                                                                                         </div>
                                                                                         <div id="actions" className="row overflow-visible ml-3" style={{ marginTop: 60 }}>
                                                                                             <button className='btn btn-outline-primary border-0 bg-transparent'  onClick={this.props.handlePlayPlaylist.bind(this, playlist.songs)}>
@@ -432,7 +435,7 @@ class PlaylistScreen extends React.Component {
                                                                         <div className="row mt-1 ml-2" >
                                                                             <div className="col-3" onClick={this.handleSortBy.bind(this, dbSongs)}>
                                                                                 <h3 id="title" className='text-header'>Title
-                                                    {sort != 0 && attrSorting === "title" ?
+                                                                                    {sort != 0 && attrSorting === "title" ?
                                                                                         sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
                                                                                         : null
                                                                                     }
@@ -441,7 +444,7 @@ class PlaylistScreen extends React.Component {
                                                                             </div>
                                                                             <div className="col-2" onClick={this.handleSortBy.bind(this, dbSongs)}>
                                                                                 <h3 id="artistName" className='text-header'>Artist
-                                                    {sort != 0 && attrSorting === "artistName" ?
+                                                                                    {sort != 0 && attrSorting === "artistName" ?
                                                                                         sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
                                                                                         : null
                                                                                     }
@@ -449,7 +452,7 @@ class PlaylistScreen extends React.Component {
                                                                             </div>
                                                                             <div className="col-2" onClick={this.handleSortBy.bind(this, dbSongs)}>
                                                                                 <h3 id="albumName" className='text-header'>Album
-                                                    {sort != 0 && attrSorting === "albumName" ?
+                                                                                    {sort != 0 && attrSorting === "albumName" ?
                                                                                         sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
                                                                                         : null
                                                                                     }
@@ -457,7 +460,7 @@ class PlaylistScreen extends React.Component {
                                                                             </div>
                                                                             <div className="col-3" onClick={this.handleSortBy.bind(this, dbSongs)}>
                                                                                 <h3 id="lastUpdated" className='text-header'>Date Added
-                                                {sort != 0 && attrSorting === "lastUpdated" ?
+                                                                                    {sort != 0 && attrSorting === "lastUpdated" ?
                                                                                         sort == 1 ? <Icon.ArrowUpShort color='royalblue' /> : <Icon.ArrowDownShort color='royalblue' />
                                                                                         : null
                                                                                     }

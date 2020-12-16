@@ -53,7 +53,8 @@ class AddSongModal extends Component {
                 artistName: this.props.album.artist[0].name,
                 albumName: this.props.album.title,
                 albumArt: this.props.album.thumbnails[0].url,
-                genre: null
+                genre: null,
+                lastUpdated: song.lastUpdated
             }
             songs.push(songToAdd);
         }
@@ -68,7 +69,8 @@ class AddSongModal extends Component {
                     artistName: this.props.album.artist[0].name,
                     albumName: this.props.album.title,
                     albumArt: this.props.album.thumbnails[0].url,
-                    genre: null
+                    genre: null,
+                    lastUpdated: song.lastUpdated
                 }
                 songs.push(songToAdd);
             })

@@ -5,7 +5,6 @@ class QueueSong extends Component {
     render() {
         let song = this.props.song;
         let index = this.props.index;
-        console.log("queue", song);
         return (
             <div className="row mt-3">
                 <div className="col-3 pb-1">

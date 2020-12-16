@@ -16,8 +16,9 @@ class Queue extends Component {
         //let queuedSongs = songs.filter(song => song.queued);
         let nextSongs = songs.filter(song => !song.queued);
         nextSongs.splice(0, index + 1);
-        console.log("queued", queuedSongs)
-        console.log(songs);
+        if (songs.length === 0) {
+            this.props.handleCloseQueue();
+        }
 
         return (
             <div className="container" style={{ backgroundColor: "#1a1a1a", position: "fixed", width: "37vh", height: "60vh", bottom: "100px", right: "95px", borderRadius: 10, zIndex: "2", overflowY: 'auto', border: 'solid', borderColor: '#393939', borderWidth: .01 }}>

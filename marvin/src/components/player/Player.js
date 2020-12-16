@@ -67,13 +67,19 @@ class Player extends React.Component {
 
     handleNextSongP = () => {
         let x = this.props.handleNextSong();
-        if (x == 0) {
-            this.setState({playing: false});
-            this.player.seekTo(parseFloat(0));
-            this.setState({played: 0});
-        }
+        // if (x == 0) {
+        //     this.setState({playing: false});
+        //     console.log(this.state.playing);
+        //     this.player.seekTo(parseFloat(0));
+        //     this.setState({played: 0});
+        // }
         this.player.seekTo(parseFloat(0));
-        this.setState({played: 0, loaded: 0}); // Also fixes issue of song still playing even when paused in beginning
+        this.setState({played: 0, loaded: 0} ,() => {
+            if (x == 0) {
+                this.setState({playing: false});
+                console.log("setting playing to false");
+            }
+        }); // Also fixes issue of song still playing even when paused in beginning
 
     }
 
@@ -94,8 +100,6 @@ class Player extends React.Component {
             song = "https://www.youtube.com/watch?v=" + songs[index].song.videoId;
         if (played >= 1)
             this.handleNextSongP();
-        console.log(songs);
-
         let buttonCursor = playing ? "pointer" : "disabled"
         return (
             songs[index] ?

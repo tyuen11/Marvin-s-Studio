@@ -10,6 +10,8 @@ import playButton from '../../icons/play-button.png'
 import shuffleButton from '../../icons/shuffle.png'
 import deleteButton from '../../icons/delete.png'
 import moreButton from '../../icons/more.png'
+import likeButton from '../../icons/like.png'
+import dislikeButton from '../../icons/dislike.png'
 import EditPlaylistNameModal from '../modals/EditPlaylistNameModal.js';
 import CopyPlaylistModal from '../modals/CopyPlaylistModal.js';
 import PlaylistSong from './PlaylistSong'
@@ -133,7 +135,6 @@ const GET_USER = gql`
         }
     }
 `;
-
 class PlaylistScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -151,10 +152,7 @@ class PlaylistScreen extends React.Component {
         vote: 0,
         songs: null,
         sort: 0,
-        attrSorting: "",
-        hovered: false,
-        hoveredDown: false,
-        owner: null
+        attrSorting: ""
     }
 
     handleShowCollab = () => {
@@ -243,14 +241,12 @@ class PlaylistScreen extends React.Component {
             votesList.push({ playlistID: playlist._id, votes: vote })
             points += vote
             userPoints += vote
-
         }
         else {
             if (votesList[idx].votes == vote) { //if clicks on same button again
                 points -= vote
                 userPoints -= vote
                 votesList.splice(idx, 1)
-                vote = 0
 
             }
 
@@ -258,6 +254,7 @@ class PlaylistScreen extends React.Component {
                 points += vote * 2
                 userPoints += vote * 2
                 votesList[idx].votes = vote;
+                //  votesList.push(votedPlaylist)
             }
         }
 
@@ -319,6 +316,7 @@ class PlaylistScreen extends React.Component {
         let owned, loggedIn = this.props.user != null;
         let songs, dbSongs;
         let sort = this.state.sort, attrSorting = this.state.attrSorting;
+        let privacyType;
         console.log(this.state.songs);
         let owner = null;
         return (
@@ -358,7 +356,14 @@ class PlaylistScreen extends React.Component {
                                                                                 <div className="row">
                                                                                     <div id="playlistInfoAndActions" className="col-8">
                                                                                         <div id="playlistName" className="row">
-                                                                                            <h1 className="text-light ml-4 mt-5">{playlist.title} </h1>
+                                                                                            <h1 className="text-light ml-4 mt-5">{playlist.title + " "}   
+                                                                                                {privacyType == 0?
+                                                                                                    <Icon.Globe2 color="#3d8af7" size={20}/>
+                                                                                                    : <Icon.LockFill color="#3d8af7" size={20}/>
+                                                                                                } 
+                                                                                                {" "} 
+                                                                                                { collaborators.length !== 0?<Icon.PeopleFill color="#3d8af7" size={20}/>: null}
+                                                                                            </h1>
                                                                                         </div>
                                                                                         <div id="playlistOwner" className="row">
                                                                                             <Link to={`/app/profile/${playlist.ownerID}`}>
@@ -499,6 +504,7 @@ class PlaylistScreen extends React.Component {
             </Mutation>
 
         )
+
     }
 }
 

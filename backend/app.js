@@ -253,8 +253,7 @@ app.post('/sidebar', (req, res) => {
     
             })
         });
-
-        res.redirect('/app/search');
+        res.redirect('app/search');
 });
 
 app.post('/artreq', (req, res) => {

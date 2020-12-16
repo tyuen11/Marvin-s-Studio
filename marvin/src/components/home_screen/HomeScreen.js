@@ -2,9 +2,11 @@ import gql from 'graphql-tag'
 import React from 'react'
 import { Query } from 'react-apollo'
 import { Link } from 'react-router-dom'
+import * as Icon from 'react-bootstrap-icons'
 import ProfilePlaylistLink from '../profile_screen/ProfilePlaylistLink'
 import ProfilePlaylistLinks from '../profile_screen/ProfilePlaylistLinks'
 import SOTD from './sotd'
+
 
 const GET_COMMUNITY = gql`
     query community($id: String!) {
@@ -94,6 +96,7 @@ class HomeScreen extends React.Component {
                                     <img className='w-100 img-responsive' style={{height: 200, objectFit: 'cover'}} 
                                         src="https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png"/>
                                     <span className='h4 position-absolute text-black' style={{top: 5, left: 20}}>Genre of the week</span>
+                                    {/* <Icon.InfoCircle data-toggle="tooltip" color="black" className='position-absolute text-black' style={{top: 5, right: 30}}> </Icon.InfoCircle> */}
                                     <span className='display-3 w-100 font-weight-bold text-black text-center position-absolute' style={{top: 50, left:10}}>{genre}</span>
                                 </div>
                             </div>

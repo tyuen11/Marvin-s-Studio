@@ -505,7 +505,7 @@ class PlaylistScreen extends React.Component {
                                                                                                         <div className="row mt-4 mb-2 justify-content-center">
                                                                                                             <a href="albumPic">
                                                                                                                 <input type="image" style={{ height: 170 }}
-                                                                                                                    src="https://dalelyles.com/musicmp3s/no_cover.jpg">
+                                                                                                                    src={songs[0].albumArt}>
                                                                                                                 </input>
                                                                                                             </a>
                                                                                                         </div>

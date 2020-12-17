@@ -82,7 +82,7 @@ class ProfileScreen extends React.Component {
 
                                                     {getUser.userPoints > 250 ?
                                                         <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#0f52ba' }} /> : null}
-                                                    <ProgressBar className='prog' animated now={getUser.userPoints/2.5} />
+                                                    <ProgressBar className='prog' animated now={getUser.userPoints/2.5} style={{height:'13%'}}/>
 
                                                 </h3> : null}
                                         </div>

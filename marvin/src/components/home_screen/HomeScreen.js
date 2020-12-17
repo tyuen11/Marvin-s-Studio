@@ -86,17 +86,17 @@ class HomeScreen extends React.Component {
                         sotd2 = data.community.song2;
                         sotd3 = data.community.song3;
                         genre = data.community.gotwPlaylist.genre
-                        recentlyPlayed=this.props.user.recentlyPlayed.slice(-4)                        
+                        recentlyPlayed=this.props.user.recentlyPlayed.slice(-4).reverse()                      
                     }
                     return(
                         <div className='container h-100'>
                             <div className='row justify-content-center'>
                                 <div id='gotw' className='col-10 mt-5'>
                                     <img className='w-100 img-responsive' style={{height: 200, objectFit: 'cover'}} 
-                                        src="https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png"/>
+                                        src="https://pixy.org/src/68/680088.jpg"/>
                                     <span className='h4 position-absolute text-black' style={{top: 5, left: 20}}>Genre of the week</span>
                                     {/* <Icon.InfoCircle data-toggle="tooltip" color="black" className='position-absolute text-black' style={{top: 5, right: 30}}> </Icon.InfoCircle> */}
-                                    <span className='display-3 w-100 font-weight-bold text-black text-center position-absolute' style={{top: 50, left:10}}>{genre}</span>
+                                    <span className='display-3 w-100 font-weight-bold  text-center position-absolute' style={{top:30, left:10, color: "#3d8af7",fontSize:100}}>{genre}</span>
                                 </div>
                             </div>
                             <div className='row mt-4 px-5 mx-2'>

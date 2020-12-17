@@ -310,13 +310,12 @@ class PlaylistScreen extends React.Component {
 
     }
 
-    handlePlayAllP (playlistSongs, updateRecentlyPlayed, playlist) {
+    handlePlayAllP(playlistSongs) {
         this.props.handlePlayPlaylist.bind(this, playlistSongs);
-        this.updateRecents(updateRecentlyPlayed, playlist);
     }
 
-    updateRecents = (updateRecentlyPlayed, playlist) => {
-        let recentlyPlayed = this.props.user.recentlyPlayed;
+    updateRecents(updateRecentlyPlayed, playlist,user) {
+        let recentlyPlayed = user.recentlyPlayed;
         let idx = recentlyPlayed.indexOf(playlist._id);
 
         if (idx == -1) {
@@ -335,7 +334,6 @@ class PlaylistScreen extends React.Component {
                 recentlyPlayed: recentlyPlayed
             }
         });
-
         //mostplayed here
     }
 
@@ -464,7 +462,7 @@ class PlaylistScreen extends React.Component {
 
                                                                                                                
                                                                                                                 onClick={() => {
-                                                                                                                    this.updateRecents(updateRecentlyPlayed,playlist);
+                                                                                                                    this.updateRecents(updateRecentlyPlayed,playlist,user);
                                                                                                                     this.props.handlePlayPlaylist(songs);
                                                                                                                 }
                                                                                                                 }
@@ -570,8 +568,8 @@ class PlaylistScreen extends React.Component {
                                                                                         {
                                                                                             songs.map((song, index) => (
                                                                                                 <PlaylistSong key={index} loggedIn={loggedIn} collaborators={collaborators} user={user} index={index} style={{ cursor: 'pointer' }}
-                                                                                                    handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong}
-                                                                                                    song={song} updatePlaylistSongs={updatePlaylistSongs} playlist={playlist} handleDeleteFromState={this.handleDeleteFromState} stateSongs={this.state.songs} />
+                                                                                                    handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong} updateRecents={this.updateRecents}
+                                                                                                    song={song} updatePlaylistSongs={updatePlaylistSongs} playlist={playlist} handleDeleteFromState={this.handleDeleteFromState} stateSongs={this.state.songs} updateRecentlyPlayed={updateRecentlyPlayed} />
                                                                                             ))
                                                                                         }
 

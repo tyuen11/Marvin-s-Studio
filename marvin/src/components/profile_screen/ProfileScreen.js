@@ -68,7 +68,7 @@ class ProfileScreen extends React.Component {
                                         <img className='rounded-circle mr-3 mb-4' src={profileImage} height='80' width='80'></img>
                                         {getUser.username}
                                         <div className="row position-absolute" style={{ right: '20vh', top: '8vh' }}>
-                                            {myProfile ?
+                                            {
                                                 <h3 style={{ fontSize: "6vh" }}>
                                                     {getUser.userPoints}
                                                     {getUser.userPoints < 25 ?
@@ -82,9 +82,9 @@ class ProfileScreen extends React.Component {
 
                                                     {getUser.userPoints > 250 ?
                                                         <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#0f52ba' }} /> : null}
-                                                    <ProgressBar className='prog' animated now={getUser.userPoints/2.5} />
+                                                    <ProgressBar className='prog' animated now={getUser.userPoints/2.5} style={{height:'13%'}}/>
 
-                                                </h3> : null}
+                                                </h3> }
                                         </div>
 
                                     </div>

@@ -183,7 +183,7 @@ class SearchScreen extends React.Component {
                                     //     ))}
                                     // </div> 
                                     : 
-                                    <h2 className="text-light">No playlists found.</h2>
+                                    <h2 className="text-light">No Playlists Found</h2>
                                 }
                             </div>
                         )

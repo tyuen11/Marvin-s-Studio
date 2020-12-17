@@ -23,7 +23,7 @@ class Queue extends Component {
         return (
             <div className="container" style={{ backgroundColor: "#1a1a1a", position: "fixed", width: "37vh", height: "60vh", bottom: "100px", right: "95px", borderRadius: 10, zIndex: "2", overflowY: 'auto', border: 'solid', borderColor: '#393939', borderWidth: .01 }}>
                 <div id="header" className="text-dark row">
-                    <Icon.X className="col-2" style={{ width: 50, padding: 0, borderRadius: 5, position: 'fixed', zIndex: 100, right: 90, cursor: "pointer", fontSize: 35 }} onClick={this.props.handleCloseQueue} />
+                    <Icon.X className="col-2" style={{ width: 50, padding: 0, borderRadius: 5, position: 'fixed', zIndex: 100, right: 90, cursor: "pointer", fontSize: 35, color:'white'}} onClick={this.props.handleCloseQueue} />
                 </div>
                 <div id="queue" className="" style={{ overflowX: 'hidden' }}>
                 {songs.length !== 0 ?

@@ -109,13 +109,13 @@ function CollaboratorSettingsModal(props) {
             if (!find) collToAdd.push(currCollaborator)
         })
         // add playlist to each users' collaborative playlists
-        collToAdd.forEach((addColl, i) => {
+        collToAdd.forEach((addColl) => {
             if (data) {
                 let user = data.users.find(user => user.email == addColl)
                 if (!user) {
                     setError(true)
                     setInvalid(addColl)
-                    deleteCollaborator(i)
+                    deleteCollaborator(e, collaborators.findIndex(coll => coll === addColl))
                     return
                 }
                 else setError(false)

@@ -63,21 +63,26 @@ class ProfileScreen extends React.Component {
                         <div className='d-flex h-100 p-0' style={{ width: 'calc(100%-200px)' }}>
                             <div className='display-inline pl-5 pt-4 w-100'>
                                 <div className='display-4 text-white ' style={{ marginBottom: 15, border: 'solid', borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, borderColor: "#545454" }}>
-                                    <div className="row">
+                                    <div className="row pb-3">
                                         <img className='rounded-circle mr-3 mb-4' src={profileImage} height='80' width='80'></img>
                                         {getUser.username}
 
-                                        <div className="row" style={{ marginLeft: '114vh' }}>
 
+                                        <div className="row position-absolute" style={{ right: '20vh', top: '10vh'}}>
                                             {myProfile ?
-                                                <Icon.MusicNoteBeamed style={{color:'#cd7f32'}}/> : null}
-                                      </div>
-
-                                        <div className="row" style={{ marginLeft: '128vh', marginTop:"-11.3vh" }}>
-                                            {myProfile ?
-                                                <h3 style={{fontSize:"6vh"}}>{this.props.user.userPoints}</h3> : null}
+                                                <h3 style={{ fontSize: "6vh" }}>
+                                                    {this.props.user.userPoints}
+                                                    {myProfile && this.props.user.userPoints < 25 ?
+                                                    <Icon.MusicNoteBeamed className='ml-3 mb-2' style={{ color: '#cd7f32' }} /> : null}
+                                                {myProfile && this.props.user.userPoints >= 50 && this.props.user.userPoints < 100 ?
+                                                    <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#aaa9ad' }} /> : null}
+                                                {myProfile && this.props.user.userPoints >= 100 && this.props.user.userPoints < 250 ?
+                                                    <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#e0115f' }} /> : null}
+                                                {myProfile && this.props.user.userPoints > 250 ?
+                                                    <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#0f52ba' }} /> : null}
+                                                </h3> : null}
                                         </div>
-                                        
+
                                     </div>
                                     <div className='row'>
                                         <div className='h4 ml-3 mr-5' style={{ textDecoration: myPLStyle, cursor: "pointer" }}

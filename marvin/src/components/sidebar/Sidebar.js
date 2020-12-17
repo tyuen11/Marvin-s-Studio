@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import CreatePlaylistModal from '../modals/CreatePlaylistModal';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
+import * as Icon from 'react-bootstrap-icons'
 
 const GET_PLAYLIST = gql`
     query playlist($playlistID: String) {
@@ -21,6 +23,7 @@ class Sidebar extends React.Component {
     }
     state = {
         show: false,
+        showDropdown: false
     }
 
     handleShow = () => {
@@ -33,21 +36,26 @@ class Sidebar extends React.Component {
         console.log("dosne");
     }
 
+    toggleDropdown = () => {
+        let currDropdown = this.state.showDropdown
+        this.setState({ showDropdown: !currDropdown})
+    }
+
     render() {
         let playlist;
         let loggedIn = this.props.user != null;
         return (
-            <nav className='sticky-top overflow-hidden' style={{height: "100vh", left:0, backgroundColor: '#1a1a1a'}}>
-                <div className=" p-0 text-center " style={{width: 200}}>
+            <nav className='sticky-top' style={{height: "100vh", left:0, backgroundColor: '#1a1a1a'}}>
+                <div className=" p-0 text-center " style={{width: "33vh"}}>
                     <Link to='/app/community'>
-                        <img src={logo} height={85} alt='' />
+                        <img src={logo} height="80vh" alt='' />
                     </Link>
                     <form action='/sidebar'  method='post' onSubmit={() => {
                         this.props.history.push('/app/search');
                     }}>
-                        <input name='searchText' className='border border-primary px-1 py-1 my-1  ' type='text'  style={{borderRadius:50, width: 175, marginRight:10, lineHeight:1}} placeholder='Search' />
+                        <input name='searchText' className='border border-primary px-1 py-1 my-1  ' type='text'  style={{borderRadius:50, width: "85%", marginRight:10, lineHeight:1}} placeholder='Search' />
                     </form>
-                    <div className='my-1 pt-1 text-center w-100 display-block' style={{ background: '#3d8af7', height: 115 }}>
+                    <div className='my-1 pt-1 text-center w-100 display-block' style={{ background: '#3d8af7', height: "19vh" }}>
                         <Link to='/app/home'>
                             <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0'>Home</button>
                         </Link>
@@ -92,9 +100,17 @@ class Sidebar extends React.Component {
                         )) : <div></div>}
                     </div>
                     {loggedIn ?
-                        <form action='/logout' method="post">
-                            <button action="submit" className='btn btn-primary'>Logout</button>
-                        </form>
+                        <Dropdown direction='right' isOpen={this.state.showDropdown} toggle={this.toggleDropdown}>
+                            <DropdownToggle className='btn bg-transparent border-0'>
+                                <div className='text-playlist'>
+                                    <Icon.PersonCircle color='white' className='mr-2'/>
+                                    {this.props.user.username}
+                                </div>
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem>Logout</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
                         :
                         <form action='/auth/google'>
                             <button action="submit" className='btn btn-primary'>Login</button>

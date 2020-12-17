@@ -126,16 +126,18 @@ class SearchScreen extends React.Component {
                                 <div className="row">
                                     <h3 className='text-white text-center my-3'>Users</h3>
                                 </div>
-                                {users !== null || users.length ? <div className="row text-wrap w-100" >
-                                    {users.map((user, index) => (
-                                        <div key={index} className='mb-5 col-2 ml-2 text-center' style={{ cursor: 'pointer' }}>
-                                            <Link className="text-playlist border-0" style={{ backgroundColor: "#232323" }} to={`/app/profile/${user._id}`} >
-                                                <Icon.PersonCircle size={100} color="white"/>
-                                                <h5> {user.username}  </h5>
-                                            </Link>
-                                        </div>
-                                    ))}
-                                </div> : <h2 className="text-light">No users found.</h2>
+                                {users !== null && users.length ? 
+                                    <div className="row text-wrap w-100" >
+                                        {users.map((user, index) => (
+                                            <div key={index} className='mb-5 col-2 ml-2 text-center' style={{ cursor: 'pointer' }}>
+                                                <Link className="text-playlist border-0" style={{ backgroundColor: "#232323" }} to={`/app/profile/${user._id}`} >
+                                                    <Icon.PersonCircle size={100} color="white"/>
+                                                    <h5> {user.username}  </h5>
+                                                </Link>
+                                            </div>
+                                        ))}
+                                    </div> : 
+                                    <h2 className="text-light">No users found.</h2>
                                 }
                             </div>
                         )

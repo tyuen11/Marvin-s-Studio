@@ -60,10 +60,10 @@ class Sidebar extends React.Component {
                     <Link to='/app/community'>
                         <img src={logo} height={"80vh"} alt='' />
                     </Link>
-                    <form action='/sidebar' method='post' onSubmit={() => {
+                    <form action='/sidebar'  method='post' onSubmit={() => {
                         this.props.history.push('/app/search');
                     }}>
-                        <input name='searchText' className='border border-primary px-1 py-1 my-1  ' type='text' style={{ borderRadius: 50, width: "85%", marginRight: 10, lineHeight: 1 }} placeholder='Search' />
+                        <input name='searchText' className='border border-primary px-1 py-1 my-1  ' type='text'  style={{borderRadius:50, width: "85%", marginRight:10, lineHeight:1}} placeholder='Search' />
                     </form>
                     <div className='my-1 pt-1 text-center w-100 display-block' style={{ background: '#3d8af7', height: 115 }}>
                         <Link to='/app/home'>
@@ -116,7 +116,7 @@ class Sidebar extends React.Component {
                         <Dropdown direction='right' isOpen={this.state.showDropdown} toggle={this.toggleDropdown}>
                             <DropdownToggle className='btn bg-transparent border-0'>
                                 <div className='text-playlist'>
-                                    <Icon.PersonCircle color='white' className='mr-2' />
+                                    <Icon.PersonCircle color='white' className='mr-2'/>
                                     {this.props.user.username}
                                 </div>
                             </DropdownToggle>

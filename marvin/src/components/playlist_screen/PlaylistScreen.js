@@ -310,12 +310,10 @@ class PlaylistScreen extends React.Component {
 
     }
 
-    handlePlayAllP(playlistSongs) {
-        this.props.handlePlayPlaylist.bind(this, playlistSongs);
-    }
+  
 
-    updateRecents(updateRecentlyPlayed, playlist,user) {
-        let recentlyPlayed = user.recentlyPlayed;
+    updateRecents = (updateRecentlyPlayed, playlist) => {
+        let recentlyPlayed = this.props.user.recentlyPlayed;
         let idx = recentlyPlayed.indexOf(playlist._id);
 
         if (idx == -1) {
@@ -462,7 +460,7 @@ class PlaylistScreen extends React.Component {
 
                                                                                                                
                                                                                                                 onClick={() => {
-                                                                                                                    this.updateRecents(updateRecentlyPlayed,playlist,user);
+                                                                                                                    this.updateRecents(updateRecentlyPlayed,playlist);
                                                                                                                     this.props.handlePlayPlaylist(songs);
                                                                                                                 }
                                                                                                                 }

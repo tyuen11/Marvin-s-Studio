@@ -273,11 +273,63 @@ app.post('/newsotds', (req, res) => {
                     api.initialize()
                         .then(info => {
                             api.search(album.title, "playlist").then(result => {
-
+                                let playlistID = result.content[ Math.floor( Math.random() * result.content.length )].browseId
+                                api.getPlaylist(playlistID).then(getPlaylist => {
+                                    let count = 0;
+                                    while(count < 3) {
+                                        let songToAdd = getPlaylist.tracks[ Math.floor( Math.random() * playlist.trackCount )]
+                                        if (!album.songs.find(song => song.videoId === songToAdd.videoId))
+                                            sotds[count++] = songToAdd
+                                    }
+                                })
                             })
                         })
+                        CommunityModel.findByIdAndUpdate(params.id,
+                            { 
+                                song1: {
+                                    albumID: null,
+                                    albumArt: sotds[0].thumbnails[0],
+                                    videoId: sotds[0].videoId,
+                                    genre: null,
+                                    title: sotds[0].title,
+                                    artistName: "Some Artist",
+                                    albumName: "Some Album",
+                                    albumID: "",
+                                    artistID: "",
+                                    lastUpdated: null
+                                }, 
+                                song2: {
+                                    albumID: null,
+                                    albumArt: sotds[1].thumbnails[0],
+                                    videoId: sotds[1].videoId,
+                                    genre: null,
+                                    title: sotds[1].title,
+                                    artistName: "Some Artist",
+                                    albumName: "Some Album",
+                                    albumID: "",
+                                    artistID: "",
+                                    lastUpdated: null
+                                },
+                                song3: {
+                                    albumID: null,
+                                    albumArt: sotds[2].thumbnails[0],
+                                    videoId: sotds[2].videoId,
+                                    genre: null,
+                                    title: sotds[2].title,
+                                    artistName: "Some Artist",
+                                    albumName: "Some Album",
+                                    albumID: "",
+                                    artistID: "",
+                                    lastUpdated: null
+                                }
+                            },
+                            function (err) {
+                                if (err) return next(err)
+                            }
+                        )
                     }
         });
+        
 
 
     });

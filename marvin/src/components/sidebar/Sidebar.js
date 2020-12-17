@@ -25,7 +25,8 @@ class Sidebar extends React.Component {
     state = {
         show: false,
         showDropdown: false,
-        showToast: false
+        showCreateToast: false,
+        showLibraryToast: false
     }
 
     handleShow = () => {
@@ -43,12 +44,20 @@ class Sidebar extends React.Component {
         this.setState({ showDropdown: !currDropdown })
     }
 
-    handleShowToast = () => {
-        this.setState({ showToast: true })
+    handleShowCreateToast = () => {
+        this.setState({ showCreateToast: true })
     }
 
-    handleHideToast = () => {
-        this.setState({ showToast: false })
+    handleHideCreateToast = () => {
+        this.setState({ showCreateToast: false })
+    }
+    
+    handleShowLibraryToast = () => {
+        this.setState({ showLibraryToast: true })
+    }
+
+    handleHideLibraryToast = () => {
+        this.setState({ showLibraryToast: false })
     }
 
     render() {
@@ -72,17 +81,15 @@ class Sidebar extends React.Component {
                             </button>
                         </Link>
                         {this.props.user ? <Link to={`/app/profile/${this.props.user._id}`}>
-                            <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0'>
-                            <Icon.Collection className="mb-1 mr-1"/>Your Library
-                            </button>
-                        </Link> : <div />}
+                            <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0'>Your Library</button>
+                        </Link> : 
+                        <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0' onClick={this.handleShowLibraryToast}>Your Library</button>
+                        }
                         <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0'
                             onClick={() => {
                                 if(loggedIn) this.handleShow()
-                                else this.handleShowToast()
-                            }}>
-                              <Icon.PlusCircle className="mb-1 mr-1"/>Create Playlist
-                        </button>
+                                else this.handleShowCreateToast()
+                            }}>Create Playlist</button>
                     </div>
 
                     <div className='text-primary'>My Playlists</div>
@@ -127,7 +134,15 @@ class Sidebar extends React.Component {
                                 </div>
                             </DropdownToggle>
                             <DropdownMenu>
-                                <DropdownItem>Logout</DropdownItem>
+                                <DropdownItem onClick={() => {
+                                    fetch('/logout', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Accept': 'marvinsStudio/json',
+                                            'Content-Type': 'marvinsStudio/json'
+                                        }
+                                    }).then(this.props.history.push('/login'))
+                                }}>Logout</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                         :
@@ -137,7 +152,7 @@ class Sidebar extends React.Component {
                             </input>
                         </a>  
                     }
-
+                    <div className='text-white'>Marvin's Studio</div>
                 </div>
 
                 { (this.props.user != null) ?
@@ -145,11 +160,24 @@ class Sidebar extends React.Component {
                         user={this.props.user} history={this.props.history} />
                     : <div />
                 }
-                <Toast show={this.state.showToast} onClose={this.handleHideToast} style={{ top: 10, right: 20, position: 'fixed'}}>
+                <Toast show={this.state.showCreateToast} onClose={this.handleHideCreateToast} style={{ top: 10, right: 20, position: 'fixed'}}>
                     <Toast.Header closeButton>Unable To Create Playlist</Toast.Header>
-                    <Toast.Body className='bg-white rounded-bottom'>Must log in to create a Playlist</Toast.Body>
+                    <Toast.Body className='bg-white rounded-bottom text-center'>
+                        <div>Must log in to create a playlist</div>
+                        <form action='/auth/google'>
+                            <button action="submit" className='btn btn-secondary mt-2'>Login</button>
+                        </form>
+                        </Toast.Body>
                 </Toast>
-
+                <Toast show={this.state.showLibraryToast} onClose={this.handleHideLibraryToast} style={{ top: 10, right: 20, position: 'fixed'}}>
+                    <Toast.Header closeButton>Unable To View Library</Toast.Header>
+                    <Toast.Body className='bg-white rounded-bottom text-center'>
+                        <div>Must log in to view your library</div>
+                        <form action='/auth/google'>
+                            <button action="submit" className='btn btn-secondary mt-2'>Login</button>
+                        </form>
+                    </Toast.Body>
+                </Toast>
             </nav>
         )
 

@@ -437,7 +437,7 @@ class PlaylistScreen extends React.Component {
                                                                         if (this.state.songs == null) this.setState({ songs: playlist.songs })
                                                                         songs = this.state.songs !== null ? this.state.songs : playlist.songs;
                                                                         dbSongs = playlist.songs;
-                                                                        followed = user.followedPlaylistsID.find(playlistID => playlist._id)
+                                                                        followed = loggedIn ? user.followedPlaylistsID.find(playlistID => playlist._id) : null
                                                                     }
                                                                     return (
                                                                         <Query pollInterval={500} query={GET_USER} variables={{ userId: playlist.ownerID }}>

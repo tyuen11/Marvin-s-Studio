@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import * as Icon from 'react-bootstrap-icons'
+import { Toast } from 'react-bootstrap';
 
 const GET_PLAYLIST = gql`
     query playlist($playlistID: String) {
@@ -23,7 +24,8 @@ class Sidebar extends React.Component {
     }
     state = {
         show: false,
-        showDropdown: false
+        showDropdown: false,
+        showToast: false
     }
 
     handleShow = () => {
@@ -39,6 +41,14 @@ class Sidebar extends React.Component {
     toggleDropdown = () => {
         let currDropdown = this.state.showDropdown
         this.setState({ showDropdown: !currDropdown})
+    }
+
+    handleShowToast = () => {
+        this.setState({ showToast: true })
+    }
+
+    handleHideToast = () => {
+        this.setState({ showToast: false })
     }
 
     render() {
@@ -63,7 +73,10 @@ class Sidebar extends React.Component {
                             <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0'>Your Library</button>
                         </Link> : <div />}
                         <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0'
-                            onClick={this.handleShow}>Create Playlist</button>
+                            onClick={() => {
+                                if(loggedIn) this.handleShow()
+                                else this.handleShowToast()
+                            }}>Create Playlist</button>
                     </div>
 
                     <div className='text-primary'>My Playlists</div>
@@ -124,6 +137,10 @@ class Sidebar extends React.Component {
                         user={this.props.user} history={this.props.history} />
                     : <div />
                 }
+                <Toast show={this.state.showToast} onClose={this.handleHideToast} style={{ top: 10, right: 20, position: 'fixed'}}>
+                    <Toast.Header closeButton>Unable To Create Playlist</Toast.Header>
+                    <Toast.Body className='bg-white rounded-bottom'>Must log in to create a Playlist</Toast.Body>
+                </Toast>
 
             </nav>
         )

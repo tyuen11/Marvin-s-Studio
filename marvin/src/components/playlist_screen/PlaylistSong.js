@@ -33,14 +33,10 @@ class PlaylistSong extends Component {
                     <a id="songName" className="col-3 text-playlist text-truncate overflow-hidden overflow-ellipsis"
                         onClick={this.props.handleSongChange.bind(this, this.props.song)}>{song.title}</a>
                     <label id="artistName" className="col-2 text-nowrap text-truncate overflow-hidden overflow-ellipses">
-                        <Link className='text-playlist' to={`/app/artist/${song.artistID}`}>
-                            {song.artistName}
-                        </Link>
+                        {song.artistName}
                     </label>
                     <label id="albumName" className="col-2 text-nowrap overflow-hidden overflow-ellipses" style={{ textOverflow: 'ellipsis' }}>
-                        <Link className='text-playlist' to='/app/album/'>
-                            {song.albumName}
-                        </Link>
+                        {song.albumName}
                     </label>
                     <label id="date" className="col-2">{song.lastUpdated.slice(0,10)}</label>
 

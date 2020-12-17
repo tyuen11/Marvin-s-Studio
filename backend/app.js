@@ -228,6 +228,7 @@ app.post('/register',
 app.get('/ud', (req, res) => res.send(uid));
 
 app.post('/logout', (req, res) => {
+    console.log(req)
     req.logout();
     uid = {};
     res.redirect('/login');

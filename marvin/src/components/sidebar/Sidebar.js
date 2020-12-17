@@ -125,9 +125,11 @@ class Sidebar extends React.Component {
                             </DropdownMenu>
                         </Dropdown>
                         :
-                        <form action='/auth/google'>
-                            <button action="submit" className='btn btn-primary'>Login</button>
-                        </form>
+                        <a href="/auth/google">
+                            <input type="image"  style={{margin: "0.25rem", paddingBottom: ".75rem"}}
+                            src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png">
+                            </input>
+                        </a>  
                     }
 
                 </div>

@@ -395,6 +395,12 @@ class PlaylistScreen extends React.Component {
         this.setState({ showUnfollowed: false })
     }
 
+    handleQueuePlaylist = (songs) => {
+		for (let x = 0; x < songs.length; x++ ) {
+			this.props.handleQueueSong(songs[x]);
+		}
+	}
+
     render() {
         let playlist;
         let user = this.props.user, collaborators;
@@ -493,6 +499,7 @@ class PlaylistScreen extends React.Component {
                                                                                                                             <DropdownItem onClick={() => this.unfollowPlaylist(user, playlist, updateFollowedPlaylists)}>Unfollow Playlist</DropdownItem> :
                                                                                                                             <DropdownItem onClick={() => this.followPlaylist(user, playlist, updateFollowedPlaylists)}>Follow Playlist</DropdownItem>
                                                                                                                         }
+                                                                                                                        <DropdownItem onClick={this.handleQueuePlaylist.bind(this, songs)}>Queue entire playlist</DropdownItem>
                                                                                                                     </DropdownMenu>
                                                                                                                 }
                                                                                                             </Dropdown>

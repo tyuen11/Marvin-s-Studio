@@ -67,16 +67,22 @@ class Sidebar extends React.Component {
                     </form>
                     <div className='my-1 pt-1 text-center w-100 display-block' style={{ background: '#3d8af7', height: 115 }}>
                         <Link to='/app/home'>
-                            <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0'>Home</button>
+                            <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0'>
+                                <Icon.House className="mb-1 mr-1"/> Home
+                            </button>
                         </Link>
                         {this.props.user ? <Link to={`/app/profile/${this.props.user._id}`}>
-                            <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0'>Your Library</button>
+                            <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0'>
+                            <Icon.Collection className="mb-1 mr-1"/>Your Library
+                            </button>
                         </Link> : <div />}
                         <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0'
                             onClick={() => {
                                 if(loggedIn) this.handleShow()
                                 else this.handleShowToast()
-                            }}>Create Playlist</button>
+                            }}>
+                              <Icon.PlusCircle className="mb-1 mr-1"/>Create Playlist
+                        </button>
                     </div>
 
                     <div className='text-primary'>My Playlists</div>

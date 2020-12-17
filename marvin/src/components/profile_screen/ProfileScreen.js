@@ -4,7 +4,7 @@ import profileImage from '../../icons/profile.png'
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import * as Icon from 'react-bootstrap-icons'
-
+import ProgressBar from 'react-bootstrap/ProgressBar'
 const GET_USER = gql`
     query user($id: String!) {
         user(id: $id) {
@@ -13,6 +13,7 @@ const GET_USER = gql`
             ownedPlaylistsID
             collaborativePlaylistsID
             followedPlaylistsID
+            userPoints
         }
     }
 `
@@ -66,20 +67,23 @@ class ProfileScreen extends React.Component {
                                     <div className="row pb-3">
                                         <img className='rounded-circle mr-3 mb-4' src={profileImage} height='80' width='80'></img>
                                         {getUser.username}
-
-
-                                        <div className="row position-absolute" style={{ right: '20vh', top: '10vh' }}>
+                                        <div className="row position-absolute" style={{ right: '20vh', top: '8vh' }}>
                                             {myProfile ?
                                                 <h3 style={{ fontSize: "6vh" }}>
-                                                    {this.props.user.userPoints}
-                                                    {myProfile && this.props.user.userPoints < 25 ?
+                                                    {getUser.userPoints}
+                                                    {getUser.userPoints < 25 ?
                                                         <Icon.MusicNoteBeamed className='ml-3 mb-2' style={{ color: '#cd7f32' }} /> : null}
-                                                    {myProfile && this.props.user.userPoints >= 50 && this.props.user.userPoints < 100 ?
+
+                                                    {getUser.userPoints >= 50 && getUser.userPoints < 100 ?
                                                         <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#aaa9ad' }} /> : null}
-                                                    {myProfile && this.props.user.userPoints >= 100 && this.props.user.userPoints < 250 ?
+
+                                                    {getUser.userPoints >= 100 && getUser.userPoints < 250 ?
                                                         <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#e0115f' }} /> : null}
-                                                    {myProfile && this.props.user.userPoints > 250 ?
+
+                                                    {getUser.userPoints > 250 ?
                                                         <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#0f52ba' }} /> : null}
+                                                    <ProgressBar className='prog' animated now={getUser.userPoints/2.5} />
+
                                                 </h3> : null}
                                         </div>
 

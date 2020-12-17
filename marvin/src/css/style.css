@@ -172,12 +172,18 @@ input[type=range]::-moz-range-track {
 .qsong {
     display: none;
   }
+.playsong {
+    display: none;
+  }
 
-  
 .songrow:hover .removesong{
    display: block; /* On :hover of div show button */
 
 }
+.songrow:hover .playsong{
+    display: block; /* On :hover of div show button */
+ 
+ }
 
 .songrow:hover .qsong {
     display: block; /* On :hover of div show button */
@@ -210,3 +216,5 @@ input[type=range]::-moz-range-track {
      display: block; /* On :hover of div show button */
   }
   
+
+ 

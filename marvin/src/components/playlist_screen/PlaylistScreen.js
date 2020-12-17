@@ -310,7 +310,7 @@ class PlaylistScreen extends React.Component {
 
     }
 
-  
+
 
     updateRecents = (updateRecentlyPlayed, playlist) => {
         let recentlyPlayed = this.props.user.recentlyPlayed;
@@ -462,17 +462,12 @@ class PlaylistScreen extends React.Component {
                                                                                                         <div id="actions" className="row overflow-visible ml-3" style={{ marginTop: 60 }}>
                                                                                                             <button className='btn btn-outline-primary border-0 bg-transparent'
                                                                                                                 //onClick={this.handlePlayAllP(playlist.songs, updateRecentlyPlayed, playlist)}
-                                                                                                            //    updateRecents = (updateRecentlyPlayed, playlist) => {
-
-                                                                                                               
+                                                                                                                //    updateRecents = (updateRecentlyPlayed, playlist) => {
                                                                                                                 onClick={() => {
-                                                                                                                    this.updateRecents(updateRecentlyPlayed,playlist);
+                                                                                                                    this.updateRecents(updateRecentlyPlayed, playlist);
                                                                                                                     this.props.handlePlayPlaylist(songs);
                                                                                                                 }
-                                                                                                                }
-                                                                                                               
-                                                                                                               >
-
+                                                                                                                }>
                                                                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="41" height="41" fill="currentColor" className="bi bi-play-circle-fill" viewBox="0 0 16 16">
                                                                                                                     <path fillRule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z" />
                                                                                                                 </svg>

@@ -25,8 +25,6 @@ ReactDOM.render(
             <Route path='/admin' component={AdminScreen} />
             <Route path="/login" component={LoginScreen} />
             <Route path="/register" component={RegisterScreen} />
-            <Route path="/reqreset" component={RequestReset} />
-            <Route path="/reset" component={ResetPassword} />
             <Route path='/app' component={MainScreen} />
           </div>
       </Router>

@@ -231,7 +231,7 @@ app.post('/logout', (req, res) => {
     console.log(req)
     req.logout();
     uid = {};
-    res.redirect('/login');
+    res.redirect('/app/homescreen');
 })
 
 

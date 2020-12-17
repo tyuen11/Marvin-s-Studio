@@ -463,9 +463,9 @@ class PlaylistScreen extends React.Component {
                                                                                                             //    updateRecents = (updateRecentlyPlayed, playlist) => {
 
                                                                                                                
-                                                                                                                onClick={e => {
+                                                                                                                onClick={() => {
                                                                                                                     this.updateRecents(updateRecentlyPlayed,playlist);
-                                                                                                                    this.props.handlePlayPlaylist.bind(this, playlist.songs);
+                                                                                                                    this.props.handlePlayPlaylist(songs);
                                                                                                                 }
                                                                                                                 }
                                                                                                                

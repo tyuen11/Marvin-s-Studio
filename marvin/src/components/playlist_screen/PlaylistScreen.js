@@ -396,10 +396,10 @@ class PlaylistScreen extends React.Component {
     }
 
     handleQueuePlaylist = (songs) => {
-		for (let x = 0; x < songs.length; x++ ) {
-			this.props.handleQueueSong(songs[x]);
-		}
-	}
+        for (let x = 0; x < songs.length; x++) {
+            this.props.handleQueueSong(songs[x]);
+        }
+    }
 
     render() {
         let playlist;
@@ -410,6 +410,7 @@ class PlaylistScreen extends React.Component {
         console.log(this.state.songs);
         let owner = null;
         let followed
+        let privacyType
         return (
             <Mutation mutation={UPDATE_FOLLOWED_PLAYLISTS}>
                 {(updateFollowedPlaylists, { loading, error }) => (
@@ -438,6 +439,7 @@ class PlaylistScreen extends React.Component {
                                                                         songs = this.state.songs !== null ? this.state.songs : playlist.songs;
                                                                         dbSongs = playlist.songs;
                                                                         followed = loggedIn ? user.followedPlaylistsID.find(playlistID => playlist._id) : null
+                                                                        privacyType = playlist.privacyType
                                                                     }
                                                                     return (
                                                                         <Query pollInterval={500} query={GET_USER} variables={{ userId: playlist.ownerID }}>
@@ -452,7 +454,14 @@ class PlaylistScreen extends React.Component {
                                                                                                 <div className="row">
                                                                                                     <div id="playlistInfoAndActions" className="col-8">
                                                                                                         <div id="playlistName" className="row">
-                                                                                                            <h1 className="text-light ml-4 mt-5">{playlist.title} </h1>
+                                                                                                            <h1 className="text-light ml-4 mt-5">{playlist.title + " "}
+                                                                                                                {privacyType == 0 ?
+                                                                                                                    <Icon.Globe2 color="#3d8af7" size={20} />
+                                                                                                                    : <Icon.LockFill color="#3d8af7" size={20} />
+                                                                                                                }
+                                                                                                                {" "}
+                                                                                                                {collaborators.length !== 0 ? <Icon.PeopleFill color="#3d8af7" size={20} /> : null}
+                                                                                                            </h1>
                                                                                                         </div>
                                                                                                         <div id="playlistOwner" className="row">
                                                                                                             <Link to={`/app/profile/${playlist.ownerID}`}>
@@ -505,7 +514,7 @@ class PlaylistScreen extends React.Component {
                                                                                                         <div className="row mt-4 mb-2 justify-content-center">
                                                                                                             <a href="albumPic">
                                                                                                                 <input type="image" style={{ height: 170 }}
-                                                                                                                    src={songs[0].albumArt}>
+                                                                                                                    src={songs[0] ? songs[0].albumArt : "https://dalelyles.com/musicmp3s/no_cover.jpg"}>
                                                                                                                 </input>
                                                                                                             </a>
                                                                                                         </div>

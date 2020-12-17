@@ -93,11 +93,11 @@ class HomeScreen extends React.Component {
                         <div className='container h-100'>
                             <div className='row justify-content-center'>
                                 <div id='gotw' className='col-10 mt-5'>
-                                    <img className='w-100 img-responsive' style={{ height: 200, objectFit: 'cover' }}
+                                    <img className='w-100 img-responsive' style={{ height: 230, objectFit: 'cover' }}
                                         src="https://pixy.org/src/68/680088.jpg" />
                                     <span className='h4 position-absolute text-black' style={{ top: 5, left: 20 }}>Genre of the Week</span>
                                     {/* <Icon.InfoCircle data-toggle="tooltip" color="black" className='position-absolute text-black' style={{top: 5, right: 30}}> </Icon.InfoCircle> */}
-                                    <span className='display-3 w-100 font-weight-bold  text-center position-absolute' style={{ top: 50, left: 10, color: '#3d8af7', fontSize:90 }}>{genre}</span>
+                                    <span className='display-3 w-100 font-weight-bold text-center position-absolute' style={{ top: 50, left: 10, color: '#3d8af7', fontSize:70, WebkitTextStroke: '1.2px black'}}>{genre}</span>
                                 </div>
                             </div>
                             <div className='row mt-4 px-5 mx-2'>

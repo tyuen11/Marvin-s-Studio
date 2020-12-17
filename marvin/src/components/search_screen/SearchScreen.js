@@ -83,12 +83,12 @@ class SearchScreen extends React.Component {
                     </div>
                     <div className="row mb-4" >
                         {art.map((artist, index) => (
-                            <div key={index} className='text-playlist text-center pl-3 mb-1 ml-15' style={{ cursor: 'pointer' }}>
+                            <div key={index} className='text-center pl-3 mb-1 ml-15' style={{ cursor: 'pointer' }}>
                                 <form action='/artreq' method='post'>
-                                    <button className="border-0" style={{ backgroundColor: "#232323" }}
+                                    <button className="text-playlist border-0" style={{ backgroundColor: "#232323" }}
                                         href={`/album/${artist.browseId}`} type="submit" name="artist" value={artist.browseId + " " + artist.thumbnails[1].url} >
                                         <img className="rounded-circle" src={artist.thumbnails[1].url} />
-                                        <h5 className="text-light text-center mt-2 " style={{ fontSize: 16 }}> {artist.name}  </h5>
+                                        <h5 className="text-center mt-2 " style={{ fontSize: 16 }}> {artist.name}  </h5>
                                     </button>
                                 </form>
                             </div>
@@ -101,12 +101,12 @@ class SearchScreen extends React.Component {
                     </div>
                     {alb !== null ? <div className="row text-wrap w-100" >
                         {alb.map((album, index) => (
-                            <div key={index} className='text-playlist mb-5 col-3' style={{ cursor: 'pointer' }}>
+                            <div key={index} className='mb-5 col-3' style={{ cursor: 'pointer' }}>
                                 <form action='/albreq' method='post'>
-                                    <button className="border-0" style={{ backgroundColor: "#232323" }}
+                                    <button className="text-playlist border-0" style={{ backgroundColor: "#232323" }}
                                         href={`/album/${album.browseId}`} type="submit" name="album" value={album.browseId} >
                                         <img className="rounded" src={album.thumbnails[1].url} />
-                                        <h5 className="text-light text-center "> {album.name}  </h5>
+                                        <h5 className="text-center "> {album.name}  </h5>
                                     </button>
                                 </form>
                             </div>
@@ -126,16 +126,18 @@ class SearchScreen extends React.Component {
                                 <div className="row">
                                     <h3 className='text-white text-center my-3'>Users</h3>
                                 </div>
-                                {users !== null || users.length ? <div className="row text-wrap w-100" >
-                                    {users.map((user, index) => (
-                                        <div key={index} className='mb-5 col-2 ml-2 justify-content-center' style={{ cursor: 'pointer' }}>
-                                            <Link className="text-playlist border-0" style={{ backgroundColor: "#232323" }} to={`/app/profile/${user._id}`} >
-                                                <Icon.PersonCircle size={100} color="white" />
-                                                <h5 > {user.username}  </h5>
-                                            </Link>
-                                        </div>
-                                    ))}
-                                </div> : <h2 className="text-light">No users found.</h2>
+                                {users !== null && users.length ? 
+                                    <div className="row text-wrap w-100" >
+                                        {users.map((user, index) => (
+                                            <div key={index} className='mb-5 col-2 ml-2 text-center' style={{ cursor: 'pointer' }}>
+                                                <Link className="text-playlist border-0" style={{ backgroundColor: "#232323" }} to={`/app/profile/${user._id}`} >
+                                                    <Icon.PersonCircle size={100} color="white"/>
+                                                    <h5> {user.username}  </h5>
+                                                </Link>
+                                            </div>
+                                        ))}
+                                    </div> : 
+                                    <h2 className="text-light">No users found.</h2>
                                 }
                             </div>
                         )

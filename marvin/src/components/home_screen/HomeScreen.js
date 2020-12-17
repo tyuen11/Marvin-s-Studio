@@ -86,7 +86,7 @@ class HomeScreen extends React.Component {
                         sotd2 = data.community.song2;
                         sotd3 = data.community.song3;
                         genre = data.community.gotwPlaylist.genre
-                        recentlyPlayed=this.props.user!==null?this.props.user.recentlyPlayed.slice(-4): null;                        
+                        recentlyPlayed= this.props.user ? this.props.user.recentlyPlayed.slice(-4) : []                   
                     }
                     return(
                         <div className='container h-100'>

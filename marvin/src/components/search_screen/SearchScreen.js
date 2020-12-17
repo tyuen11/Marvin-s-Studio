@@ -3,12 +3,23 @@ import { Query } from 'react-apollo';
 import * as Icon from 'react-bootstrap-icons'
 import { Link, useLocation } from 'react-router-dom';
 import gql from 'graphql-tag'
+import ProfilePlaylistLinks from '../profile_screen/ProfilePlaylistLinks'
 
 const GET_USERS = gql`
     query users{
         users {
             _id
             username
+        }
+    }
+`
+
+const GET_PLAYLISTS = gql`
+    query playlists {
+        playlists {
+            _id
+            title
+            privacyType
         }
     }
 `
@@ -62,7 +73,7 @@ class SearchScreen extends React.Component {
         let art = this.state.artists.slice(0, 5);
         let alb = this.state.album !== undefined ? this.state.albums.slice(0, 5) : null;
         let renderContainer = false //By default don't render anything
-        let users
+        let users, playlists, playlistIDs
         if (this.state.render) { //If this.state.render == true, which is set to true by the timer.
             renderContainer = <div>Look at me! I'm content!</div> //Add dom elements
         }
@@ -119,7 +130,7 @@ class SearchScreen extends React.Component {
                         if (loading) return 'Loading'
                         if (error) return `Error! ${error.message}`
                         else {
-                            users = data.users.filter(user => user._id !== "5fd9c0005d6810d64be137f9" || user.username.toLowerCase().includes(this.state.query.toLowerCase()))
+                            users = data.users.filter(user => user._id !== "5fd9c0005d6810d64be137f9" && user.username.toLowerCase().includes(this.state.query.toLowerCase()))
                         }
                         return (
                             <div className="col ml-3">
@@ -138,6 +149,41 @@ class SearchScreen extends React.Component {
                                         ))}
                                     </div> : 
                                     <h2 className="text-light">No Users Found</h2>
+                                }
+                            </div>
+                        )
+                    }}
+                </Query>
+                <Query query={GET_PLAYLISTS}>
+                    {({ loading, error, data }) => {
+                        if (loading) return 'Loading'
+                        if (error) return `Error! ${error.message}`
+                        else {
+                            playlists = data.playlists.filter(playlist => playlist.title.toLowerCase().includes(this.state.query.toLowerCase()) && playlist.privacyType == 0)
+                            playlistIDs = []
+                            playlists.forEach(playlist => playlistIDs.push(playlist._id))
+                            console.log("Playlists:", playlists)
+                            console.log("PlaylistIDs:", playlistIDs)
+                        }
+                        return (
+                            <div className="col ml-3">
+                                <div className="row">
+                                    <h3 className='text-white text-center my-3'>Playlists</h3>
+                                </div>
+                                {playlistIDs !== null && playlistIDs.length ? 
+                                    <ProfilePlaylistLinks playlists={playlistIDs}/>
+                                    // <div className="row text-wrap w-100" >
+                                    //     {playlists.map((playlist, index) => (
+                                    //         <div key={index} className='mb-5 col-2 ml-2 text-center' style={{ cursor: 'pointer' }}>
+                                    //             <Link className="text-playlist border-0" style={{ backgroundColor: "#232323" }} to={`/app/playlist/${playlist._id}`} >
+                                    //                 <Icon.MusicNoteBeamed size={100} color="white"/>
+                                    //                 <h5> {playlist.title}  </h5>
+                                    //             </Link>
+                                    //         </div>
+                                    //     ))}
+                                    // </div> 
+                                    : 
+                                    <h2 className="text-light">No playlists found.</h2>
                                 }
                             </div>
                         )

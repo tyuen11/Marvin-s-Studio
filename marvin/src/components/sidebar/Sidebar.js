@@ -45,8 +45,8 @@ class Sidebar extends React.Component {
         let playlist;
         let loggedIn = this.props.user != null;
         return (
-            <nav className='sticky-top' style={{height: "100vh", width: "15%", left:0, backgroundColor: '#1a1a1a'}}>
-                <div className=" p-0 text-center h-100">
+            <nav className='sticky-top' style={{height: "100vh", left:0, backgroundColor: '#1a1a1a'}}>
+                <div className=" p-0 text-center " style={{width: 200}}>
                     <Link to='/app/community'>
                         <img src={logo} height={"80vh"} alt='' />
                     </Link>
@@ -55,7 +55,7 @@ class Sidebar extends React.Component {
                     }}>
                         <input name='searchText' className='border border-primary px-1 py-1 my-1  ' type='text'  style={{borderRadius:50, width: "85%", marginRight:10, lineHeight:1}} placeholder='Search' />
                     </form>
-                    <div className='my-1 pt-1 text-center w-100 display-block' style={{ background: '#3d8af7', height: "20%" }}>
+                    <div className='my-1 pt-1 text-center w-100 display-block' style={{ background: '#3d8af7', height: 115 }}>
                         <Link to='/app/home'>
                             <button className='btn btn-outline-primary mb-1 w-75 py-1 bg-transparent btn-sidebar border-0'>Home</button>
                         </Link>
@@ -67,7 +67,7 @@ class Sidebar extends React.Component {
                     </div>
 
                     <div className='text-primary'>My Playlists</div>
-                    <div className='sidebar-scroll' style={{height: "33%", overflowY: "scroll"}}>
+                    <div className='sidebar-scroll' style={{height: "33vh", overflowY: "scroll"}}>
                         {this.props.user != null ? this.props.user.ownedPlaylistsID.map((playlistID, index) => (
                             <Query pollInterval={500} query={GET_PLAYLIST} variables={{ playlistID: playlistID }} fetchPolicy='network-only'>
                                 {({ loading, error, data }) => {

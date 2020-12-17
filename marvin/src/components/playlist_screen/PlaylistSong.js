@@ -2,7 +2,22 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import * as Icon from 'react-bootstrap-icons'
+import { Query, Mutation } from 'react-apollo'
+import gql from 'graphql-tag';
 
+const UPDATE_RECENTLY_PLAYED = gql`
+    mutation updateRecentlyPlayed(
+        $id: String!
+        $recentlyPlayed: [String]!
+    ) {
+        updateRecentlyPlayed(
+            id: $id
+            recentlyPlayed: $recentlyPlayed
+        ) {
+            _id
+        }
+    }
+`
 class PlaylistSong extends Component {
     constructor(props) {
         super(props);

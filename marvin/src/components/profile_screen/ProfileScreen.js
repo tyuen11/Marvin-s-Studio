@@ -68,18 +68,18 @@ class ProfileScreen extends React.Component {
                                         {getUser.username}
 
 
-                                        <div className="row position-absolute" style={{ right: '20vh', top: '10vh'}}>
+                                        <div className="row position-absolute" style={{ right: '20vh', top: '10vh' }}>
                                             {myProfile ?
                                                 <h3 style={{ fontSize: "6vh" }}>
                                                     {this.props.user.userPoints}
                                                     {myProfile && this.props.user.userPoints < 25 ?
-                                                    <Icon.MusicNoteBeamed className='ml-3 mb-2' style={{ color: '#cd7f32' }} /> : null}
-                                                {myProfile && this.props.user.userPoints >= 50 && this.props.user.userPoints < 100 ?
-                                                    <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#aaa9ad' }} /> : null}
-                                                {myProfile && this.props.user.userPoints >= 100 && this.props.user.userPoints < 250 ?
-                                                    <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#e0115f' }} /> : null}
-                                                {myProfile && this.props.user.userPoints > 250 ?
-                                                    <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#0f52ba' }} /> : null}
+                                                        <Icon.MusicNoteBeamed className='ml-3 mb-2' style={{ color: '#cd7f32' }} /> : null}
+                                                    {myProfile && this.props.user.userPoints >= 50 && this.props.user.userPoints < 100 ?
+                                                        <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#aaa9ad' }} /> : null}
+                                                    {myProfile && this.props.user.userPoints >= 100 && this.props.user.userPoints < 250 ?
+                                                        <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#e0115f' }} /> : null}
+                                                    {myProfile && this.props.user.userPoints > 250 ?
+                                                        <Icon.MusicNoteBeamed className='ml-3' style={{ color: '#0f52ba' }} /> : null}
                                                 </h3> : null}
                                         </div>
 

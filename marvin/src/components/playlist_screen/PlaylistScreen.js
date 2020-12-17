@@ -310,10 +310,7 @@ class PlaylistScreen extends React.Component {
 
     }
 
-    handlePlayAllP (playlistSongs, updateRecentlyPlayed, playlist) {
-        this.props.handlePlayPlaylist.bind(this, playlistSongs);
-        this.updateRecents(updateRecentlyPlayed, playlist);
-    }
+  
 
     updateRecents = (updateRecentlyPlayed, playlist) => {
         let recentlyPlayed = this.props.user.recentlyPlayed;
@@ -335,7 +332,6 @@ class PlaylistScreen extends React.Component {
                 recentlyPlayed: recentlyPlayed
             }
         });
-
         //mostplayed here
     }
 
@@ -570,8 +566,8 @@ class PlaylistScreen extends React.Component {
                                                                                         {
                                                                                             songs.map((song, index) => (
                                                                                                 <PlaylistSong key={index} loggedIn={loggedIn} collaborators={collaborators} user={user} index={index} style={{ cursor: 'pointer' }}
-                                                                                                    handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong}
-                                                                                                    song={song} updatePlaylistSongs={updatePlaylistSongs} playlist={playlist} handleDeleteFromState={this.handleDeleteFromState} stateSongs={this.state.songs} />
+                                                                                                    handleSongChange={this.props.handleSongChange} handleQueueSong={this.props.handleQueueSong} updateRecents={this.updateRecents}
+                                                                                                    song={song} updatePlaylistSongs={updatePlaylistSongs} playlist={playlist} handleDeleteFromState={this.handleDeleteFromState} stateSongs={this.state.songs} updateRecentlyPlayed={updateRecentlyPlayed} />
                                                                                             ))
                                                                                         }
 

@@ -111,7 +111,7 @@ class SearchScreen extends React.Component {
                                 </form>
                             </div>
                         ))}
-                    </div> : <h2 className="text-light">No albums found.</h2>
+                    </div> : <h2 className="text-light">No Albums Found</h2>
                     }
                 </div>
                 <Query query={GET_USERS}>
@@ -137,7 +137,7 @@ class SearchScreen extends React.Component {
                                             </div>
                                         ))}
                                     </div> : 
-                                    <h2 className="text-light">No users found.</h2>
+                                    <h2 className="text-light">No Users Found</h2>
                                 }
                             </div>
                         )

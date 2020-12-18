@@ -410,6 +410,12 @@ app.post('/newgotw', (req, res) => {
     res.end();
 });
 
+app.post('/sotdVoteReset', (req, res) => {
+    UserModel.find(function(err, users) {
+        if(err) return err
+        users.forEach(user => UserModel.findByIdAndUpdate(user._id, { votedSOTD: 0}, function(err) { if(err) return err}))
+    })
+}) 
 
 
 
@@ -496,7 +502,7 @@ app.post('/feelingLucky', (req, res) => {
                             let pushSong = {
                                 name: getPL.content[randIndex].name,
                                 videoId: getPL.content[randIndex].videoId,
-                                artistName: getPL.content[randIndex].author[0],
+                                artistName: getPL.content[randIndex].author.name,
                                 thumbnails: [getPL.content[randIndex].thumbnails],
                                 duration: getPL.content[randIndex].duration
                             }

@@ -153,7 +153,7 @@ class SearchScreen extends React.Component {
                         if (loading) return 'Loading'
                         if (error) return `Error! ${error.message}`
                         else {
-                            users = data.users.filter(user => user._id !== "5fd9c0005d6810d64be137f9" && user.username.toLowerCase().includes(this.state.query.toLowerCase()))
+                            users = data.users.filter(user => user._id !== "5fdc52a21d96445e6ab4d805" && user.username.toLowerCase().includes(this.state.query.toLowerCase()))
                         }
                         return (
                             <div className="col ml-3">

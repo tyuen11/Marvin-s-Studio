@@ -4,6 +4,8 @@ import * as Icon from 'react-bootstrap-icons'
 import { Link, useLocation } from 'react-router-dom';
 import gql from 'graphql-tag'
 import ProfilePlaylistLinks from '../profile_screen/ProfilePlaylistLinks'
+import musicGenres from 'music-genres'
+
 
 const GET_USERS = gql`
     query users{
@@ -66,9 +68,12 @@ class SearchScreen extends React.Component {
         // }
         if (this.state.initial)
             return (
-                <div className="mt-4 w-25" >
+                <div className="mt-4 row">
                     <form action='/sidebar' method='post'>
-                        <input name='searchText' className='border border-primary px-1 py-1 my-1 rounded w-75' type='text' border border-primary placeholder='Search' />
+                        <input name='searchText' className='border border-primary px-1 py-1 my-1 rounded w-100' type='text' placeholder='Search' />
+                    </form>
+                    <form action='/feelingLucky' method='post'>
+                        <button className='btn btn-primary ml-2' type='submit' name='genre' value={musicGenres.getRandomSubgenre()}>Feeling Lucky</button>
                     </form>
                 </div>
             )
@@ -84,9 +89,12 @@ class SearchScreen extends React.Component {
 
         return (
             <div id="playlist" className="mt-4 ml-4">
-                <div className="w-25">
+                <div className="mt-4 row">
                     <form action='/sidebar' method='post'>
-                        <input name='searchText' className='border border-primary px-1 py-1 my-1 rounded w-75' type='text' placeholder='Search' />
+                        <input name='searchText' className='border border-primary px-1 py-1 my-1 rounded w-100' type='text' placeholder='Search' />
+                    </form>
+                    <form action='/feelingLucky' method='post'>
+                        <button className='btn btn-primary ml-2' type='submit' name='genre' value={musicGenres.getRandomSubgenre()}>Feeling Lucky</button>
                     </form>
                 </div>
                 <div className="row">

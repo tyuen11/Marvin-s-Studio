@@ -462,11 +462,11 @@ class PlaylistScreen extends React.Component {
                                                                                                             </h1>
                                                                                                         </div>
                                                                                                         <div id="playlistOwner" className="row">
-                                                                                                        {data.user ?
+                                                                                                        {data.user && data.user._id !== "5fdc52a21d96445e6ab4d805" ?
                                                                                                             <Link to={`/app/profile/${playlist.ownerID}`}>
                                                                                                                 <h4 className="text-light ml-4"> Playlist by {playlist.ownerName} </h4>
                                                                                                             </Link> :
-                                                                                                            <h4 className="text-light ml-4"> Playlist by Deleted User</h4>
+                                                                                                            <h4 className="text-light ml-4"> Playlist by Marvin's Studio</h4>
                                                                                                         }
                                                                                                         </div>
                                                                                                         <div id="actions" className="row overflow-visible ml-3" style={{ marginTop: 60 }}>
@@ -474,7 +474,7 @@ class PlaylistScreen extends React.Component {
                                                                                                                 //onClick={this.handlePlayAllP(playlist.songs, updateRecentlyPlayed, playlist)}
                                                                                                                 //    updateRecents = (updateRecentlyPlayed, playlist) => {
                                                                                                                 onClick={() => {
-                                                                                                                    this.updateRecents(updateRecentlyPlayed, playlist);
+                                                                                                                    if (loggedIn) this.updateRecents(updateRecentlyPlayed, playlist);
                                                                                                                     this.props.handlePlayPlaylist(songs);
                                                                                                                 }
                                                                                                                 }>

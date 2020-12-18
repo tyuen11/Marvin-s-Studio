@@ -41,7 +41,6 @@ const GET_PLAYLIST = gql`
         }
     }
 `;
-
 const UPDATE_PLAYLIST_POINTS = gql`
     mutation updatePlaylistPoints(
         $id: String!
@@ -263,14 +262,12 @@ class PlaylistScreen extends React.Component {
             votesList.push({ playlistID: playlist._id, votes: vote })
             points += vote
             userPoints += vote
-
         }
         else {
             if (votesList[idx].votes == vote) { //if clicks on same button again
                 points -= vote
                 userPoints -= vote
                 votesList.splice(idx, 1)
-                vote = 0
 
             }
 
@@ -278,6 +275,7 @@ class PlaylistScreen extends React.Component {
                 points += vote * 2
                 userPoints += vote * 2
                 votesList[idx].votes = vote;
+                //  votesList.push(votedPlaylist)
             }
         }
 
@@ -407,10 +405,10 @@ class PlaylistScreen extends React.Component {
         let owned, loggedIn = this.props.user != null;
         let songs, dbSongs;
         let sort = this.state.sort, attrSorting = this.state.attrSorting;
+        let privacyType;
         console.log(this.state.songs);
         let owner = null;
         let followed
-        let privacyType
         return (
             <Mutation mutation={UPDATE_FOLLOWED_PLAYLISTS}>
                 {(updateFollowedPlaylists, { loading, error }) => (

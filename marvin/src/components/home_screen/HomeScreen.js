@@ -10,6 +10,7 @@ import ViewedPlaylistLinks from './ViewedPlaylistLinks'
 import musicGenres from 'music-genres'
 
 
+
 const GET_COMMUNITY = gql`
     query community($id: String!) {
         community(id: $id) {

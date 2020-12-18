@@ -292,16 +292,17 @@ app.post('/newsotds', (req, res) => {
                                             newSotds.push(getPlaylist.content[randIndex]);
                                         }
                                     }
+                                    console.log(newSotds[0]);
                                     CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f",
                                         {
                                             song1: {
                                                 song: {
                                                     albumID: null,
-                                                    albumArt: newSotds[0].thumbnails[0].url,
+                                                    albumArt: newSotds[0].thumbnails[0]?newSotds[0].thumbnails[0].url:newSotds[0].thumbnails.url,
                                                     videoId: newSotds[0].videoId,
                                                     genre: null,
                                                     title: newSotds[0].name,
-                                                    artistName:newSotds[2].author.name?newSotds[2].author.name:newSotds[2].author[0].name,
+                                                    artistName:newSotds[0].author.name?newSotds[0].author.name:newSotds[0].author[0].name,
                                                     albumName: "Some Album",
                                                     albumID: "",
                                                     artistID: "",
@@ -312,11 +313,11 @@ app.post('/newsotds', (req, res) => {
                                             song2: {
                                                 song: {
                                                     albumID: null,
-                                                    albumArt: newSotds[1].thumbnails[0].url,
+                                                    albumArt: newSotds[1].thumbnails[0]?newSotds[1].thumbnails[0].url:newSotds[1].thumbnails.url,
                                                     videoId: newSotds[1].videoId,
                                                     genre: null,
                                                     title: newSotds[1].name,
-                                                    artistName: newSotds[2].author.name?newSotds[2].author.name:newSotds[2].author[0].name,
+                                                    artistName: newSotds[1].author.name?newSotds[1].author.name:newSotds[1].author[0].name,
                                                     albumName: "Some Album",
                                                     albumID: "",
                                                     artistID: "",
@@ -327,7 +328,7 @@ app.post('/newsotds', (req, res) => {
                                             song3: {
                                                 song: {
                                                     albumID: null,
-                                                    albumArt: newSotds[2].thumbnails[0].url,
+                                                    albumArt: newSotds[2].thumbnails[0]?newSotds[2].thumbnails[0].url:newSotds[2].thumbnails.url,
                                                     videoId: newSotds[2].videoId,
                                                     genre: null,
                                                     title: newSotds[2].name,

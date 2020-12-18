@@ -108,8 +108,8 @@ class sotd extends Component {
                             <Mutation mutation={UPDATE_SOTD}>
                                 {(updateSOTD, { loading, error }) => (
                                     <div>
-                                        <div className='pt-2 text-center d-block overflow-hidden text-nowrap text-truncate' style={{ textOverflow: 'ellipsis', width: "70%" }}>
-                                            <a className='h5 text-playlist' onClick={this.props.handleSongChange.bind(this, song)}>{song.title}</a>
+                                        <div className='pt-2 text-center d-block overflow-hidden text-nowrap text-truncate' style={{ textOverflow: 'ellipsis' }}>
+                                            <a className='h5 text-playlist' onClick={this.props.handleSongChange.bind(this, song)} style={{width:"70%"}}>{song.title}</a>
                                             <div className='position-relative mb-3  '>
                                                 <img className='rounded' src={song.albumArt} style={{ height: 150, width: 150 }} />
                                             </div>

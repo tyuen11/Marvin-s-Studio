@@ -31,11 +31,7 @@ class LoginScreen extends Component {
                         <form action="/login" method="post">
                             <input name="email" type="text" placeholder="Email" className="my-4 w-100"></input>
                             <input name="password" type="password" placeholder="Password" className="mt-1 mb-4 w-100"></input>
-
-                            <div className="d-flex justify-content-between" style={{margin: "0.25rem", paddingBottom: "1.95rem"}}>
-                                <button type="submit" className="btn btn-primary btn-sm col-sm-3">Log In</button>
-                                <a href="/reqreset" className="mt-2" >Forgot Password?</a>
-                            </div>
+                            <button type="submit" className="btn btn-primary btn-sm col-sm-3 mb-2">Log In</button>
                         </form>
                         <div className="divider"/>
 

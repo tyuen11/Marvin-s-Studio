@@ -429,13 +429,26 @@ app.post('/sidebar', (req, res) => {
             })
         });
     api.initalize()
-        .then(info => {
-            api.search(req.body.searchText, 'album').then(result => {
-                search["albums"] = result;
-                // console.log(result);
-
-            })
-        });
+    .then(info => {
+        api.search(req.body.searchText).then(result => {
+            console.log(result);
+            search["search"] = result;
+            let content = result.content;
+            let artists = [], songs = [];
+            for (let x = 0; x < content.length; x++) {
+                if (content[x].type === "album") {
+                    artists.push(content[x]);
+                } else if (content[x].type === "song") {
+                    songs.push(content[x]);
+                }
+            }
+            search["albums"] = {content: artists};
+            search["songs"] = {content: songs};
+            
+            // console.log(result);
+        })
+    });
+    
     res.redirect('app/search');
 });
 

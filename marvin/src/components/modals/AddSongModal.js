@@ -54,7 +54,6 @@ class AddSongModal extends Component {
                 albumName: this.props.album.title,
                 albumArt: this.props.album.thumbnails[3].url,
                 genre: null,
-                lastUpdated: song.lastUpdated
             }
             songs.push(songToAdd);
         }

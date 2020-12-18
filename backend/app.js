@@ -254,7 +254,8 @@ app.post('/newsotds', (req, res) => {
                 mostVoted = sotds[x].song;
         }
         let songs = gotwPlaylist.songs;
-        songs.push(mostVoted);
+        if (mostVoted.genre === genre && !songs.find(song => song.videoId === mostVoted.videoId))
+            songs.push(mostVoted);
         console.log(mostVoted);
         // Put song with most votes into gotwPlaylist
         const playlistModel = new PlaylistModel({
@@ -287,10 +288,12 @@ app.post('/newsotds', (req, res) => {
                                     let count = 0;
                                     while (count < 3) {
                                         let randIndex = Math.floor(Math.random() * getPlaylist.trackCount)
-                                        if (!gotwPlaylist.songs.find(song => song.videoId === getPlaylist.content[randIndex].videoId)) {
-                                            count++;
-                                            newSotds.push(getPlaylist.content[randIndex]);
-                                        }
+                                        try {
+                                            if (getPlaylist.content[randIndex].videoId && !gotwPlaylist.songs.find(song => song.videoId === getPlaylist.content[randIndex].videoId)) {
+                                                count++;
+                                                newSotds.push(getPlaylist.content[randIndex]);
+                                            }
+                                        } catch (e) { console.log(e) }
                                     }
                                     console.log(newSotds[0]);
                                     CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f",
@@ -300,13 +303,13 @@ app.post('/newsotds', (req, res) => {
                                                     albumID: null,
                                                     albumArt: newSotds[0].thumbnails[0]?newSotds[0].thumbnails[0].url:newSotds[0].thumbnails.url,
                                                     videoId: newSotds[0].videoId,
-                                                    genre: null,
+                                                    genre: genre,
                                                     title: newSotds[0].name,
                                                     artistName:newSotds[0].author.name?newSotds[0].author.name:newSotds[0].author[0].name,
-                                                    albumName: "Some Album",
+                                                    albumName: "Marvin's Studio Community Curated",
                                                     albumID: "",
                                                     artistID: "",
-                                                    lastUpdated: null
+                                                    lastUpdated: Date.now()
                                                 },
                                                 sotdVotes: 0
                                             },
@@ -315,13 +318,13 @@ app.post('/newsotds', (req, res) => {
                                                     albumID: null,
                                                     albumArt: newSotds[1].thumbnails[0]?newSotds[1].thumbnails[0].url:newSotds[1].thumbnails.url,
                                                     videoId: newSotds[1].videoId,
-                                                    genre: null,
+                                                    genre: genre,
                                                     title: newSotds[1].name,
                                                     artistName: newSotds[1].author.name?newSotds[1].author.name:newSotds[1].author[0].name,
-                                                    albumName: "Some Album",
+                                                    albumName: "Marvin's Studio Community Curated",
                                                     albumID: "",
                                                     artistID: "",
-                                                    lastUpdated: null
+                                                    lastUpdated: Date.now()
                                                 },
                                                 sotdVotes: 0
                                             },
@@ -330,13 +333,13 @@ app.post('/newsotds', (req, res) => {
                                                     albumID: null,
                                                     albumArt: newSotds[2].thumbnails[0]?newSotds[2].thumbnails[0].url:newSotds[2].thumbnails.url,
                                                     videoId: newSotds[2].videoId,
-                                                    genre: null,
+                                                    genre: genre,
                                                     title: newSotds[2].name,
                                                     artistName: newSotds[2].author.name?newSotds[2].author.name:newSotds[2].author[0].name,
-                                                    albumName: "Some Album",
+                                                    albumName: "Marvin's Studio Community Curated",
                                                     albumID: "",
                                                     artistID: "",
-                                                    lastUpdated: null
+                                                    lastUpdated: Date.now()
                                                 },
                                                 sotdVotes: 0
                                             }
@@ -415,6 +418,8 @@ app.post('/sotdVoteReset', (req, res) => {
         if(err) return err
         users.forEach(user => UserModel.findByIdAndUpdate(user._id, { votedSOTD: 0}, function(err) { if(err) return err}))
     })
+    res.send("done")
+    res.end();
 }) 
 
 

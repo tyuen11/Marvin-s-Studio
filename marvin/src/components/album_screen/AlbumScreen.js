@@ -84,7 +84,7 @@ class AlbumScreen extends React.Component {
 			return <div>Loading...</div>
 		let album = this.state.album, albumId = this.state.albumId;
 		let songs = album.tracks;
-
+		console.log(songs)
 		return (
 			<div id="album" className="album">
 				<div className="row border-light" >

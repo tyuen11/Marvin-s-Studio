@@ -29,7 +29,7 @@ class ProfilePlaylistLink extends React.Component {
                         playlist == null || (playlist.privacyType == 1 && !this.props.myProfile) ? <div/> : 
                             <Link className='col-3 mb-5 text-playlist p-0' to={`/app/playlist/${playlist._id}`}>
                                 <div style={{cursor: 'pointer', width: 150, height: 150}}>
-                                    <img className='border rounded border-white w-100 h-100' src={playlist.songs.length!==0?playlist.songs[0].albumArt:"https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png"}></img>
+                                    <img className='rounded w-100 h-100' src={playlist.songs.length!==0?playlist.songs[0].albumArt:"https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png"}></img>
                                     <div className='text-center'>{playlist.title}</div>
                                 </div>
                             </Link>

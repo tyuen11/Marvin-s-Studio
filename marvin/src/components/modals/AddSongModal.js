@@ -61,18 +61,21 @@ class AddSongModal extends Component {
         else {
             let album = this.props.album;
             album.tracks.forEach(song => {
-                let songToAdd= {
-                    videoId: song.videoId,
-                    title: song.name,
-                    artistID: artistID,
-                    albumID: this.props.albumId,
-                    artistName: this.props.album.artist[0].name,
-                    albumName: this.props.album.title,
-                    albumArt: this.props.album.thumbnails[3].url,
-                    genre: null,
-                    lastUpdated: song.lastUpdated
+                try {
+                    let songToAdd= {
+                        videoId: song.videoId,
+                        title: song.name,
+                        artistID: artistID,
+                        albumID: this.props.albumId,
+                        artistName: this.props.album.artist[0].name,
+                        albumName: this.props.album.title,
+                        albumArt: (this.props.album.thumbnails[3]) ? this.props.album.thumbnails[3].url : "https://www.wmhbradio.org/wp-content/uploads/2016/07/music-placeholder.png",
+                        genre: null,
+                        lastUpdated: song.lastUpdated
+                    }
+                    songs.push(songToAdd);
                 }
-                songs.push(songToAdd);
+                catch (e) { console.log(e) }
             })
         }
         this.setState({

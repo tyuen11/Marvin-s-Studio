@@ -7,6 +7,7 @@ import ProfilePlaylistLink from '../profile_screen/ProfilePlaylistLink'
 import ProfilePlaylistLinks from '../profile_screen/ProfilePlaylistLinks'
 import SOTD from './sotd'
 import ViewedPlaylistLinks from './ViewedPlaylistLinks'
+import musicGenres from 'music-genres'
 
 
 const GET_COMMUNITY = gql`
@@ -105,6 +106,12 @@ class HomeScreen extends React.Component {
                                 <div className="col-4"><SOTD user={this.props.user} community={community} song={sotd2.song} handleSongChange={this.props.handleSongChange} playing={this.props.playing} /></div>
                                 <div className="col-4"><SOTD user={this.props.user} community={community} song={sotd3.song} handleSongChange={this.props.handleSongChange} playing={this.props.playing} /></div>
                             </div>
+                            <form className='text-center mt-5' action='/feelingLucky' method='post'>
+                                <h2 className='text-white'>
+                                    Create Playlist by Random Genre
+                                    <button className='btn btn-primary ml-2' type='submit' name='genre' value={musicGenres.getRandomSubgenre()}>Feeling Lucky</button>
+                                    </h2>
+                            </form>
                             <div className='row mt-5'>
                                 <div className='h4 ml-3 text-white'>Community Curated</div>
                                 <Link to={{

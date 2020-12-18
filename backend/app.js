@@ -29,7 +29,7 @@ var playlistSchema = require('./graphql/PlaylistSchemas');
 var communitySchema = require('./graphql/CommunitySchemas');
 //var communityUserSchema = require('./graphql/CommunityPlaylistSchemas');
 //var schema = mergeSchemas({ 
-  //  schemas: [ userSchema, playlistSchema ]
+//  schemas: [ userSchema, playlistSchema ]
 //})
 
 //TODO: display error messages on login screen (wrong email, wrong password) and on Register Screen (email already in use and perhaps password length)
@@ -37,8 +37,8 @@ var communitySchema = require('./graphql/CommunitySchemas');
 
 // Connect to MongoDB Atlas database with mongoose
 mongoose.connect(process.env.DB, { promiseLibrary: require('bluebird'), useNewUrlParser: true })
-  .then(() =>  console.log('connection successful'))
-  .catch((err) => console.error(err));
+    .then(() => console.log('connection successful'))
+    .catch((err) => console.error(err));
 
 const app = express();
 
@@ -50,7 +50,7 @@ app.use('/graphql', cors(), graphqlHTTP({
 
 
 app.use(cors());
-app.use(express.urlencoded({extended: true})); // Used to parse info from login/register
+app.use(express.urlencoded({ extended: true })); // Used to parse info from login/register
 app.use(express.json()); // Used to parse info from login/register
 
 app.use(bodyParser.json());
@@ -68,54 +68,54 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // backend to frontend
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     done(null, user._id);
 });
 
 // frontend to backend
-passport.deserializeUser(function(id, done) {
+passport.deserializeUser(function (id, done) {
     UserModel.findById(id).then((user) => {
-        done(null , user);
+        done(null, user);
     })
-    
+
 });
 
 let uid = {};
 
 // Passport setup for Google
 passport.use(new GoogleStrategy({
-        clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: 'http://localhost:3000/auth/google/callback'
-    },
-    function(accessToken, refreshToken, profile, done) {
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: 'http://localhost:3000/auth/google/callback'
+},
+    function (accessToken, refreshToken, profile, done) {
         var email = profile._json.email;
         var username = profile._json.given_name;
-        
+
         // Check is user is existing user of Marvin's Studio
-        UserModel.findOne({email: email}).then((currentUser) => {
+        UserModel.findOne({ email: email }).then((currentUser) => {
             console.log(currentUser);
             if (currentUser) {
-                uid = {user: currentUser._id}
+                uid = { user: currentUser._id }
                 console.log(currentUser.email);
                 return done(null, currentUser)
-            } 
+            }
             else {
-                bcrypt.hash(profile.id, saltRounds).then(function(hash) {
-                    new UserModel( {
+                bcrypt.hash(profile.id, saltRounds).then(function (hash) {
+                    new UserModel({
                         email: email,
                         password: hash,
-                        username: username, 
+                        username: username,
                         userPoints: 0,
                         collaborativePlaylists: [],
                         followedPlaylists: [],
                         ownedPlaylisits: [],
-                        recentlyPlayed:[],
+                        recentlyPlayed: [],
                         mostPlayed: [],
                         votedPlaylists: [],
                         votedSOTD: 0
                     }).save().then((newUser) => {
-                        uid = {user: newUser._id}
+                        uid = { user: newUser._id }
                         return done(null, newUser)
                     });
                 });
@@ -125,48 +125,48 @@ passport.use(new GoogleStrategy({
 ))
 
 // Passport setup for username and password authentication
-passport.use(new LocalStrategy({  
-        passReqToCallback : true,
-        usernameField: 'email'
-    },
-    function(req, username, password, done) {
-      UserModel.findOne({ email: username }, function (err, user) {
-        if (err) { 
-            return done(err); 
-        }
-        if (!user) { 
-            return done(null, false, { message: 'Incorrect username.' });
-        }
-        bcrypt.compare(password, user.password).then(function(result) {
-            if (!result) {
-                return done(null, false, { message: 'Incorrect password.' });
+passport.use(new LocalStrategy({
+    passReqToCallback: true,
+    usernameField: 'email'
+},
+    function (req, username, password, done) {
+        UserModel.findOne({ email: username }, function (err, user) {
+            if (err) {
+                return done(err);
             }
-            else {
-                console.log("verification is correct");
-                uid = {user: user._id}
-                return done(null, user);
+            if (!user) {
+                return done(null, false, { message: 'Incorrect username.' });
             }
+            bcrypt.compare(password, user.password).then(function (result) {
+                if (!result) {
+                    return done(null, false, { message: 'Incorrect password.' });
+                }
+                else {
+                    console.log("verification is correct");
+                    uid = { user: user._id }
+                    return done(null, user);
+                }
+            });
         });
-      });
     }
 ));
-passport.use('local-register', new LocalStrategy({  
-    passReqToCallback : true,
+passport.use('local-register', new LocalStrategy({
+    passReqToCallback: true,
     usernameField: 'email'
-    },
-    function(req, username, password, done) {
+},
+    function (req, username, password, done) {
         UserModel.findOne({ email: username }, function (err, user) {
-            if (err) { 
-                return done(err); 
+            if (err) {
+                return done(err);
             }
-            if (user) { 
+            if (user) {
                 return done(null, false, { message: 'That email is already registered with an account' });
-            } 
+            }
             else {
                 try {
                     console.log(username);
-                    bcrypt.hash(password, saltRounds).then(function(hash) {
-                        new UserModel( {
+                    bcrypt.hash(password, saltRounds).then(function (hash) {
+                        new UserModel({
                             email: username,
                             password: hash,
                             username: req.body.uname,
@@ -174,12 +174,12 @@ passport.use('local-register', new LocalStrategy({
                             collaborativePlaylists: [],
                             followedPlaylists: [],
                             ownedPlaylisits: [],
-                            recentlyPlayed:[],
+                            recentlyPlayed: [],
                             mostPlayed: [],
                             votedPlaylists: [],
                             votedSOTD: 0
                         }).save().then((newUser) => {
-                            uid = {user: newUser._id}
+                            uid = { user: newUser._id }
                             return done(null, newUser);
                         });
                     });
@@ -192,10 +192,10 @@ passport.use('local-register', new LocalStrategy({
 ));
 
 const isLoggedIn = (req, res, next) => {
-    if (req.user){
+    if (req.user) {
         next();
     }
-    else{
+    else {
         res.sendStatus(401);
     }
 }
@@ -204,24 +204,24 @@ const isLoggedIn = (req, res, next) => {
 app.get('/failed', (req, res) => res.send('You failed to login.'));
 app.get('/good', isLoggedIn, (req, res) => res.redirect('/app/home'));
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/failed'} ) ,
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/failed' }),
     (req, res) => res.redirect('/app/home')
 );
 
 //Routes for using Local Strategy
 app.post('/login',
-  passport.authenticate('local', { 
-      successRedirect: '/app/home', 
-      failureRedirect: '/login', 
-      failureFlash: true 
+    passport.authenticate('local', {
+        successRedirect: '/app/home',
+        failureRedirect: '/login',
+        failureFlash: true
     })
 );
 
 app.post('/register',
     passport.authenticate('local-register', {
-        successRedirect: '/app/home', 
-        failureRedirect: '/register', 
-        failureFlash: true 
+        successRedirect: '/app/home',
+        failureRedirect: '/register',
+        failureFlash: true
     })
 );
 
@@ -240,12 +240,13 @@ app.post('/newsotds', (req, res) => {
     var genre;
     let playlists = [];
     let sotds = [];
-    CommunityModel.findById("5fc69c8b61fdeb5194781f2f", function(err, community) {
+    // get community and gotw
+    CommunityModel.findById("5fc69c8b61fdeb5194781f2f", function (err, community) {
         let gotwPlaylist = community.gotwPlaylist;
         let mostVoted;
         genre = gotwPlaylist.genre;
         console.log(genre);
-        sotds = [gotwPlaylist.song1, gotwPlaylist.song2, gotwPlaylist.song3];
+        sotds = [community.song1, community.song2, community.song3];
         mostVoted = sotds[0];
         for (let x = 1; x < sotds.length; x++) { // Get song with most votes
             if (mostVoted.sotdVotes < sotds[x].sotdVotes)
@@ -266,90 +267,106 @@ app.post('/newsotds', (req, res) => {
             songs: songs,
             title: gotwPlaylist.genre
         });
-        CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f", {gotwPlaylist: playlistModel}, 
+        // update gotw playlist
+        CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f", { gotwPlaylist: playlistModel },
             function (err) {
                 if (err) return next(err);
                 else {
-                    api.initialize()
+                    // get sotds
+                    api.initalize()
                         .then(info => {
-                            api.search(album.title, "playlist").then(result => {
-                                let playlistID = result.content[ Math.floor( Math.random() * result.content.length )].browseId
+                            api.search(genre).then(result => {
+                                let genrePlaylists = result.content.filter(genrePL => genrePL.type.toLowerCase().includes("playlist") && genrePL.type.match(/\/d+/g)[0] > 30)
+                                let playlistID = genrePlaylists[Math.floor(Math.random() * result.content.length)].browseId
                                 api.getPlaylist(playlistID).then(getPlaylist => {
                                     let count = 0;
-                                    while(count < 3) {
-                                        let songToAdd = getPlaylist.tracks[ Math.floor( Math.random() * playlist.trackCount )]
-                                        if (!album.songs.find(song => song.videoId === songToAdd.videoId))
-                                            sotds[count++] = songToAdd
+                                    let newSotds = [];
+                                    while (count < 3) {
+                                        let randIndex = Math.floor(Math.random() * getPlaylist.trackCount)
+                                        if (!gotwPlaylist.songs.find(song => song.videoId === getPlaylist.tracks[randIndex].videoId)) {
+                                            count++;
+                                            newSotds.push(getPlaylist.tracks[randIndex]);
+                                        }
                                     }
+                                    CommunityModel.findByIdAndUpdate(params.id,
+                                        {
+                                            song1: {
+                                                song: {
+                                                    albumID: null,
+                                                    albumArt: sotds[0].thumbnails[3],
+                                                    videoId: sotds[0].videoId,
+                                                    genre: null,
+                                                    title: sotds[0].title,
+                                                    artistName: "Some Artist",
+                                                    albumName: "Some Album",
+                                                    albumID: "",
+                                                    artistID: "",
+                                                    lastUpdated: null
+                                                },
+                                                sotdVotes: 0
+                                            },
+                                            song2: {
+                                                song: {
+                                                    albumID: null,
+                                                    albumArt: sotds[1].thumbnails[3],
+                                                    videoId: sotds[1].videoId,
+                                                    genre: null,
+                                                    title: sotds[1].title,
+                                                    artistName: "Some Artist",
+                                                    albumName: "Some Album",
+                                                    albumID: "",
+                                                    artistID: "",
+                                                    lastUpdated: null
+                                                },
+                                                sotdVotes: 0
+                                            },
+                                            song3: {
+                                                song: {
+                                                    albumID: null,
+                                                    albumArt: sotds[2].thumbnails[3],
+                                                    videoId: sotds[2].videoId,
+                                                    genre: null,
+                                                    title: sotds[2].title,
+                                                    artistName: "Some Artist",
+                                                    albumName: "Some Album",
+                                                    albumID: "",
+                                                    artistID: "",
+                                                    lastUpdated: null
+                                                },
+                                                sotdVotes: 0
+                                            }
+                                        },
+                                        function (err) {
+                                            if (err) return next(err)
+                                        }
+                                    )
                                 })
                             })
                         })
-                        CommunityModel.findByIdAndUpdate(params.id,
-                            { 
-                                song1: {
-                                    albumID: null,
-                                    albumArt: sotds[0].thumbnails[0],
-                                    videoId: sotds[0].videoId,
-                                    genre: null,
-                                    title: sotds[0].title,
-                                    artistName: "Some Artist",
-                                    albumName: "Some Album",
-                                    albumID: "",
-                                    artistID: "",
-                                    lastUpdated: null
-                                }, 
-                                song2: {
-                                    albumID: null,
-                                    albumArt: sotds[1].thumbnails[0],
-                                    videoId: sotds[1].videoId,
-                                    genre: null,
-                                    title: sotds[1].title,
-                                    artistName: "Some Artist",
-                                    albumName: "Some Album",
-                                    albumID: "",
-                                    artistID: "",
-                                    lastUpdated: null
-                                },
-                                song3: {
-                                    albumID: null,
-                                    albumArt: sotds[2].thumbnails[0],
-                                    videoId: sotds[2].videoId,
-                                    genre: null,
-                                    title: sotds[2].title,
-                                    artistName: "Some Artist",
-                                    albumName: "Some Album",
-                                    albumID: "",
-                                    artistID: "",
-                                    lastUpdated: null
-                                }
-                            },
-                            function (err) {
-                                if (err) return next(err)
-                            }
-                        )
-                    }
-        });
-        
+                }
+            });
+
 
 
     });
-    api.initialize()
+    api.initalize()
         .then(info => {
             api.search(album.title, "playlist").then(result => {
                 // get 3 random songs of the genre
             })
         })
 
-    
+
     res.send("done");
     res.end();
+
 });
 
 
 app.post('/newgotw', (req, res) => {
     var genre = req.body.newGenre;
     console.log(genre);
-    CommunityModel.findById("5fc69c8b61fdeb5194781f2f", function(err, community) {
+    CommunityModel.findById("5fc69c8b61fdeb5194781f2f", function (err, community) {
         let playlist = community.gotwPlaylist;
         let communityIDs = community.communityPlaylistsID;
         const playlistModel = new PlaylistModel({
@@ -367,28 +384,28 @@ app.post('/newgotw', (req, res) => {
             console.log(playlist._id);
             communityIDs.push(playlist._id);
             console.log(communityIDs);
-            CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f",{ communityPlaylistsID: communityIDs },
-            function (err) {
-                if (err) return next(err);
-                else {
-                    const newGOTW = new PlaylistModel({
-                        _id: "5fd1f2b4bbb0c538661afe93",
-                        genre: genre,
-                        numPlays: 0,
-                        numTracks: 0,
-                        ownerID: '5fd9c0005d6810d64be137f9',
-                        ownerName: "Marvin's Studio",
-                        playlistPoints: 0,
-                        privacyType: 0,
-                        songs: [],
-                        title: genre
-                    });
-                    CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f",{ gotwPlaylist: newGOTW },
-                        function (err) {
-                            if (err) return next(err);
+            CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f", { communityPlaylistsID: communityIDs },
+                function (err) {
+                    if (err) return next(err);
+                    else {
+                        const newGOTW = new PlaylistModel({
+                            _id: "5fd1f2b4bbb0c538661afe93",
+                            genre: genre,
+                            numPlays: 0,
+                            numTracks: 0,
+                            ownerID: '5fd9c0005d6810d64be137f9',
+                            ownerName: "Marvin's Studio",
+                            playlistPoints: 0,
+                            privacyType: 0,
+                            songs: [],
+                            title: genre
                         });
-                }
-            });
+                        CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f", { gotwPlaylist: newGOTW },
+                            function (err) {
+                                if (err) return next(err);
+                            });
+                    }
+                });
         });
         // const gotwPlaylist = new PlaylistModel(playlist)
     });
@@ -416,10 +433,10 @@ app.post('/sidebar', (req, res) => {
             api.search(req.body.searchText, 'album').then(result => {
                 search["albums"] = result;
                 // console.log(result);
-    
+
             })
         });
-        res.redirect('app/search');
+    res.redirect('app/search');
 });
 
 app.post('/artreq', (req, res) => {
@@ -448,6 +465,42 @@ app.post('/albreq', (req, res) => {
             res.redirect(`/app/album/${req.body.album}`);
         });
 });
+
+app.post('/feelingLucky', (req, res) => {
+    api.initalize()
+        .then(info => {
+            api.search(req.body.genre).then(result => {
+                let playlistSet = result.content.filter(cont => cont.type.toLowerCase().includes("playlist") && cont.type.toLowerCase().match(/\/d+/g)[0] > 30)
+                api.getPlaylist(playlistSet[Math.floor(Math.random() * playlistSet.length)].browseId).then(getPL => {
+                    console.log(getPL.trackCount)
+                    album['album'] = {}
+                    album.album['title'] = req.body.genre
+                    album.album['trackCount'] = 7
+                    album.album['artist'] = [{ name: "Marvin's Studio" }]
+                    album.album['tracks'] = []
+                    album.album['thumbnails'] = [getPL.thumbnails]
+                    let i = 0
+                    while (i < 7) {
+                        let randIndex = Math.floor(Math.random() * getPL.trackCount)
+                        try {
+                            let pushSong = {
+                                name: getPL.content[randIndex].name,
+                                videoId: getPL.content[randIndex].videoId,
+                                artistName: getPL.content[randIndex].author[0],
+                                thumbnails: [getPL.content[randIndex].thumbnails],
+                                duration: getPL.content[randIndex].duration
+                            }
+                            console.log(pushSong)
+                            album.album.tracks.push(pushSong).then(i++)
+                        }
+                        catch (e) { console.log(e) }
+                    }
+                })
+            })
+            res.redirect('/app/album')
+        })
+})
+
 app.get('/searchResult', (req, res) => res.send(search));
 
 app.get('/search', (req, res) => res.send(search));

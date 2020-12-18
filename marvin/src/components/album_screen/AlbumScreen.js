@@ -105,7 +105,7 @@ class AlbumScreen extends React.Component {
 								<div className="row mt-4 mb-2 text-center">
 									<a href="albumPic">
 										<input type="image"
-											src={album.thumbnails[2].url} alt="https://dalelyles.com/musicmp3s/no_cover.jpg">
+											src={album.thumbnails[2] ? album.thumbnails[2].url : "https://dalelyles.com/musicmp3s/no_cover.jpg"}>
 										</input>
 									</a>
 								</div>

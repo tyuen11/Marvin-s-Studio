@@ -236,131 +236,131 @@ app.post('/logout', (req, res) => {
 
 
 // POST methods for getting new SOTDs and changing the gotw
-app.post('/newsotds', (req, res) => {
-    var genre;
-    let playlists = [];
-    let sotds = [];
-    // get community and gotw
-    CommunityModel.findById("5fc69c8b61fdeb5194781f2f", function (err, community) {
-        let gotwPlaylist = community.gotwPlaylist;
-        let mostVoted;
-        genre = gotwPlaylist.genre;
-        console.log(genre);
-        sotds = [community.song1, community.song2, community.song3];
-        mostVoted = sotds[0];
-        for (let x = 1; x < sotds.length; x++) { // Get song with most votes
-            if (mostVoted.sotdVotes < sotds[x].sotdVotes)
-                mostVoted = sotds[x];
-        }
-        let songs = gotwPlaylist.songs;
-        songs.push(mostVoted);
-        // Put song with most votes into gotwPlaylist
-        const playlistModel = new PlaylistModel({
-            _id: "5fd1f2b4bbb0c538661afe93",
-            genre: gotwPlaylist.genre,
-            numPlays: 0,
-            numTracks: songs.length,
-            ownerID: '5fd9c0005d6810d64be137f9',
-            ownerName: "Marvin's Studio",
-            playlistPoints: 0,
-            privacyType: 0,
-            songs: songs,
-            title: gotwPlaylist.genre
-        });
-        // update gotw playlist
-        CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f", { gotwPlaylist: playlistModel },
-            function (err) {
-                if (err) return next(err);
-                else {
-                    // get sotds
-                    api.initalize()
-                        .then(info => {
-                            api.search(genre).then(result => {
-                                let genrePlaylists = result.content.filter(genrePL => genrePL.type.toLowerCase().includes("playlist") && genrePL.type.match(/\/d+/g)[0] > 30)
-                                let playlistID = genrePlaylists[Math.floor(Math.random() * result.content.length)].browseId
-                                api.getPlaylist(playlistID).then(getPlaylist => {
-                                    let count = 0;
-                                    let newSotds = [];
-                                    while (count < 3) {
-                                        let randIndex = Math.floor(Math.random() * getPlaylist.trackCount)
-                                        if (!gotwPlaylist.songs.find(song => song.videoId === getPlaylist.tracks[randIndex].videoId)) {
-                                            count++;
-                                            newSotds.push(getPlaylist.tracks[randIndex]);
-                                        }
-                                    }
-                                    CommunityModel.findByIdAndUpdate(params.id,
-                                        {
-                                            song1: {
-                                                song: {
-                                                    albumID: null,
-                                                    albumArt: sotds[0].thumbnails[3],
-                                                    videoId: sotds[0].videoId,
-                                                    genre: null,
-                                                    title: sotds[0].title,
-                                                    artistName: "Some Artist",
-                                                    albumName: "Some Album",
-                                                    albumID: "",
-                                                    artistID: "",
-                                                    lastUpdated: null
-                                                },
-                                                sotdVotes: 0
-                                            },
-                                            song2: {
-                                                song: {
-                                                    albumID: null,
-                                                    albumArt: sotds[1].thumbnails[3],
-                                                    videoId: sotds[1].videoId,
-                                                    genre: null,
-                                                    title: sotds[1].title,
-                                                    artistName: "Some Artist",
-                                                    albumName: "Some Album",
-                                                    albumID: "",
-                                                    artistID: "",
-                                                    lastUpdated: null
-                                                },
-                                                sotdVotes: 0
-                                            },
-                                            song3: {
-                                                song: {
-                                                    albumID: null,
-                                                    albumArt: sotds[2].thumbnails[3],
-                                                    videoId: sotds[2].videoId,
-                                                    genre: null,
-                                                    title: sotds[2].title,
-                                                    artistName: "Some Artist",
-                                                    albumName: "Some Album",
-                                                    albumID: "",
-                                                    artistID: "",
-                                                    lastUpdated: null
-                                                },
-                                                sotdVotes: 0
-                                            }
-                                        },
-                                        function (err) {
-                                            if (err) return next(err)
-                                        }
-                                    )
-                                })
-                            })
-                        })
-                }
-            });
+// app.post('/newsotds', (req, res) => {
+//     var genre;
+//     let playlists = [];
+//     let sotds = [];
+//     // get community and gotw
+//     CommunityModel.findById("5fc69c8b61fdeb5194781f2f", function (err, community) {
+//         let gotwPlaylist = community.gotwPlaylist;
+//         let mostVoted;
+//         genre = gotwPlaylist.genre;
+//         console.log(genre);
+//         sotds = [community.song1, community.song2, community.song3];
+//         mostVoted = sotds[0];
+//         for (let x = 1; x < sotds.length; x++) { // Get song with most votes
+//             if (mostVoted.sotdVotes < sotds[x].sotdVotes)
+//                 mostVoted = sotds[x];
+//         }
+//         let songs = gotwPlaylist.songs;
+//         songs.push(mostVoted);
+//         // Put song with most votes into gotwPlaylist
+//         const playlistModel = new PlaylistModel({
+//             _id: "5fd1f2b4bbb0c538661afe93",
+//             genre: gotwPlaylist.genre,
+//             numPlays: 0,
+//             numTracks: songs.length,
+//             ownerID: '5fd9c0005d6810d64be137f9',
+//             ownerName: "Marvin's Studio",
+//             playlistPoints: 0,
+//             privacyType: 0,
+//             songs: songs,
+//             title: gotwPlaylist.genre
+//         });
+//         // update gotw playlist
+//         CommunityModel.findByIdAndUpdate("5fc69c8b61fdeb5194781f2f", { gotwPlaylist: playlistModel },
+//             function (err) {
+//                 if (err) return next(err);
+//                 else {
+//                     // get sotds
+//                     api.initalize()
+//                         .then(info => {
+//                             api.search(genre).then(result => {
+//                                 let genrePlaylists = result.content.filter(genrePL => genrePL.type.toLowerCase().includes("playlist") && genrePL.type.match(/\/d+/g)[0] > 30)
+//                                 let playlistID = genrePlaylists[Math.floor(Math.random() * result.content.length)].browseId
+//                                 api.getPlaylist(playlistID).then(getPlaylist => {
+//                                     let count = 0;
+//                                     let newSotds = [];
+//                                     while (count < 3) {
+//                                         let randIndex = Math.floor(Math.random() * getPlaylist.trackCount)
+//                                         if (!gotwPlaylist.songs.find(song => song.videoId === getPlaylist.tracks[randIndex].videoId)) {
+//                                             count++;
+//                                             newSotds.push(getPlaylist.tracks[randIndex]);
+//                                         }
+//                                     }
+//                                     CommunityModel.findByIdAndUpdate(params.id,
+//                                         {
+//                                             song1: {
+//                                                 song: {
+//                                                     albumID: null,
+//                                                     albumArt: sotds[0].thumbnails[3],
+//                                                     videoId: sotds[0].videoId,
+//                                                     genre: null,
+//                                                     title: sotds[0].title,
+//                                                     artistName: "Some Artist",
+//                                                     albumName: "Some Album",
+//                                                     albumID: "",
+//                                                     artistID: "",
+//                                                     lastUpdated: null
+//                                                 },
+//                                                 sotdVotes: 0
+//                                             },
+//                                             song2: {
+//                                                 song: {
+//                                                     albumID: null,
+//                                                     albumArt: sotds[1].thumbnails[3],
+//                                                     videoId: sotds[1].videoId,
+//                                                     genre: null,
+//                                                     title: sotds[1].title,
+//                                                     artistName: "Some Artist",
+//                                                     albumName: "Some Album",
+//                                                     albumID: "",
+//                                                     artistID: "",
+//                                                     lastUpdated: null
+//                                                 },
+//                                                 sotdVotes: 0
+//                                             },
+//                                             song3: {
+//                                                 song: {
+//                                                     albumID: null,
+//                                                     albumArt: sotds[2].thumbnails[3],
+//                                                     videoId: sotds[2].videoId,
+//                                                     genre: null,
+//                                                     title: sotds[2].title,
+//                                                     artistName: "Some Artist",
+//                                                     albumName: "Some Album",
+//                                                     albumID: "",
+//                                                     artistID: "",
+//                                                     lastUpdated: null
+//                                                 },
+//                                                 sotdVotes: 0
+//                                             }
+//                                         },
+//                                         function (err) {
+//                                             if (err) return next(err)
+//                                         }
+//                                     )
+//                                 })
+//                             })
+//                         })
+//                 }
+//             });
 
 
 
-    });
-    api.initalize()
-        .then(info => {
-            api.search(album.title, "playlist").then(result => {
-                // get 3 random songs of the genre
-            })
-        })
+//     });
+//     api.initalize()
+//         .then(info => {
+//             api.search(album.title, "playlist").then(result => {
+//                 // get 3 random songs of the genre
+//             })
+//         })
 
 
-    res.send("done");
-    res.end();
+//     res.send("done");
+//     res.end();
 
-});
+// });
 
 
 app.post('/newgotw', (req, res) => {

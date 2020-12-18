@@ -66,7 +66,7 @@ class Sidebar extends React.Component {
         return (
             <nav className='sticky-top' style={{ height: "100vh", left: 0, backgroundColor: '#1a1a1a' }}>
                 <div className=" p-0 text-center " style={{ width: 200 }}>
-                    <Link to='/app/community'>
+                    <Link to='/app/home'>
                         <img src={logo} height={"80vh"} alt='' />
                     </Link>
                     <form action='/sidebar' method='post' onSubmit={() => {

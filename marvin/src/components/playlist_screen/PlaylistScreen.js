@@ -464,9 +464,12 @@ class PlaylistScreen extends React.Component {
                                                                                                             </h1>
                                                                                                         </div>
                                                                                                         <div id="playlistOwner" className="row">
+                                                                                                        {data.user ?
                                                                                                             <Link to={`/app/profile/${playlist.ownerID}`}>
                                                                                                                 <h4 className="text-light ml-4"> Playlist by {playlist.ownerName} </h4>
-                                                                                                            </Link>
+                                                                                                            </Link> :
+                                                                                                            <h4 className="text-light ml-4"> Playlist by Deleted User</h4>
+                                                                                                        }
                                                                                                         </div>
                                                                                                         <div id="actions" className="row overflow-visible ml-3" style={{ marginTop: 60 }}>
                                                                                                             <button className='btn btn-outline-primary border-0 bg-transparent'

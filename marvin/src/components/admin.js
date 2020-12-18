@@ -18,6 +18,12 @@ class admin extends Component {
                         <button className="row-1 btn btn-primary" type="submit" name="newGenre" value={musicGenres.getRandomSubgenre()}>Add then change gotw</button>
                     </form>
                 </div>
+                <div className='col-8 m-4'>
+                    <h4 className='row-1 mb-3 text-light'>Reset user's SOTD votes</h4>
+                    <form action='/sotdVoteReset' method='post'>
+                        <button className='row-1 btn btn-primary' type='submit'>Reset SOTD Votes</button>
+                    </form>
+                </div>
 
             </div>
         )

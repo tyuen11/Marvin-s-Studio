@@ -413,6 +413,12 @@ app.post('/newgotw', (req, res) => {
     res.end();
 });
 
+app.post('/sotdVoteReset', (req, res) => {
+    UserModel.find(function(err, users) {
+        if(err) return err
+        users.forEach(user => UserModel.findByIdAndUpdate(user._id, { votedSOTD: 0}, function(err) { if(err) return err}))
+    })
+}) 
 
 
 
@@ -470,7 +476,7 @@ app.post('/feelingLucky', (req, res) => {
     api.initalize()
         .then(info => {
             api.search(req.body.genre).then(result => {
-                let playlistSet = result.content.filter(cont => cont.type.toLowerCase().includes("playlist") && cont.type.toLowerCase().match(/\/d+/g)[0] > 30)
+                let playlistSet = result.content.filter(cont => cont.type.toLowerCase().includes("playlist") && parseInt(cont.type.replace(/\D/g, "")) > 30)
                 api.getPlaylist(playlistSet[Math.floor(Math.random() * playlistSet.length)].browseId).then(getPL => {
                     console.log(getPL.trackCount)
                     album['album'] = {}
@@ -486,7 +492,7 @@ app.post('/feelingLucky', (req, res) => {
                             let pushSong = {
                                 name: getPL.content[randIndex].name,
                                 videoId: getPL.content[randIndex].videoId,
-                                artistName: getPL.content[randIndex].author[0],
+                                artistName: getPL.content[randIndex].author.name,
                                 thumbnails: [getPL.content[randIndex].thumbnails],
                                 duration: getPL.content[randIndex].duration
                             }
